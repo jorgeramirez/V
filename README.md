@@ -1,7 +1,7 @@
 V
 ==
 
-V (Ventas) es un  sistema sencillo de Compra/Ventas de Productos.
+V (Ventas) es un  sistema sencillo de Compra/Venta de Productos.
 
 
 Información del Proyecto
