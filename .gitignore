@@ -1,0 +1,4 @@
+*.symbolMap
+*.class
+v_gwtapp/v_gwtapp/war/v_gwtapp/*
+v_gwtapp/v_gwtapp/war/v_gwtapp/*/**
