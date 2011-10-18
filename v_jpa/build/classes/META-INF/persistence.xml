@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="v_jpa" transaction-type="JTA">
+		<jta-data-source>V-DBC</jta-data-source>
+		<class>v.modelo.Cliente</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+			<property name="hibernate.connection.url" value="jdbc:postgresql:vdb"/>
+			<property name="hibernate.connection.username" value="admin"/>
+			<property name="hibernate.connection.password" value="1234"/>
+		</properties>
+	</persistence-unit>
+</persistence>

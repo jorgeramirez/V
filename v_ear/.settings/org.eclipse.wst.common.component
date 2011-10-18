@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="v_ear">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="v_ejb.jar" deploy-path="/" handle="module:/resource/v_ejb/v_ejb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="v_ejbClient.jar" deploy-path="/" handle="module:/resource/v_ejbClient/v_ejbClient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="v_gwtapp.war" deploy-path="/" handle="module:/resource/v_gwtapp/v_gwtapp">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="v_jpa.jar" deploy-path="/lib" handle="module:/resource/v_jpa/v_jpa">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
