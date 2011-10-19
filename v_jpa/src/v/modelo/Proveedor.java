@@ -3,45 +3,43 @@ package v.modelo;
 import java.io.Serializable;
 import java.lang.Long;
 import java.lang.String;
-
-import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Column;
 import javax.persistence.Transient;
 
 /**
- * Entity implementation class for Entity: 
+ * Entity implementation class for Entity: Proveedor
  *
  */
-@MappedSuperclass
-public class Persona implements Serializable {
+@Entity
+@Table(name="proveedor")
+public class Proveedor implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="cedula", unique=true, nullable=false, length=10)
-	private String cedula;
+	@Column(name="ruc", length=15, unique=true, nullable=false)
+	private String ruc;
 	
-	@Column(name="nombre", nullable=false, length=50)
+	@Column(name="nombre", length=50, nullable=false)
 	private String nombre;
 	
-	@Column(name="apellido", nullable=false, length=50)
-	private String apellido;
-
 	@Column(name="direccion", length=70, nullable=false)
 	private String direccion;
 	
 	@Column(name="telefono", length=20)
 	private String telefono;
-
+	
 	@Transient
 	private static final long serialVersionUID = 1L;
 
-	public Persona() {
+	public Proveedor() {
 		super();
 	}
 	
@@ -53,12 +51,12 @@ public class Persona implements Serializable {
 		this.id = id;
 	}
 	
-	public String getCedula() {
-		return this.cedula;
+	public String getRuc() {
+		return this.ruc;
 	}
 
-	public void setCedula(String cedula) {
-		this.cedula = cedula;
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
 	}
 	
 	public String getNombre() {
@@ -67,15 +65,8 @@ public class Persona implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}   
-	public String getApellido() {
-		return this.apellido;
 	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
+	
 	public String getDireccion() {
 		return this.direccion;
 	}
@@ -91,20 +82,20 @@ public class Persona implements Serializable {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	
+
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
-    }
+    }	
 
     @Override
-    public boolean equals(Object object){
-        if (!(object instanceof Persona)){
+    public boolean equals(Object object) {
+        if (!(object instanceof Proveedor)){
             return false;
         }
-        Persona other = (Persona) object;
+        Proveedor other = (Proveedor) object;
         if ((this.id == null && other.id != null) ||
                 (this.id != null && !this.id.equals(other.id))) {
             return false;
@@ -114,6 +105,6 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return this.nombre + " [" + this.cedula + "]";
-    }
+        return this.nombre + " [" + this.ruc + "]";
+    }	
 }
