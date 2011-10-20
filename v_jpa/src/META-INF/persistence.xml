@@ -2,7 +2,20 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="v_jpa" transaction-type="JTA">
 		<jta-data-source>V-DBC</jta-data-source>
+		<class>v.modelo.Persona</class>
 		<class>v.modelo.Cliente</class>
+		<class>v.modelo.Cajero</class>
+		<class>v.modelo.Proveedor</class>
+		<class>v.modelo.Caja</class>
+		<class>v.modelo.Producto</class>
+		<class>v.modelo.Factura</class>
+		<class>v.modelo.FacturaDetalle</class>
+		<class>v.modelo.FacturaVenta</class>
+		<class>v.modelo.FacturaDetalleVenta</class>
+		<class>v.modelo.FacturaCompra</class>
+		<class>v.modelo.FacturaDetalleCompra</class>
+		<class>v.modelo.Pago</class>
+		<class>v.modelo.RegistroPago</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
