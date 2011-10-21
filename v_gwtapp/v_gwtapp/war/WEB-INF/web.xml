@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-  
-  <!-- Servlets -->
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>V_gwtapp.html</welcome-file>
-  </welcome-file-list>
-
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ <!-- Servlets 
+ Default page to serve -->
+ <welcome-file-list>
+  <welcome-file>V_gwtapp.html</welcome-file>
+ </welcome-file-list>
+ <security-constraint>
+  <display-name>v_security</display-name>
+  <web-resource-collection>
+   <web-resource-name>v_security</web-resource-name>
+   <description>Restricciones de seguridad de la aplicacion.</description>
+   <url-pattern>/</url-pattern>
+   <http-method>GET</http-method>
+   <http-method>POST</http-method>
+  </web-resource-collection>
+ </security-constraint>
+ <login-config>
+  <auth-method>BASIC</auth-method>
+  <realm-name>v-security</realm-name>
+ </login-config>
+ <security-role>
+  <description>Rol de Administrador</description>
+  <role-name>administrador</role-name>
+ </security-role>
+ <security-role>
+  <description>Rol de Cajero</description>
+  <role-name>cajero</role-name>
+ </security-role>
+ <security-role>
+  <description>Rol de Comprador</description>
+  <role-name>comprador</role-name>
+ </security-role>
+ <security-role>
+  <description>Rol de Vendedor</description>
+  <role-name>vendedor</role-name>
+ </security-role>
 </web-app>
