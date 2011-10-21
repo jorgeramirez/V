@@ -6,11 +6,15 @@ import java.lang.Integer;
 import java.lang.Long;
 import java.lang.String;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,6 +40,10 @@ public class Pago implements Serializable {
 	
 	@Column(name="numero_pago", nullable=false)
 	private Integer numeroPago;
+	
+	@ManyToOne(optional=false, fetch=FetchType.EAGER, cascade=CascadeType.REFRESH)
+	@JoinColumn(name="id_factura_venta", referencedColumnName="id")
+	private FacturaVenta factura;
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -76,7 +84,15 @@ public class Pago implements Serializable {
 		this.numeroPago = numeroPago;
 	}
 	
-    @Override
+    public FacturaVenta getFactura() {
+		return factura;
+	}
+
+	public void setFactura(FacturaVenta factura) {
+		this.factura = factura;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

@@ -30,6 +30,9 @@ public class RegistroPago implements Serializable {
 	@Column(name="id")
 	private Long id;
 	
+	@Column(name="id_pago")
+	private Long idPago;
+	
 	@Temporal(value=TemporalType.TIMESTAMP)
 	@Column(name="fecha", nullable=false)
 	private Date fecha;
@@ -55,6 +58,14 @@ public class RegistroPago implements Serializable {
 		this.id = id;
 	}  
 	
+	public Long getIdPago() {
+		return idPago;
+	}
+
+	public void setIdPago(Long idPago) {
+		this.idPago = idPago;
+	}
+
 	public Date getFecha() {
 		return this.fecha;
 	}

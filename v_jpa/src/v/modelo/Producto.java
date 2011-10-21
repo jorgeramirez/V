@@ -6,12 +6,16 @@ import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.String;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -43,6 +47,14 @@ public class Producto implements Serializable {
 	
 	@Column(name="porcentaje_ganancia", nullable=false)
 	private Float porcentajeGanancia;
+	
+	@ManyToMany
+	@JoinTable(name="productos_proveedores", 
+		joinColumns=
+			@JoinColumn(name="id_producto", referencedColumnName="id"),
+		inverseJoinColumns=
+			@JoinColumn(name="id_proveedor", referencedColumnName="id"))	
+	private List<Proveedor> proveedores;
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -99,7 +111,15 @@ public class Producto implements Serializable {
 		this.porcentajeGanancia = porcentajeGanancia;
 	}
 
-    @Override
+    public List<Proveedor> getProveedores() {
+		return proveedores;
+	}
+
+	public void setProveedores(List<Proveedor> proveedores) {
+		this.proveedores = proveedores;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

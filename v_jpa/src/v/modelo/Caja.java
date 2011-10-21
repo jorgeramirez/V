@@ -3,12 +3,15 @@ package v.modelo;
 import java.io.Serializable;
 import java.lang.Integer;
 import java.lang.Long;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -27,6 +30,9 @@ public class Caja implements Serializable {
 	
 	@Column(name="numero_caja", nullable=false)
 	private Integer numeroCaja;
+	
+	@OneToMany(mappedBy="caja", fetch=FetchType.LAZY)
+	private List<Cajero> cajeros;
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -51,7 +57,15 @@ public class Caja implements Serializable {
 		this.numeroCaja = numeroCaja;
 	}
 
-    @Override
+    public List<Cajero> getCajeros() {
+		return cajeros;
+	}
+
+	public void setCajeros(List<Cajero> cajeros) {
+		this.cajeros = cajeros;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
