@@ -4,12 +4,8 @@ import java.lang.String;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import v.modelo.Cajero;
 
 
 /**
@@ -28,9 +24,6 @@ public class Usuario extends Persona {
 
 	@Column(name="email", nullable=false, unique=true, length=100)
 	private String email;
-	
-	@OneToOne(optional=false, mappedBy="usuario", fetch=FetchType.LAZY)
-	private Cajero cajero;
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -61,13 +54,5 @@ public class Usuario extends Persona {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Cajero getCajero() {
-		return cajero;
-	}
-
-	public void setCajero(Cajero cajero) {
-		this.cajero = cajero;
 	}
 }
