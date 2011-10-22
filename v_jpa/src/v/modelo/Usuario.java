@@ -1,9 +1,14 @@
 package v.modelo;
 
 import java.lang.String;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,6 +29,19 @@ public class Usuario extends Persona {
 
 	@Column(name="email", nullable=false, unique=true, length=100)
 	private String email;
+	
+	@Column(name="rol", length=20, nullable=false)
+	private String rol; //administrador, cajero, vendedor o comprador
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="id_caja", referencedColumnName="id")
+	private Caja caja; //para usuarios con rol de cajero
+	
+	@OneToMany(mappedBy="comprador", fetch=FetchType.LAZY)
+	private List<FacturaCompra> compras; //compras registradas por usuario comprador
+	
+	@OneToMany(mappedBy="vendedor", fetch=FetchType.LAZY)
+	private List<FacturaVenta> ventas; //ventas registradas por usuario vendedor
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -54,5 +72,37 @@ public class Usuario extends Persona {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Caja getCaja() {
+		return caja;
+	}
+
+	public void setCaja(Caja caja) {
+		this.caja = caja;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public List<FacturaCompra> getCompras() {
+		return compras;
+	}
+
+	public void setCompras(List<FacturaCompra> compras) {
+		this.compras = compras;
+	}
+
+	public List<FacturaVenta> getVentas() {
+		return ventas;
+	}
+
+	public void setVentas(List<FacturaVenta> ventas) {
+		this.ventas = ventas;
 	}
 }

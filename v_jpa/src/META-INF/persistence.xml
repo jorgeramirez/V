@@ -5,7 +5,6 @@
 		<class>v.modelo.Persona</class>
 		<class>v.modelo.Cliente</class>
 		<class>v.modelo.Usuario</class>
-		<class>v.modelo.Cajero</class>
 		<class>v.modelo.Proveedor</class>
 		<class>v.modelo.Caja</class>
 		<class>v.modelo.Producto</class>

@@ -32,7 +32,10 @@ public class Caja implements Serializable {
 	private Integer numeroCaja;
 	
 	@OneToMany(mappedBy="caja", fetch=FetchType.LAZY)
-	private List<Cajero> cajeros;
+	private List<Usuario> cajeros;
+	
+	@OneToMany(mappedBy="caja", fetch=FetchType.LAZY)
+	private List<Pago> pagos; //pagos registrados en la caja
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -57,12 +60,20 @@ public class Caja implements Serializable {
 		this.numeroCaja = numeroCaja;
 	}
 
-    public List<Cajero> getCajeros() {
+    public List<Usuario> getCajeros() {
 		return cajeros;
 	}
 
-	public void setCajeros(List<Cajero> cajeros) {
+	public void setCajeros(List<Usuario> cajeros) {
 		this.cajeros = cajeros;
+	}
+
+	public List<Pago> getPagos() {
+		return pagos;
+	}
+
+	public void setPagos(List<Pago> pagos) {
+		this.pagos = pagos;
 	}
 
 	@Override

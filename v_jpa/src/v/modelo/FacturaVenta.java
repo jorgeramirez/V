@@ -39,7 +39,11 @@ public class FacturaVenta extends Factura {
 	private List<FacturaDetalleVenta> detalles;
 
 	@OneToMany(mappedBy="factura", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Pago> pagos;	
+	private List<Pago> pagos;
+	
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_vendedor", referencedColumnName="id")
+	private Usuario vendedor; //el usuario con rol vendedor que registro la venta.
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -78,6 +82,12 @@ public class FacturaVenta extends Factura {
 	}
 	public void setPagos(List<Pago> pagos) {
 		this.pagos = pagos;
+	}
+	public Usuario getVendedor() {
+		return vendedor;
+	}
+	public void setVendedor(Usuario vendedor) {
+		this.vendedor = vendedor;
 	}
    
 }

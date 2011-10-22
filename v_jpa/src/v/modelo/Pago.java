@@ -45,6 +45,10 @@ public class Pago implements Serializable {
 	@JoinColumn(name="id_factura_venta", referencedColumnName="id")
 	private FacturaVenta factura;
 	
+	@ManyToOne(optional=false, fetch=FetchType.EAGER, cascade=CascadeType.REFRESH)
+	@JoinColumn(name="id_caja", referencedColumnName="id")
+	private Caja caja;  //la caja donde se registro el pago.
+	
 	@Transient
 	private static final long serialVersionUID = 1L;
 
@@ -90,6 +94,14 @@ public class Pago implements Serializable {
 
 	public void setFactura(FacturaVenta factura) {
 		this.factura = factura;
+	}
+
+	public Caja getCaja() {
+		return caja;
+	}
+
+	public void setCaja(Caja caja) {
+		this.caja = caja;
 	}
 
 	@Override

@@ -5,14 +5,6 @@
         primary key (id)
     );
 
-    create table public.cajero (
-        id int8 not null,
-        id_caja int8 not null,
-        id_usuario int8 not null,
-        primary key (id),
-        unique (id_usuario)
-    );
-
     create table public.cliente (
         id int8 not null,
         apellido varchar(50) not null,
@@ -28,6 +20,7 @@
         fecha timestamp not null,
         numero_factura varchar(10) not null unique,
         total float8 not null,
+        id_comprador int8 not null,
         id_producto int8 not null,
         primary key (id)
     );
@@ -58,6 +51,7 @@
         estado varchar(40) not null,
         saldo float8 not null,
         id_cliente int8 not null,
+        id_vendedor int8 not null,
         primary key (id)
     );
 
@@ -66,6 +60,7 @@
         estado varchar(20) not null,
         monto float8 not null,
         numero_pago int4 not null,
+        id_caja int8 not null,
         id_factura_venta int8 not null,
         primary key (id)
     );
@@ -112,18 +107,15 @@
         telefono varchar(20),
         email varchar(100) not null unique,
         password varchar(64) not null,
+        rol varchar(20) not null,
         username varchar(25) not null unique,
+        id_caja int8,
         primary key (id)
     );
 
-    alter table public.cajero 
-        add constraint FKAE786616FDCA21FE 
-        foreign key (id_caja) 
-        references public.caja;
-
-    alter table public.cajero 
-        add constraint FKAE7866167471F808 
-        foreign key (id_usuario) 
+    alter table public.factura_compra 
+        add constraint FK286314257819B4E3 
+        foreign key (id_comprador) 
         references public.usuario;
 
     alter table public.factura_compra 
@@ -156,6 +148,16 @@
         foreign key (id_cliente) 
         references public.cliente;
 
+    alter table public.factura_venta 
+        add constraint FKF1D09AC5D8DB0F89 
+        foreign key (id_vendedor) 
+        references public.usuario;
+
+    alter table public.pago 
+        add constraint FK346299FDCA21FE 
+        foreign key (id_caja) 
+        references public.caja;
+
     alter table public.pago 
         add constraint FK346299AFBD6585 
         foreign key (id_factura_venta) 
@@ -170,5 +172,10 @@
         add constraint FK7614CE08D11C694 
         foreign key (id_producto) 
         references public.producto;
+
+    alter table public.usuario 
+        add constraint FKF814F32EFDCA21FE 
+        foreign key (id_caja) 
+        references public.caja;
 
     create sequence public.hibernate_sequence;

@@ -27,6 +27,10 @@ public class FacturaCompra extends Factura {
 	
 	@OneToMany(mappedBy="cabecera", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<FacturaDetalleCompra> detalles;
+
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_comprador", referencedColumnName="id")
+	private Usuario comprador; //el usuario con rol comprador que registro la compra.
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -49,6 +53,14 @@ public class FacturaCompra extends Factura {
 
 	public void setDetalles(List<FacturaDetalleCompra> detalles) {
 		this.detalles = detalles;
+	}
+
+	public Usuario getComprador() {
+		return comprador;
+	}
+
+	public void setComprador(Usuario comprador) {
+		this.comprador = comprador;
 	}
    
 }
