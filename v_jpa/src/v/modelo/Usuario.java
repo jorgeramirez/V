@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,6 +21,9 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="usuario")
+@NamedQueries({
+		@NamedQuery(name="Usuario.findAll", query="select u from Usuario u")
+})
 public class Usuario extends Persona {
 
 	@Column(name="username", unique=true, nullable=false, length=25)
