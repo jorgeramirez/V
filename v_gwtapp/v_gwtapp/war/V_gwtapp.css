@@ -1,1 +1,68 @@
 /** Add css rules here for your application. */
+
+#v-header {
+  background: #1E4176 url(images/bg/hd-bg.gif) repeat-x scroll 0pt;
+  border: 0pt none;
+  padding-left: 3px;
+}
+
+
+#v-theme {
+  float: right;
+  padding-top: 5px;
+  padding-right: 8px;
+  position: relative;
+}
+
+
+#v-title {
+  color: white;
+  font-family: tahoma, arial, sans-serif;
+  font-size: 16px;
+  font-size-adjust: none;
+  font-stretch: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: normal;
+  padding: 6px 0 8px 6px;
+}
+
+
+#loading {
+position: absolute;
+left: 45%;
+top: 40%;
+margin-left: -45px;
+padding: 2px;
+z-index: 20001;
+height: auto;
+border: 1px solid #ccc;
+}
+
+
+#loading a {
+color: #225588;
+}
+
+
+#loading .loading-indicator {
+background: white;
+color: #444;
+font: bold 13px tahoma, arial, helvetica;
+padding: 10px;
+margin: 0;
+height: auto;
+}
+
+
+#loading .loading-indicator img {
+margin-right:8px;
+float:left;
+vertical-align:top;
+}
+
+
+#loading-msg {
+font: normal 10px arial, tahoma, sans-serif;
+}
