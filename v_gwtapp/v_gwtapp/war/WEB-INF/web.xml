@@ -11,7 +11,7 @@
   <web-resource-collection>
    <web-resource-name>v_security</web-resource-name>
    <description>Restricciones de seguridad de la aplicacion.</description>
-   <url-pattern>/</url-pattern>
+   <url-pattern>/*</url-pattern>
    <http-method>GET</http-method>
    <http-method>POST</http-method>
   </web-resource-collection>
