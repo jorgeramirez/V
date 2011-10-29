@@ -2,7 +2,7 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="v_jpa" transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<jta-data-source>java:/DefaultDS</jta-data-source>
+		<jta-data-source>java:/PostgresDS</jta-data-source>
 		<class>v.modelo.Persona</class>
 		<class>v.modelo.Cliente</class>
 		<class>v.modelo.Usuario</class>
@@ -19,6 +19,7 @@
 		<class>v.modelo.RegistroPago</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="create"/>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.connection.url" value="jdbc:postgresql:vdb"/>
 			<property name="hibernate.connection.username" value="admin"/>

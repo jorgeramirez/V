@@ -46,9 +46,6 @@ public class CustomGrid<M> extends LayoutContainer {
 	private BeanModelReader reader;
 	private RpcProxy<List<M>> proxy;
 	private ListLoader<ListLoadResult<ModelData>> loader;
-	private Class<?> serviceClass; // GWT service class
-	private String serviceName; 
-	private String methodName;
 	
 	
 	public CustomGrid(String title, ColumnModel cm, HashMap<String, AppConstants.Filtros> filtersConfig, 
