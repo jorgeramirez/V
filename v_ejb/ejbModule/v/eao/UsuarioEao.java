@@ -22,7 +22,7 @@ import v.modelo.Usuario;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class UsuarioEao implements UsuarioEaoLocal {
 
-	@PersistenceContext(name="v_jpa")
+	@PersistenceContext(unitName="v_jpa")
 	private EntityManager em;
 	
 	@Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/gxt.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" output="test-classes" path="test"/>
 	<classpathentry exported="true" kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
@@ -15,6 +16,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/v_jpa"/>
+	<classpathentry exported="true" kind="src" path="/v_ejbClient"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

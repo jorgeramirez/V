@@ -36,4 +36,12 @@
   <description>Rol de Vendedor</description>
   <role-name>vendedor</role-name>
  </security-role>
+ <servlet>
+ 	<servlet-name>AdministradorService</servlet-name>
+ 	<servlet-class>v.server.AdministradorServiceImpl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	<servlet-name>AdministradorService</servlet-name>
+ 	<url-pattern>/v_gwtapp/AdministradorService</url-pattern>
+ </servlet-mapping>
 </web-app>

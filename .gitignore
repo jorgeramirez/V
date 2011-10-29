@@ -6,3 +6,5 @@ v_gwtapp/v_gwtapp/gwt-unitCache/*
 v_gwtapp/v_gwtapp/gwt-unitCache/*/**
 v_jpa/build/classes/*
 v_jpa/build/classes/*/**
+v_gwtapp/v_gwtapp/war/WEB-INF/deploy/*
+v_gwtapp/v_gwtapp/war/WEB-INF/deploy/*/**
