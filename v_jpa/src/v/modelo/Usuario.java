@@ -42,10 +42,10 @@ public class Usuario extends Persona {
 	@JoinColumn(name="id_caja", referencedColumnName="id")
 	private Caja caja; //para usuarios con rol de cajero
 	
-	@OneToMany(mappedBy="comprador", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="comprador")
 	private List<FacturaCompra> compras; //compras registradas por usuario comprador
 	
-	@OneToMany(mappedBy="vendedor", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="vendedor")
 	private List<FacturaVenta> ventas; //ventas registradas por usuario vendedor
 	
 	@Transient

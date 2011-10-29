@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,10 +30,10 @@ public class Caja implements Serializable {
 	@Column(name="numero_caja", nullable=false)
 	private Integer numeroCaja;
 	
-	@OneToMany(mappedBy="caja", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="caja")
 	private List<Usuario> cajeros;
 	
-	@OneToMany(mappedBy="caja", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="caja")
 	private List<Pago> pagos; //pagos registrados en la caja
 	
 	@Transient

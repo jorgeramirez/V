@@ -35,10 +35,10 @@ public class FacturaVenta extends Factura {
 	@JoinColumn(name="id_cliente", referencedColumnName="id")
 	private Cliente cliente;
 
-	@OneToMany(mappedBy="cabecera", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="cabecera", cascade=CascadeType.ALL)
 	private List<FacturaDetalleVenta> detalles;
 
-	@OneToMany(mappedBy="factura", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="factura", cascade=CascadeType.ALL)
 	private List<Pago> pagos;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)

@@ -12,6 +12,10 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/usr/local/jboss/client/jboss-ejb-api_3.1_spec.jar"/>
+	<classpathentry exported="true" kind="lib" path="/usr/local/jboss/client/jboss-ejb-api_3.1_spec.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

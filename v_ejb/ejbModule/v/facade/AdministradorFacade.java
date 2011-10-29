@@ -2,8 +2,6 @@ package v.facade;
 
 import java.util.List;
 
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -19,6 +17,10 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 
 	@EJB
 	UsuarioEaoLocal usuarioEao;
+	
+	public AdministradorFacade () {
+		
+	}
 	
 	@Override
 	//@RolesAllowed("administrador")

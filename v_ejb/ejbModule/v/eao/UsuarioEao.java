@@ -25,6 +25,10 @@ public class UsuarioEao implements UsuarioEaoLocal {
 	@PersistenceContext(unitName="v_jpa")
 	private EntityManager em;
 	
+	public UsuarioEao() {
+		
+	}
+	
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Usuario agregar(Usuario usuario) throws GuardarException {

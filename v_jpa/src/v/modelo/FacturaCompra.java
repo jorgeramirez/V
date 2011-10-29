@@ -25,7 +25,7 @@ public class FacturaCompra extends Factura {
 	@JoinColumn(name="id_producto", referencedColumnName="id")
 	private Proveedor proveedor;
 	
-	@OneToMany(mappedBy="cabecera", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="cabecera", cascade=CascadeType.ALL)
 	private List<FacturaDetalleCompra> detalles;
 
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)

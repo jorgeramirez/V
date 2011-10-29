@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
  <!-- Servlets 
  Default page to serve -->
  <welcome-file-list>
   <welcome-file>V_gwtapp.html</welcome-file>
  </welcome-file-list>
+ <!-- 
  <security-constraint>
   <display-name>v_security</display-name>
   <web-resource-collection>
@@ -36,6 +38,7 @@
   <description>Rol de Vendedor</description>
   <role-name>vendedor</role-name>
  </security-role>
+ -->
  <servlet>
  	<servlet-name>AdministradorService</servlet-name>
  	<servlet-class>v.server.AdministradorServiceImpl</servlet-class>
