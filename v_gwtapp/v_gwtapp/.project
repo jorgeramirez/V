@@ -3,6 +3,7 @@
 	<name>v_gwtapp</name>
 	<comment></comment>
 	<projects>
+		<project>v_ejbClient</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

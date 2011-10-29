@@ -12,10 +12,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/usr/local/jboss/client/jboss-ejb-api_3.1_spec.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.jboss.ide.eclipse.as.classpath.core.javaee-5.0"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
