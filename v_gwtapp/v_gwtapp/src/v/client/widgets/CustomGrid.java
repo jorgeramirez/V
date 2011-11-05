@@ -6,12 +6,17 @@ import java.util.List;
 import v.client.AppConstants;
 
 import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.BeanModelReader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.ListLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -45,7 +50,7 @@ public class CustomGrid<M> extends LayoutContainer {
 	private GridFilters filters;
 	private BeanModelReader reader;
 	private RpcProxy<List<M>> proxy;
-	private ListLoader<ListLoadResult<ModelData>> loader;
+	private PagingLoader<PagingLoadResult<ModelData>> loader;
 	
 	
 	public CustomGrid(String title, ColumnModel cm, HashMap<String, AppConstants.Filtros> filtersConfig, 
@@ -100,7 +105,13 @@ public class CustomGrid<M> extends LayoutContainer {
 	public void onRender(Element target, int index) {
 		super.onRender(target, index);
 		reader = new BeanModelReader();
-		loader = new BaseListLoader<ListLoadResult<ModelData>>(proxy, reader);
+		loader = new BasePagingLoader<PagingLoadResult<ModelData>>(proxy, reader) {
+			@Override
+			protected Object newLoadConfig() {
+				BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
+				return config;
+			}
+		};
 		store = new ListStore<BeanModel>(loader);
 		loader.load();
 		

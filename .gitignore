@@ -8,3 +8,5 @@ v_jpa/build/classes/*
 v_jpa/build/classes/*/**
 v_gwtapp/v_gwtapp/war/WEB-INF/deploy/*
 v_gwtapp/v_gwtapp/war/WEB-INF/deploy/*/**
+v_gwtapp/v_gwtapp/war/WEB-INF/lib/gwt-servlet.jar
+*~

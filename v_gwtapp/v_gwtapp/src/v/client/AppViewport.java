@@ -13,6 +13,7 @@ import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.custom.ThemeSelector;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
@@ -93,7 +94,7 @@ public class AppViewport extends Viewport {
 	private void createCenter() {
 		BorderLayoutData centerData = new BorderLayoutData(LayoutRegion.CENTER);
 		centerData.setCollapsible(false);
-		ContentPanel center = new ContentPanel();
+		LayoutContainer center = new LayoutContainer();
 		final FitLayout fitLayout = new FitLayout();
 		center.setLayout(fitLayout);
 		this.add(center, centerData);

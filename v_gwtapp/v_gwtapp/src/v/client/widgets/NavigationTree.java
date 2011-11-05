@@ -1,6 +1,7 @@
 package v.client.widgets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import v.client.AppConstants;
@@ -15,7 +16,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.TreePanelEvent;
 import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
@@ -50,8 +51,14 @@ public class NavigationTree extends TreePanel<ModelData> {
 					columns.add(new ColumnConfig("cedula", "Cédula", 200));
 					columns.add(new ColumnConfig("rol", "Rol", 200));
 					ColumnModel cm = new ColumnModel(columns);
-					CustomGrid<Usuario> usuariosGrid = new CustomGrid<Usuario>("ABM Usuarios", cm, proxy);
-					ContentPanel cp = (ContentPanel)Registry.get(AppViewport.CENTER_REGION);
+					
+					HashMap<String, AppConstants.Filtros> fc = new HashMap<String, AppConstants.Filtros>();
+					fc.put("username", AppConstants.Filtros.STRING_FILTER);
+					fc.put("cedula", AppConstants.Filtros.STRING_FILTER);
+					fc.put("rol", AppConstants.Filtros.STRING_FILTER);
+					
+					CustomGrid<Usuario> usuariosGrid = new CustomGrid<Usuario>("ABM Usuarios", cm, fc, proxy);
+					LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 					cp.add(usuariosGrid);
 				};
 			}

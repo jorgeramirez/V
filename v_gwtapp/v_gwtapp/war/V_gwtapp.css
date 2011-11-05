@@ -1,7 +1,7 @@
 /** Add css rules here for your application. */
 
 #v-header {
-  background: #1E4176 url(images/bg/hd-bg.gif) repeat-x scroll 0pt;
+  background: #1E4176 url(images/hd-bg.gif) repeat-x scroll 0pt;
   border: 0pt none;
   padding-left: 3px;
 }
@@ -65,4 +65,8 @@ vertical-align:top;
 
 #loading-msg {
 font: normal 10px arial, tahoma, sans-serif;
+}
+
+.clear_icon { 
+	background: url(images/clear-filters.png) no-repeat center left !important; 
 }
