@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,6 +25,9 @@ import v.modelo.Cliente;
  */
 @Entity
 @Table(name="factura_venta")
+@NamedQueries({
+	@NamedQuery(name="FacturaVenta.findAll", query="select f from FacturaVenta f")
+})
 public class FacturaVenta extends Factura {
 
 	@Column(name="estado", nullable=false, length=40)
