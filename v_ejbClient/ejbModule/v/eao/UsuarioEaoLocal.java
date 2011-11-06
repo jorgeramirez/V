@@ -1,4 +1,5 @@
 package v.eao;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -13,6 +14,7 @@ public interface UsuarioEaoLocal {
 	public Usuario agregar(Usuario usuario) throws GuardarException;
 	public void modificar(Usuario usuario) throws GuardarException;
 	public void eliminar(Usuario usuario) throws EliminarException;
-	public List<Usuario> listar();	
+	public List<Usuario> listar(HashMap<String, Object> filters, int start, int limit);
+	public int getCount();
 	
 }

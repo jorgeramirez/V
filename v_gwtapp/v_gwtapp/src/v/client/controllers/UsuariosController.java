@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -26,10 +28,10 @@ public class UsuariosController extends AbstractController {
 	@Override
 	public void init() {
 		final AdministradorServiceAsync service = Registry.get(AppConstants.ADMINISTRADOR_SERVICE);
-		RpcProxy<List<Usuario>> proxy = new RpcProxy<List<Usuario>>() {
+		RpcProxy<PagingLoadResult<Usuario>> proxy = new RpcProxy<PagingLoadResult<Usuario>>() {
 			@Override
-			public void load(Object loadConfig, AsyncCallback<List<Usuario>> callback) {
-				service.listarUsuarios(callback);
+			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<Usuario>> callback) {
+				service.listarUsuarios((FilterPagingLoadConfig)loadConfig, callback);
 			}
 		};
 		
@@ -39,6 +41,8 @@ public class UsuariosController extends AbstractController {
 		columns.add(new ColumnConfig("apellido", "Apellido", 200));
 		columns.add(new ColumnConfig("cedula", "Cédula", 200));
 		columns.add(new ColumnConfig("rol", "Rol", 200));
+		columns.add(new ColumnConfig("direccion", "Dirección", 200));
+		columns.add(new ColumnConfig("telefono", "Telefono", 200));
 		ColumnModel cm = new ColumnModel(columns);
 		
 		HashMap<String, AppConstants.Filtros> fc = new HashMap<String, AppConstants.Filtros>();

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import v.client.AppConstants;
+import v.client.AppViewport;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
@@ -31,6 +32,9 @@ import com.extjs.gxt.ui.client.widget.grid.filters.DateFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
 import com.extjs.gxt.ui.client.widget.grid.filters.NumericFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.LiveToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
@@ -49,12 +53,12 @@ public class CustomGrid<M> extends LayoutContainer {
 	private String title = "Grid Panel";
 	private GridFilters filters;
 	private BeanModelReader reader;
-	private RpcProxy<List<M>> proxy;
+	private RpcProxy<PagingLoadResult<M>> proxy;
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
 	
 	
 	public CustomGrid(String title, ColumnModel cm, HashMap<String, AppConstants.Filtros> filtersConfig, 
-					  RpcProxy<List<M>> proxy) {
+					  RpcProxy<PagingLoadResult<M>> proxy) {
 		super();
 		this.filtersConfig = filtersConfig;
 		this.hasFilters = true;
@@ -64,7 +68,7 @@ public class CustomGrid<M> extends LayoutContainer {
 		
 	}
 	
-	public CustomGrid(String title, ColumnModel cm, RpcProxy<List<M>> proxy) {
+	public CustomGrid(String title, ColumnModel cm, RpcProxy<PagingLoadResult<M>> proxy) {
 		super();
 		this.cm = cm;
 		this.title = title;
@@ -113,9 +117,10 @@ public class CustomGrid<M> extends LayoutContainer {
 			}
 		};
 		store = new ListStore<BeanModel>(loader);
-		loader.load();
 		
+		//cp = (ContentPanel)Registry.get(AppViewport.CENTER_REGION);//new ContentPanel();
 		cp = new ContentPanel();
+		cp.setLayout(new FitLayout());
 		cp.setBodyBorder(true);
 		cp.setHeading(this.title);
 		grid = createGrid();
@@ -123,10 +128,20 @@ public class CustomGrid<M> extends LayoutContainer {
 			filters = createFilters();
 			grid.addPlugin(filters);
 		}
+		grid.setHeight(400);
 		cp.add(grid);
 		topToolBar = createToolBar();
 		cp.setTopComponent(topToolBar);
-		add(cp);
+		
+		//creamos bottom toolbar
+		ToolBar tb = new ToolBar();
+		tb.add(new FillToolItem());
+		LiveToolItem it = new LiveToolItem();
+		it.bindGrid(grid);
+		tb.add(it);
+		cp.setBottomComponent(tb);
+		
+		//add(cp);
 	}
 
 	public Boolean getHasFilters() {

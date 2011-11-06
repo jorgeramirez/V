@@ -15,13 +15,19 @@
  */
 package v.server;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 
+import v.client.AppConstants;
 import v.client.rpc.AdministradorService;
 import v.facade.AdministradorFacadeLocal;
 
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.FilterConfig;
+import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import v.modelo.Usuario;
@@ -33,8 +39,28 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	AdministradorFacadeLocal administradorFacade;
 	
 	@Override
-	public List<Usuario> listarUsuarios() {
-		return administradorFacade.listarUsuarios();
+	public PagingLoadResult<Usuario> listarUsuarios(FilterPagingLoadConfig config) {
+		int count = administradorFacade.getTotalUsuarios();
+		List<FilterConfig> filters = config.getFilterConfigs();
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		
+		HashMap<String, Object> plainFilters = new HashMap<String, Object>();
+		if(filters != null){
+			for (FilterConfig f : filters) {
+				Object val = f.getValue();
+				String field = f.getField();
+				plainFilters.put(field, val);
+		    }
+		}
+		
+		List<Usuario> users = administradorFacade.listarUsuarios(plainFilters, start, limit);
+		for(Usuario u: users){
+			u.setCompras(null);
+			u.setVentas(null);
+		}
+		
+		return new BasePagingLoadResult<Usuario>(users, config.getOffset(), count);
 	}
 	
 }

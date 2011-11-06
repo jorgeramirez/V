@@ -30,6 +30,7 @@ public class AppConstants {
 	public static final String LISTAR_LABEL = "Listar";
 	public static final String LOGOUT_LABEL = "Salir";
 	
+	public static final int PAGE_SIZE = 50;
 	
 
 }

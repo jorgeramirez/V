@@ -22,7 +22,8 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="usuario")
 @NamedQueries({
-		@NamedQuery(name="Usuario.findAll", query="select u from Usuario u")
+		@NamedQuery(name="Usuario.findAll", query="select u from Usuario u"),
+		@NamedQuery(name="Usuario.count", query="select count(u) from Usuario u")
 })
 public class Usuario extends Persona {
 

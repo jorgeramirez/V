@@ -1,5 +1,6 @@
 package v.facade;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -24,8 +25,13 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	
 	@Override
 	//@RolesAllowed("administrador")
-	public List<Usuario> listarUsuarios() {
-		return usuarioEao.listar();
+	public List<Usuario> listarUsuarios(HashMap<String, Object> filters, int start, int limit) {
+		return usuarioEao.listar(filters, start, limit);
+	}
+
+	@Override
+	public int getTotalUsuarios() {
+		return usuarioEao.getCount();
 	}
 
 }
