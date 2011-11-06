@@ -70,3 +70,11 @@ font: normal 10px arial, tahoma, sans-serif;
 .clear_icon { 
 	background: url(images/clear-filters.png) no-repeat center left !important; 
 }
+
+.icon-add { 
+	background-image: url(images/add.gif) !important; background-repeat: no-repeat;
+}
+
+.icon-delete { 
+	background-image: url(images/delete.gif) !important; background-repeat: no-repeat; 
+}

@@ -121,36 +121,36 @@ public class AppViewport extends Viewport {
 	
 	private static Funcionalidad getAdminTreeModel() {
 		Funcionalidad[] funcs = new Funcionalidad[] {
-		    new Funcionalidad("ABM",
+		    new Funcionalidad(AppConstants.ABM_LABEL,
 		    	new Funcionalidad[] {
-		    		new Funcionalidad("Usuarios"),
-		        	new Funcionalidad("Cliente"),
-		        	new Funcionalidad("Vendedor"),
-		        	new Funcionalidad("Proveedor"),
-		        	new Funcionalidad("Caja")
+		    		new Funcionalidad(AppConstants.USUARIOS_LABEL),
+		        	new Funcionalidad(AppConstants.CLIENTE_LABEL),
+		        	new Funcionalidad(AppConstants.VENDEDOR_LABEL),
+		        	new Funcionalidad(AppConstants.PROVEEDOR_LABEL),
+		        	new Funcionalidad(AppConstants.CAJA_LABEL)
 		    	}
 		    ),
-	        new Funcionalidad("Ventas",
+	        new Funcionalidad(AppConstants.VENTAS_LABEL,
 	        	new Funcionalidad[] {
-	        		new Funcionalidad("Registrar Venta"),
-	        		new Funcionalidad("Listar")
+	        		new Funcionalidad(AppConstants.REGISTRAR_VENTA_LABEL),
+	        		new Funcionalidad(AppConstants.LISTAR_LABEL)
 	        	}
 	        ),
-	        new Funcionalidad("Compras",
+	        new Funcionalidad(AppConstants.COMPRAS_LABEL,
 		       	new Funcionalidad[] {
-		       		new Funcionalidad("Registrar Compra"),
-		       		new Funcionalidad("Listar")
+		       		new Funcionalidad(AppConstants.REGISTRAR_COMPRA_LABEL),
+		       		new Funcionalidad(AppConstants.LISTAR_LABEL)
 		    	}
 	        ),
-	        new Funcionalidad("Caja",
+	        new Funcionalidad(AppConstants.CAJA_LABEL,
 		       	new Funcionalidad[] {
-		       		new Funcionalidad("Registrar Pago"),
-		       		new Funcionalidad("Cierre de Caja")
+		       		new Funcionalidad(AppConstants.REGISTRAR_PAGO_LABEL),
+		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)
 	        	}
 	        ),
-	        new Funcionalidad("Sistema",
+	        new Funcionalidad(AppConstants.SISTEMA_LABEL,
 		       	new Funcionalidad[] {
-		       		new Funcionalidad("Logout")
+		       		new Funcionalidad(AppConstants.LOGOUT_LABEL)
 		        }
 	        )
 		};

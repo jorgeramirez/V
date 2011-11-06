@@ -72,7 +72,7 @@ public class CustomGrid<M> extends LayoutContainer {
 	}
 	
 	
-	public GridFilters createFilters() {
+	protected GridFilters createFilters() {
 		GridFilters filters = new GridFilters();
 		filters.setLocal(false);
 		for(String f: filtersConfig.keySet()){
@@ -137,7 +137,7 @@ public class CustomGrid<M> extends LayoutContainer {
 		this.hasFilters = hasFilters;
 	}
 	
-	private ToolBar createToolBar() {
+	protected ToolBar createToolBar() {
 		ToolBar tb = new ToolBar();
 		if(this.hasFilters){
 			Button clearButton = new Button("Eliminar Filtros");
@@ -147,7 +147,7 @@ public class CustomGrid<M> extends LayoutContainer {
 		return tb;
 	}
 	
-	private Grid<BeanModel> createGrid() {
+	protected Grid<BeanModel> createGrid() {
 		Grid<BeanModel> g = new Grid<BeanModel>(store, cm);
 		g.setBorders(false);
 		g.setStripeRows(true);

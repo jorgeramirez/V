@@ -1,5 +1,10 @@
 package v.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import v.client.controllers.AbstractController;
+import v.client.controllers.UsuariosController;
 import v.client.rpc.AdministradorService;
 import v.client.rpc.AdministradorServiceAsync;
 import v.shared.model.Roles;
@@ -21,6 +26,12 @@ public class V_gwtapp implements EntryPoint {
 		//creamos los servicios
 		AdministradorServiceAsync adminService = (AdministradorServiceAsync)GWT.create(AdministradorService.class);
 		Registry.register(AppConstants.ADMINISTRADOR_SERVICE, adminService);
+		
+		//seteamos controladores
+		List<AbstractController> controllers = new ArrayList<AbstractController>();
+		controllers.add(new UsuariosController());
+		Dispatcher d = new Dispatcher(controllers);
+		Registry.register("dispatcher", d);
 		
 		AppViewport viewport = new AppViewport(Roles.ADMINISTRADOR);
 		RootPanel.get().add(viewport);
