@@ -24,6 +24,7 @@
 			<property name="hibernate.connection.url" value="jdbc:postgresql:vdb"/>
 			<property name="hibernate.connection.username" value="admin"/>
 			<property name="hibernate.connection.password" value="1234"/>
+			<property name="hibernate.default_schema" value="public"/>
 		</properties>
 	</persistence-unit>
 </persistence>
