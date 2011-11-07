@@ -53,6 +53,7 @@ public class UsuariosController extends AbstractController {
 		CrudGrid<Usuario> usuariosGrid = new CrudGrid<Usuario>("ABM Usuarios", cm, fc, proxy);
 		LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 		cp.add(usuariosGrid);
+		cp.layout();
 	}
 
 }

@@ -94,7 +94,7 @@ public class AppViewport extends Viewport {
 	private void createCenter() {
 		BorderLayoutData centerData = new BorderLayoutData(LayoutRegion.CENTER);
 		centerData.setCollapsible(false);
-		ContentPanel center = new ContentPanel();
+		LayoutContainer center = new LayoutContainer();
 		final FitLayout fitLayout = new FitLayout();
 		center.setLayout(fitLayout);
 		this.add(center, centerData);

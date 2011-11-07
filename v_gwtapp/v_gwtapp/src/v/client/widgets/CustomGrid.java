@@ -19,6 +19,9 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -41,7 +44,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings({"unused"})
-public class CustomGrid<M> extends LayoutContainer {
+public class CustomGrid<M> extends ContentPanel {
 
 	private HashMap<String, AppConstants.Filtros> filtersConfig;
 	private Boolean hasFilters = false;
@@ -49,7 +52,6 @@ public class CustomGrid<M> extends LayoutContainer {
 	private ToolBar topToolBar;
 	private ListStore<BeanModel> store;
 	private ColumnModel cm;
-	private ContentPanel cp;
 	private String title = "Grid Panel";
 	private GridFilters filters;
 	private BeanModelReader reader;
@@ -65,6 +67,7 @@ public class CustomGrid<M> extends LayoutContainer {
 		this.cm = cm;
 		this.title = title;
 		this.proxy = proxy;
+		this.setupToolBars();
 		
 	}
 	
@@ -73,6 +76,7 @@ public class CustomGrid<M> extends LayoutContainer {
 		this.cm = cm;
 		this.title = title;
 		this.proxy = proxy;
+		this.setupToolBars();
 	}
 	
 	
@@ -118,30 +122,27 @@ public class CustomGrid<M> extends LayoutContainer {
 		};
 		store = new ListStore<BeanModel>(loader);
 		
-		//cp = (ContentPanel)Registry.get(AppViewport.CENTER_REGION);//new ContentPanel();
-		cp = new ContentPanel();
-		cp.setLayout(new FitLayout());
-		cp.setBodyBorder(true);
-		cp.setHeading(this.title);
+		this.setLayout(new FitLayout());
+		this.setHeading(this.title);
 		grid = createGrid();
 		if(hasFilters){
 			filters = createFilters();
 			grid.addPlugin(filters);
 		}
-		grid.setHeight(400);
-		cp.add(grid);
-		topToolBar = createToolBar();
-		cp.setTopComponent(topToolBar);
+		this.add(grid);
+		LiveToolItem it = new LiveToolItem();
+		it.bindGrid(grid);
+		((ToolBar)this.getBottomComponent()).add(it);	
+	}
+	
+	public void setupToolBars() {
+		topToolBar = this.createTopToolBar();
+		this.setTopComponent(topToolBar);
 		
 		//creamos bottom toolbar
 		ToolBar tb = new ToolBar();
 		tb.add(new FillToolItem());
-		LiveToolItem it = new LiveToolItem();
-		it.bindGrid(grid);
-		tb.add(it);
-		cp.setBottomComponent(tb);
-		
-		//add(cp);
+		this.setBottomComponent(tb);		
 	}
 
 	public Boolean getHasFilters() {
@@ -152,11 +153,17 @@ public class CustomGrid<M> extends LayoutContainer {
 		this.hasFilters = hasFilters;
 	}
 	
-	protected ToolBar createToolBar() {
+	protected ToolBar createTopToolBar() {
 		ToolBar tb = new ToolBar();
 		if(this.hasFilters){
 			Button clearButton = new Button("Eliminar Filtros");
 			clearButton.setIconStyle("clear_icon");
+			clearButton.addListener(Events.OnClick, new Listener<ButtonEvent>() {
+				@Override
+				public void handleEvent(ButtonEvent be) {
+					filters.clearFilters();
+				}
+			});
 			tb.add(clearButton);
 		}
 		return tb;

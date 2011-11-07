@@ -22,8 +22,8 @@ public class CrudGrid<M> extends CustomGrid<M> {
 	}
 	
 	@Override
-	protected ToolBar createToolBar() {
-		ToolBar tb = super.createToolBar();
+	protected ToolBar createTopToolBar() {
+		ToolBar tb = super.createTopToolBar();
 		Button addButton = new Button("Agregar");
 		addButton.setIconStyle("icon-add");
 		tb.add(addButton);
