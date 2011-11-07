@@ -44,22 +44,10 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		
-		HashMap<String, Object> plainFilters = new HashMap<String, Object>();
-		if(filters != null){
-			for (FilterConfig f : filters) {
-				Object val = f.getValue();
-				String field = f.getField();
-				plainFilters.put(field, val);
-		    }
-		}
-		
+		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
 		List<Usuario> users = administradorFacade.listarUsuarios(plainFilters, start, limit);
-		for(Usuario u: users){
-			u.setCompras(null);
-			u.setVentas(null);
-		}
-		
+		Converter<Usuario> c = new Converter<Usuario>();
+		users = c.convertObjects(users);		
 		return new BasePagingLoadResult<Usuario>(users, config.getOffset(), count);
 	}
 	
