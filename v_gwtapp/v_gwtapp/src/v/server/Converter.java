@@ -38,5 +38,4 @@ public class Converter<M> {
 		}
 		return objects;
 	}
-	
 }

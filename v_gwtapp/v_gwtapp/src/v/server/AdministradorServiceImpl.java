@@ -30,6 +30,7 @@ import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import v.modelo.Caja;
 import v.modelo.Usuario;
 
 @SuppressWarnings("serial")
@@ -46,8 +47,14 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		int limit = AppConstants.PAGE_SIZE;
 		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
 		List<Usuario> users = administradorFacade.listarUsuarios(plainFilters, start, limit);
-		Converter<Usuario> c = new Converter<Usuario>();
-		users = c.convertObjects(users);		
+		Converter<Usuario> cu = new Converter<Usuario>();
+		Converter<Caja> cc = new Converter<Caja>();
+		users = cu.convertObjects(users);
+		for(Usuario u: users){
+			if(u.getRol().equals(AppConstants.CAJERO_ROL)){
+				u.setCaja(cc.convertObject(u.getCaja()));
+			}
+		}
 		return new BasePagingLoadResult<Usuario>(users, config.getOffset(), count);
 	}
 	

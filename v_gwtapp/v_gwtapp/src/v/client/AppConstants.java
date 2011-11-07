@@ -32,5 +32,11 @@ public class AppConstants {
 	
 	public static final int PAGE_SIZE = 50;
 	
+	//nombre de los roles que maneja el sistema
+	public static final String ADMINISTRADOR_ROL = "administrador";
+	public static final String CAJERO_ROL = "cajero";
+	public static final String VENDEDOR_ROL = "vendedor";
+	public static final String COMPRADOR_ROL = "comprador";
+	
 
 }
