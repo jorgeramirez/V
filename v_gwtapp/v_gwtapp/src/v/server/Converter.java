@@ -22,8 +22,8 @@ public class Converter<M> {
 				mn = "set" + fn.substring(0, 1).toUpperCase() + fn.substring(1);
 				Class[] params = {f.getType()};
 				try {
-					Method  seter = clazz.getMethod(mn, params);
-					seter.invoke(object, (Object)null);
+					Method  setter = clazz.getMethod(mn, params);
+					setter.invoke(object, (Object)null);
 				} catch (Exception e) {
 					//ignore
 				}
