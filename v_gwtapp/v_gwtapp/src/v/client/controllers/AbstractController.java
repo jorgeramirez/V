@@ -2,6 +2,8 @@ package v.client.controllers;
 
 /**
  * Clase base para los Controladores.
+ * 
+ * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
 public abstract class AbstractController {
 	

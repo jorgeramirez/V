@@ -10,6 +10,9 @@ import v.client.controllers.AbstractController;
 
 /**
  * Clase que se encarga de enrutar hacia los controladores.
+ * 
+ * 
+ * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
 
 public class Dispatcher {
