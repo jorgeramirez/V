@@ -1,4 +1,6 @@
 package v.eao;
+import java.util.List;
+
 import javax.ejb.Local;
 
 import v.excepciones.EliminarException;
@@ -13,5 +15,7 @@ public interface CajaEaoLocal {
 	void modificar(Caja caja) throws GuardarException;
 
 	void eliminar(Caja caja) throws EliminarException;
+	
+	List<Caja> listar();
 
 }

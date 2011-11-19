@@ -10,4 +10,5 @@ import v.modelo.Usuario;
 public interface AdministradorFacadeLocal {
 	public List<Usuario> listarUsuarios(HashMap<String, Object> filters, int start, int limit);
 	public int getTotalUsuarios();
+	public List<Integer> listarNrosCaja();
 }

@@ -37,6 +37,5 @@ public class AppConstants {
 	public static final String CAJERO_ROL = "cajero";
 	public static final String VENDEDOR_ROL = "vendedor";
 	public static final String COMPRADOR_ROL = "comprador";
-	
 
 }

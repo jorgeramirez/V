@@ -25,6 +25,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -33,6 +34,8 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.LiveGridView;
+import com.extjs.gxt.ui.client.widget.grid.RowEditor;
+import com.extjs.gxt.ui.client.widget.grid.EditorGrid.ClicksToEdit;
 import com.extjs.gxt.ui.client.widget.grid.filters.BooleanFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.DateFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.Filter;
@@ -79,6 +82,12 @@ public class CustomGrid<M> extends ContentPanel {
 	 * Define si se utilizará {@link CheckBoxSelectionModel}
 	 **/
 	private Boolean useCheckBoxSm = false;
+
+	
+	/**
+	 * Determina si se utiliza un {@link RowEditor}
+	 **/
+	private Boolean useRowEditor = false;
 	
 	private CheckBoxSelectionModel<BeanModel> cbsm;	
 	private Grid<BeanModel> grid;
@@ -90,6 +99,12 @@ public class CustomGrid<M> extends ContentPanel {
 	private BeanModelReader reader;
 	private RpcProxy<PagingLoadResult<M>> proxy;
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
+	
+	/**
+	 * {@link RowEditor} utilizado para realizar cambios en los elementos
+	 * almacenados en el {@link Store}
+	 **/
+	private RowEditor<BeanModel> rowEditor;
 	
 	
 	/**
@@ -209,6 +224,11 @@ public class CustomGrid<M> extends ContentPanel {
 			grid.addPlugin(this.cbsm);
 			grid.setSelectionModel(this.cbsm);
 		}
+		if(useRowEditor){
+			rowEditor = new RowEditor<BeanModel>();
+			rowEditor.setClicksToEdit(ClicksToEdit.TWO);
+			grid.addPlugin(rowEditor);
+		}
 	}
 	
 	/**
@@ -273,6 +293,26 @@ public class CustomGrid<M> extends ContentPanel {
 
 	public void setGrid(Grid<BeanModel> grid) {
 		this.grid = grid;
+	}
+
+
+	public Boolean getUseRowEditor() {
+		return useRowEditor;
+	}
+
+
+	public void setUseRowEditor(Boolean useRowEditor) {
+		this.useRowEditor = useRowEditor;
+	}
+
+
+	public RowEditor<BeanModel> getRowEditor() {
+		return rowEditor;
+	}
+
+
+	public void setRowEditor(RowEditor<BeanModel> re) {
+		this.rowEditor = re;
 	}
 	
 }

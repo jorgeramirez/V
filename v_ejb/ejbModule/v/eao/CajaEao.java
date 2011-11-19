@@ -1,5 +1,7 @@
 package v.eao;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -55,6 +57,11 @@ public class CajaEao implements CajaEaoLocal {
 		}catch(PersistenceException pe) {
 			throw new EliminarException(pe.getMessage());
 		}
+	}
+
+	@Override
+	public List<Caja> listar() {
+		return em.createNamedQuery("Caja.findAll", Caja.class).getResultList();
 	}
 
 }

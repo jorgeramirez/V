@@ -78,3 +78,11 @@ font: normal 10px arial, tahoma, sans-serif;
 .icon-delete { 
 	background-image: url(images/delete.gif) !important; background-repeat: no-repeat; 
 }
+
+.icon-save {
+	background-image: url(images/save.gif) !important; background-repeat: no-repeat; 
+}
+
+.icon-discard {
+	background-image: url(images/discard.png) !important; background-repeat: no-repeat; 
+}

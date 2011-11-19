@@ -57,5 +57,10 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		}
 		return new BasePagingLoadResult<Usuario>(users, config.getOffset(), count);
 	}
+
+	@Override
+	public List<Integer> listarNrosCaja() {
+		return administradorFacade.listarNrosCaja();
+	}
 	
 }

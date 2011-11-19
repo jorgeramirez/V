@@ -8,6 +8,9 @@ import v.client.AppConstants.Filtros;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.Store;
@@ -28,6 +31,10 @@ import com.google.gwt.user.client.Element;
 public class CrudGrid<M> extends CustomGrid<M> {
 	private Button addButton;
 	private Button deleteButton;
+	private Button saveChangesButton;
+	private Button discardChangesButton;
+	
+
 
 	public CrudGrid(String title, ColumnModel cm, HashMap<String, AppConstants.Filtros> filtersConfig, 
 			  		RpcProxy<PagingLoadResult<M>> proxy) {
@@ -50,10 +57,21 @@ public class CrudGrid<M> extends CustomGrid<M> {
 		addButton = new Button("Agregar");
 		addButton.setIconStyle("icon-add");
 		tb.add(addButton);
+		
 		deleteButton = new Button("Eliminar");
 		deleteButton.setIconStyle("icon-delete");
 		deleteButton.setEnabled(false);
 		tb.add(deleteButton);
+		
+		saveChangesButton = new Button("Guardar Cambios");
+		saveChangesButton.setIconStyle("icon-save");
+		saveChangesButton.setEnabled(false);
+		tb.add(saveChangesButton);
+		
+		discardChangesButton = new Button("Descartar Cambios");
+		discardChangesButton.setIconStyle("icon-discard");
+		discardChangesButton.setEnabled(false);
+		tb.add(discardChangesButton);
 		return tb;
 	}
 	
@@ -68,6 +86,17 @@ public class CrudGrid<M> extends CustomGrid<M> {
 				deleteButton.setEnabled(se.getSelection().size() > 0);
 			}
 		});
+		
+		if(this.getUseRowEditor()){
+			this.getRowEditor().addListener(Events.AfterEdit, new Listener<BaseEvent>() {
+
+				@Override
+				public void handleEvent(BaseEvent be) {
+					saveChangesButton.setEnabled(true);
+					discardChangesButton.setEnabled(true);
+				}
+			});
+		}
 	}
 
 	public Button getAddButton() {
@@ -84,6 +113,22 @@ public class CrudGrid<M> extends CustomGrid<M> {
 
 	public void setDeleteButton(Button deleteButton) {
 		this.deleteButton = deleteButton;
+	}
+
+	public Button getSaveChangesButton() {
+		return saveChangesButton;
+	}
+
+	public void setSaveChangesButton(Button saveChangesButton) {
+		this.saveChangesButton = saveChangesButton;
+	}
+
+	public Button getDiscardChangesButton() {
+		return discardChangesButton;
+	}
+
+	public void setDiscardChangesButton(Button discardChangesButton) {
+		this.discardChangesButton = discardChangesButton;
 	}
 	
 }
