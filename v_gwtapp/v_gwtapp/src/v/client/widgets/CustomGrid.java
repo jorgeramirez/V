@@ -2,6 +2,7 @@ package v.client.widgets;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import v.client.AppConstants;
 import v.client.AppViewport;
@@ -18,11 +19,13 @@ import com.extjs.gxt.ui.client.data.BeanModelReader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.ListLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Store;
@@ -46,6 +49,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.selection.SelectionModel;
 import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.LiveToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
@@ -54,8 +58,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * {@link CustomGrid} es una clase que define un {@link Grid} con un view 
- * del tipo {@link LiveGridView} de manera a hacer lazy loading.
+ * {@link CustomGrid} es una clase que define un {@link Grid} con paginación
+ * utilizando {@link PagingToolBar}
  * 
  * También permite realizar filtrado, utilizando el plugin {@link GridFilters}
  * 
@@ -206,9 +210,29 @@ public class CustomGrid<M> extends ContentPanel {
 		grid = createGrid();
 		setupGridPlugins();
 		this.add(grid);
-		LiveToolItem it = new LiveToolItem();
-		it.bindGrid(grid);
-		((ToolBar)this.getBottomComponent()).add(it);	
+		final PagingToolBar toolBar = new PagingToolBar(AppConstants.PAGE_SIZE);  
+	    toolBar.bind(loader);
+	    
+	    // seteamos el loader
+	    grid.setStateId("customgrid");  
+	    grid.setStateful(true);	    
+	    grid.addListener(Events.Attach, new Listener<GridEvent<BeanModel>>() {  
+	    	public void handleEvent(GridEvent<BeanModel> be) {  
+	    		BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();  
+	    		config.setOffset(0);  
+	    		config.setLimit(AppConstants.PAGE_SIZE);  
+
+	    		Map<String, Object> state = grid.getState();  
+	    		if (state.containsKey("offset")) {  
+	    			int offset = (Integer)state.get("offset");  
+	    			int limit = (Integer)state.get("limit");  
+	    			config.setOffset(offset);  
+	    			config.setLimit(limit);  
+	    		}  
+	    		loader.load(config);
+	    	}  
+	    });
+	    ((ToolBar) this.getBottomComponent()).add(toolBar);
 	}
 	
 	/**
@@ -280,10 +304,6 @@ public class CustomGrid<M> extends ContentPanel {
 		g.setStripeRows(true);
 		g.setColumnLines(true);
 		g.setLoadMask(true);
-		LiveGridView lv = new LiveGridView();
-		lv.setEmptyText("No se encontraron filas en el servidor");
-		lv.setRowHeight(32);
-		g.setView(lv);
 		return g;
 	}
 
