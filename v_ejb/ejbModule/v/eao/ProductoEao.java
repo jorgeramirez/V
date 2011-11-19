@@ -1,5 +1,8 @@
 package v.eao;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -8,6 +11,7 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
@@ -58,5 +62,26 @@ public class ProductoEao implements ProductoEaoLocal {
 		}catch(PersistenceException pe) {
 			throw new EliminarException(pe.getMessage());
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Producto> listar(HashMap<String, Object> filters, int start, int limit) {
+		String q = "select p from Producto p ";
+		Object val;
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(String key: filters.keySet()) {
+				val = filters.get(key);
+				if(val instanceof String){
+					val = (String)val;
+					q += "p." + key + " like '" + val + "'";
+				}
+			}
+		}
+		Query query = em.createQuery(q, Producto.class);
+		query.setFirstResult(start);
+		query.setMaxResults(limit);
+		return query.getResultList();
 	}
 }
