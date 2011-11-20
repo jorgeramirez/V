@@ -6,6 +6,7 @@ import javax.ejb.Local;
 
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
+import v.modelo.FacturaCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
 
@@ -29,5 +30,7 @@ public interface ComprasFacadeLocal {
 
 	List<Proveedor> listarProveedores(HashMap<String, Object> filters,
 			int start, int limit);
+
+	void registrarCompra(FacturaCompra factura) throws GuardarException;
 
 }

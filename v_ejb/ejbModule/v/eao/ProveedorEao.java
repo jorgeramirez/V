@@ -81,5 +81,10 @@ public class ProveedorEao implements ProveedorEaoLocal {
 		query.setMaxResults(limit);
 		return query.getResultList();
 	}
+	
+	@Override
+	public Proveedor getById(Long id){
+		return em.find(Proveedor.class, id);
+	}
 
 }

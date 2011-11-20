@@ -28,9 +28,17 @@ public class FacturaDetalle implements Serializable {
 	@Column(name="cantidad", nullable=false)
 	private Integer cantidad;
 	
-	@Column(name="subtotal", nullable=false)
-	private Double subTotal;
+	@Column(name="precio", nullable=false)
+	private Double precio;
 	
+	public Double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
 	@Transient
 	private static final long serialVersionUID = 1L;
 
@@ -54,13 +62,6 @@ public class FacturaDetalle implements Serializable {
 		this.cantidad = cantidad;
 	}
 	
-	public Double getSubTotal() {
-		return this.subTotal;
-	}
-
-	public void setSubTotal(Double subTotal) {
-		this.subTotal = subTotal;
-	}
 
     @Override
     public int hashCode() {

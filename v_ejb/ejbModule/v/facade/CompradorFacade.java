@@ -6,11 +6,13 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import v.eao.FacturaCompraEaoLocal;
 import v.eao.ProductoEaoLocal;
 import v.eao.ProveedorEaoLocal;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaCompra;
+import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
 
@@ -24,8 +26,11 @@ public class CompradorFacade implements ComprasFacadeLocal {
 	@EJB
 	ProveedorEaoLocal proveedorEao;
 	
+	@EJB
+	FacturaCompraEaoLocal facturaEao;
+	
     public CompradorFacade() {
-        // TODO Auto-generated constructor stub
+    	
     }
 
 	@Override
@@ -68,7 +73,33 @@ public class CompradorFacade implements ComprasFacadeLocal {
 		return proveedorEao.listar(filters, start, limit);
 	}
 	
-	public void registrarCompra(FacturaCompra factura) {
+	@Override
+	public void registrarCompra(FacturaCompra factura) throws GuardarException {
 		
+		Proveedor proveedor = proveedorEao.getById(factura.getProveedor().getId());
+		
+		for (FacturaDetalleCompra detalle : factura.getDetalles()) {
+			
+			Producto producto = productoEao.getById(detalle.getProducto().getId());
+			
+			//costo actual * cantidad actual + costo nuevo * cantidad compra) / 
+			//           (cantidad actual + cantidad compra).
+			Double nuevoCosto = ((producto.getCosto() * producto.getCantidad()) 
+					+ ( detalle.getPrecio() * detalle.getCantidad() )) 
+					/ ( producto.getCantidad() + detalle.getCantidad() );
+			
+			int nuevaCantidad = producto.getCantidad() + detalle.getCantidad();
+			
+			producto.setCosto(nuevoCosto);
+			producto.setCantidad(nuevaCantidad);
+			
+			productoEao.modificar(producto);
+				
+			detalle.setProducto(producto);			
+		}
+		
+		factura.setProveedor(proveedor);
+		
+		facturaEao.agregar(factura);
 	}
 }
