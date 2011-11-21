@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 
 import v.client.AppConstants;
 import v.client.rpc.AdministradorService;
+import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.facade.AdministradorFacadeLocal;
 
@@ -104,5 +105,20 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	@Override
 	public boolean existeUsername(String username) {
 		return administradorFacade.findByUsername(username) != null;
+	}
+
+	@Override
+	public boolean eliminarUsuarios(List<Usuario> users) {
+		boolean ok = true;
+		for(Usuario u: users){
+			try {
+				administradorFacade.eliminarUsuario(u);
+			} catch (EliminarException e) {
+				e.printStackTrace();
+				ok = false;
+				break;
+			}
+		}
+		return ok;
 	}
 }

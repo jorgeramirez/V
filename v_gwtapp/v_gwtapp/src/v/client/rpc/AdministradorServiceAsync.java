@@ -17,4 +17,5 @@ public interface AdministradorServiceAsync {
 	void agregarUsuario(Usuario u, AsyncCallback<Usuario> callback);
 	void modificarUsuario(Usuario u, AsyncCallback<Void> asyncCallback);
 	void existeUsername(String username, AsyncCallback<Boolean> asyncCallback);
+	void eliminarUsuarios(List<Usuario> users, AsyncCallback<Boolean> asyncCallback);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Caja;
 import v.modelo.Usuario;
@@ -17,4 +18,5 @@ public interface AdministradorFacadeLocal {
 	Usuario agregarUsuario(Usuario u) throws GuardarException;
 	void modificarUsuario(Usuario u) throws GuardarException;
 	Usuario findByUsername(String username);
+	void eliminarUsuario(Usuario u) throws EliminarException;
 }

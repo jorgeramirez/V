@@ -34,4 +34,5 @@ public interface AdministradorService extends RemoteService {
 	Usuario agregarUsuario(Usuario u);
 	void modificarUsuario(Usuario u);
 	boolean existeUsername(String username);
+	boolean eliminarUsuarios(List<Usuario> users);
 }

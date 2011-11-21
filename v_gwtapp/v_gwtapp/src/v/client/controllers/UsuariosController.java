@@ -11,7 +11,6 @@ import v.client.VType;
 import v.client.VTypeValidator;
 import v.client.rpc.AdministradorServiceAsync;
 import v.client.widgets.CrudGrid;
-import v.client.widgets.CustomGrid;
 import v.client.widgets.EditorForm;
 import v.modelo.Caja;
 import v.modelo.Usuario;
@@ -36,6 +35,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.Field;
@@ -59,48 +59,48 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class UsuariosController extends AbstractController {
 	private CrudGrid<Usuario> grid;
 	private final AdministradorServiceAsync service = Registry.get(AppConstants.ADMINISTRADOR_SERVICE);
-	
+
 	public UsuariosController() {
 		super(AppConstants.USUARIOS_LABEL);
 	}
-	
+
 	@Override
 	public void init() {
-	
+
 		RpcProxy<PagingLoadResult<Usuario>> proxy = new RpcProxy<PagingLoadResult<Usuario>>() {
 			@Override
 			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<Usuario>> callback) {
 				service.listarUsuarios((FilterPagingLoadConfig)loadConfig, callback);
 			}
 		};		
-		
-	    // Creamos los ColumnConfigs
+
+		// Creamos los ColumnConfigs
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
 		// Selection Model para el grid
 		CheckBoxSelectionModel<BeanModel> cbsm = new CheckBoxSelectionModel<BeanModel>();
 		columns.add(cbsm.getColumn());
-		
+
 		// username
 		ColumnConfig column = new ColumnConfig("username", "Username", 100);
 		columns.add(column);
-		
- 	    // rol
+
+		// rol
 		column = new ColumnConfig("rol", "Rol", 100);
 		columns.add(column);
-		
+
 		// cedula
 		column = new ColumnConfig("cedula", "Cédula", 100);
 		columns.add(column);
-		
+
 		// nro. de caja field.
 		ColumnConfig nroCajaColumn = new ColumnConfig("nroCaja", "Nro. de Caja", 100);
 		nroCajaColumn.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
 			public Object render(BeanModel model, String property,
-								 ColumnData config, int rowIndex, int colIndex,
-								 ListStore<BeanModel> store, Grid<BeanModel> grid) {
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<BeanModel> store, Grid<BeanModel> grid) {
 				Usuario u = (Usuario)model.getBean();
 				if(u.getRol().equals(AppConstants.CAJERO_ROL)){
 					return u.getCaja().getNumeroCaja();
@@ -109,11 +109,11 @@ public class UsuariosController extends AbstractController {
 			}
 		});
 		columns.add(nroCajaColumn);
-		
+
 		// nombre
 		column = new ColumnConfig("nombre", "Nombre", 100);
 		columns.add(column);
-		
+
 		// apellido
 		column = new ColumnConfig("apellido", "Apellido", 100);
 		columns.add(column);
@@ -125,47 +125,47 @@ public class UsuariosController extends AbstractController {
 		// telefono
 		column = new ColumnConfig("telefono", "Teléfono", 100);
 		columns.add(column);
-		
+
 		// email
 		column = new ColumnConfig("email", "Email", 200);
 		columns.add(column);
-		
+
 		ColumnModel cm = new ColumnModel(columns);
-		
+
 		// establecemos los filtros
 		HashMap<String, AppConstants.Filtros> fc = new HashMap<String, AppConstants.Filtros>();
 		fc.put("username", AppConstants.Filtros.STRING_FILTER);
 		fc.put("cedula", AppConstants.Filtros.STRING_FILTER);
 		fc.put("rol", AppConstants.Filtros.STRING_FILTER);
-		
+
 		// creamos el CrudGrid para Usuarios
 		grid = new CrudGrid<Usuario>("ABM Usuarios", cm, fc, proxy, cbsm);
 		bindHandlers();
-		
+
 		LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 		cp.add(grid);
 		cp.layout();
 
 	}
-	
+
 	/**
 	 * Método que se encarga de construir el {@link EditorForm} para {@link Usuario}
 	 **/
 	private EditorForm buildEditorForm(boolean create) {
 		List<Field<?>> fields = new ArrayList<Field<?>>();
 		List<FieldBinding> bindings = new ArrayList<FieldBinding>();
-		
-	
+
+
 		// username field
 		final TextField<String> username = new TextField<String>();
 		username.setAllowBlank(false);
 		username.setMaxLength(25);
 		username.setFieldLabel("Username");
 		username.setName("username");
-		
+
 		if(create){ // Comprobar que el nombre de usuario no existe todavía.
 			username.setValidator(new Validator() {  // Validator para username
-				
+
 				@Override
 				public String validate(Field<?> field, final String value) {
 					service.existeUsername(value, new AsyncCallback<Boolean>(){
@@ -181,7 +181,7 @@ public class UsuariosController extends AbstractController {
 								username.markInvalid("El username " + value + " ya existe");
 							}
 						}
-						
+
 					});
 					return null;
 				}
@@ -190,7 +190,7 @@ public class UsuariosController extends AbstractController {
 			username.setEnabled(false);
 		}
 		fields.add(username);
-				
+
 		// password field
 		final TextField<String> password = new TextField<String>();
 		password.setAllowBlank(false);
@@ -199,7 +199,7 @@ public class UsuariosController extends AbstractController {
 		password.setFieldLabel("Contraseña");
 		password.setName("password");
 		fields.add(password);
-		
+
 		// confirmar password field
 		final TextField<String> confirm = new TextField<String>();
 		confirm.setAllowBlank(!create);
@@ -207,19 +207,19 @@ public class UsuariosController extends AbstractController {
 		confirm.setPassword(true);
 		confirm.setFieldLabel("Confirmar");
 		confirm.setName("confirmar");
-		
+
 		confirm.setValidator(new Validator() { // validator para confirmación de password
-			
+
 			@Override
 			public String validate(Field<?> field, String value) {
 				return value == password.getValue() ? null : "Confirmación de Password incorrecta";
 			}
 		});
-		
+
 		fields.add(confirm);
-				
+
 		// Creamos el combobox para Caja. El mismo trae los datos desde el server.
-		
+
 		RpcProxy<ListLoadResult<Caja>> cashBoxesProxy = new RpcProxy<ListLoadResult<Caja>>() {
 
 			@Override
@@ -228,58 +228,58 @@ public class UsuariosController extends AbstractController {
 			}
 
 		};
-		
+
 		final BaseListLoader<ListLoadResult<Caja>> loader = new BaseListLoader<ListLoadResult<Caja>>(cashBoxesProxy, new BeanModelReader());  
 		ListStore<BeanModel> cashBoxesStore = new ListStore<BeanModel>(loader);
 		final ComboBox<BeanModel> cajaCombo = new ComboBox<BeanModel>();
 		cajaCombo.setStore(cashBoxesStore);
-	    cajaCombo.setForceSelection(false);  
-	    cajaCombo.setTriggerAction(TriggerAction.ALL);
-	    cajaCombo.setEditable(false);
-	    cajaCombo.setVisible(false);
+		cajaCombo.setForceSelection(false);  
+		cajaCombo.setTriggerAction(TriggerAction.ALL);
+		cajaCombo.setEditable(false);
+		cajaCombo.setVisible(false);
 		cajaCombo.setFieldLabel("Caja");
 		cajaCombo.setName("caja");
 		cajaCombo.setDisplayField("numeroCaja");
-		
+
 		// binding para el nro de caja
 		FieldBinding cajaBinding = new FieldBinding(cajaCombo, "caja");
-	    bindings.add(cajaBinding);
-		
+		bindings.add(cajaBinding);
+
 		// ComboBox para el campo Rol.
 		final SimpleComboBox<String> rolCombo = new SimpleComboBox<String>();  
-	    rolCombo.setForceSelection(true);
-	    rolCombo.setAllowBlank(false);
-	    rolCombo.setTriggerAction(TriggerAction.ALL);  
-	    rolCombo.add(AppConstants.ADMINISTRADOR_ROL);  
-	    rolCombo.add(AppConstants.CAJERO_ROL);  
-	    rolCombo.add(AppConstants.VENDEDOR_ROL);  
-	    rolCombo.add(AppConstants.COMPRADOR_ROL);
-	    rolCombo.setEditable(false);
-	    rolCombo.setFieldLabel("Rol");
-	    rolCombo.setName("rol");
-	    
-	    if(!create){
-	    	rolCombo.setEnabled(false);
-	    }
-	    
-	    // binding para el campo rol
-	    FieldBinding rolComboBinding = new FieldBinding(rolCombo, "rol") {
-	    	@Override
-	    	protected Object onConvertFieldValue(Object value) {
-	    		return rolCombo.getSimpleValue();
-	    	}
+		rolCombo.setForceSelection(true);
+		rolCombo.setAllowBlank(false);
+		rolCombo.setTriggerAction(TriggerAction.ALL);  
+		rolCombo.add(AppConstants.ADMINISTRADOR_ROL);  
+		rolCombo.add(AppConstants.CAJERO_ROL);  
+		rolCombo.add(AppConstants.VENDEDOR_ROL);  
+		rolCombo.add(AppConstants.COMPRADOR_ROL);
+		rolCombo.setEditable(false);
+		rolCombo.setFieldLabel("Rol");
+		rolCombo.setName("rol");
 
-	    	@Override
-	    	protected Object onConvertModelValue(Object value) {
-	    		String name = (String)value;
-	    		return rolCombo.findModel(name);
-	    	}
-	    }; 
-	    bindings.add(rolComboBinding);
-	    
-	    // controla la visibilidad del combobox Nro de Caja.
-	    rolCombo.addSelectionChangedListener(new SelectionChangedListener<SimpleComboValue<String>>() {
-			
+		if(!create){
+			rolCombo.setEnabled(false);
+		}
+
+		// binding para el campo rol
+		FieldBinding rolComboBinding = new FieldBinding(rolCombo, "rol") {
+			@Override
+			protected Object onConvertFieldValue(Object value) {
+				return rolCombo.getSimpleValue();
+			}
+
+			@Override
+			protected Object onConvertModelValue(Object value) {
+				String name = (String)value;
+				return rolCombo.findModel(name);
+			}
+		}; 
+		bindings.add(rolComboBinding);
+
+		// controla la visibilidad del combobox Nro de Caja.
+		rolCombo.addSelectionChangedListener(new SelectionChangedListener<SimpleComboValue<String>>() {
+
 			@Override
 			public void selectionChanged(SelectionChangedEvent<SimpleComboValue<String>> se) {
 				cajaCombo.setVisible(false);
@@ -288,50 +288,53 @@ public class UsuariosController extends AbstractController {
 				}
 			}
 		});
-	    
- 	    // rol field
+
+		// rol field
 		fields.add(rolCombo);
-		
-		
+
+
 		// cedula field
 		TextField<String> text = new TextField<String>();
-		text = new TextField<String>();
+		text.setAllowBlank(false);
 		text.setMaxLength(10);
 		text.setValidator(new VTypeValidator(VType.NUMERIC));
 		text.setFieldLabel("Cédula");
 		text.setName("cedula");
 		fields.add(text);
-		
-		
-		// nro. de caja field.
-    	fields.add(cajaCombo);
 
-    	
+
+		// nro. de caja field.
+		fields.add(cajaCombo);
+
+
 		// nombre field
 		text = new TextField<String>();
 		text.setMaxLength(50);
 		text.setValidator(new VTypeValidator(VType.ALPHABET));
 		text.setFieldLabel("Nombre");
 		text.setName("nombre");
+		text.setAllowBlank(false);
 		fields.add(text);
-			
+
 		// apellido field
 		text = new TextField<String>();
 		text.setMaxLength(50);
 		text.setValidator(new VTypeValidator(VType.ALPHABET));
 		text.setFieldLabel("Apellido");
 		text.setName("apellido");
+		text.setAllowBlank(false);
 		fields.add(text);
-	
+
 
 		// direccion field
 		text = new TextField<String>();
 		text.setMaxLength(70);		
 		text.setValidator(new VTypeValidator(VType.ALPHABET));
 		text.setFieldLabel("Dirección");
-		text.setName("direccion");	
+		text.setName("direccion");
+		text.setAllowBlank(false);
 		fields.add(text);
-	
+
 
 		// telefono field
 		text = new TextField<String>();
@@ -340,19 +343,20 @@ public class UsuariosController extends AbstractController {
 		text.setFieldLabel("Teléfono");
 		text.setName("telefono");
 		fields.add(text);
-	
-		
+
+
 		// email field
 		text = new TextField<String>();
 		text.setMaxLength(100);
 		text.setValidator(new VTypeValidator(VType.EMAIL));
 		text.setFieldLabel("Email");
 		text.setName("email");
+		text.setAllowBlank(false);
 		fields.add(text);
-		
+
 		return new EditorForm("Usuario", fields, bindings, 500, 370);
 	}
-	
+
 	/**
 	 * Asocia a cada evento con su respectivo handler definido
 	 * en el controlador.
@@ -360,21 +364,21 @@ public class UsuariosController extends AbstractController {
 	private void bindHandlers() {
 		//Asociamos a cada botón con su respectivo handler del controlador
 		grid.getAddButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
-			
+
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				onAddClicked();
 			}
 		});
-		
+
 		grid.getDeleteButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
-			
+
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				onDeleteClicked();
 			}
 		});
-		
+
 		/** 
 		 * Agregamos el listener para el evento RowDoubleClick.
 		 **/
@@ -401,7 +405,7 @@ public class UsuariosController extends AbstractController {
 	 **/
 	private void onRowDoubleClicked(final GridEvent<BeanModel> ge){ 
 		final EditorForm form = buildEditorForm(false);
-		
+
 		/**
 		 * Luego del rendering hacemos el binding del Modelo seleccionado
 		 * Tambien hacemos el bind de los handlers para los botones
@@ -417,7 +421,7 @@ public class UsuariosController extends AbstractController {
 		});
 		form.show();	
 	}
-	
+
 	/**
 	 * Asocia los botones del {@link EditorForm} con sus respectivos handlers
 	 * definidos en el {@link UsuariosController}
@@ -427,23 +431,20 @@ public class UsuariosController extends AbstractController {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if(create){
-					if(form.getForm().isValid()){
-						saveUser(((BeanModel)form.getFormBindings().getModel()));
+				if(form.getForm().isValid()){
+					BeanModel u = (BeanModel)form.getFormBindings().getModel();
+					if(create){
+						saveUser(u);
 					}else{
-						form.show();
+						updateUser(u);
 					}
-				}else{
-					if(form.getForm().isValid()){
-						updateUser(((BeanModel)form.getFormBindings().getModel()));
-					}else{ // si hay campos invalidos mostramos de vuelta el form
-						form.show();
-					}
+				}else{ // si hay campos invalidos mostramos de vuelta el form
+					form.show();
 				}
 			}
 		});		
 	}
-	
+
 	/**
 	 * Guarda el usuario creado
 	 **/
@@ -462,7 +463,7 @@ public class UsuariosController extends AbstractController {
 			}
 		});
 	}
-	
+
 	/**
 	 * Actualiza el usuario
 	 **/
@@ -481,10 +482,9 @@ public class UsuariosController extends AbstractController {
 			}
 		});
 	}
-	
+
 	/**
-	 * Handler para el evento click del botón add del {@link CustomGrid}
-	 * @param editorForm 
+	 * Handler para el evento click del botón add del {@link CrudGrid}
 	 **/
 	private void onAddClicked() {
 		final EditorForm form = buildEditorForm(true);
@@ -504,11 +504,33 @@ public class UsuariosController extends AbstractController {
 	}
 
 	/**
-	 * Handler para el evento click del botón delete del {@link CustomGrid}
-	 * @param editorForm 
+	 * Handler para el evento click del botón delete del {@link CrudGrid}
 	 **/	
 	private void onDeleteClicked() {
-		System.out.println("Delete Clicked");
+		List<BeanModel> selected = grid.getGrid().getSelectionModel().getSelectedItems();
+		List<Usuario> users = new ArrayList<Usuario>();
+		for(BeanModel s: selected){
+			users.add((Usuario)s.getBean());
+		}
+		service.eliminarUsuarios(users, new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Boolean ok) {
+				if(ok){
+					MessageBox.info("OK", "Usuarios eliminados correctamente", null);
+					grid.getGrid().getStore().getLoader().load();
+				}else{
+					MessageBox.alert("Error", "Algunos usuarios no pudieron eliminarse", null);
+				}
+			}
+		
+		});
 	}
 
 }
