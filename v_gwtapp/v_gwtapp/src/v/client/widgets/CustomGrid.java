@@ -63,11 +63,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * 
  * También permite realizar filtrado, utilizando el plugin {@link GridFilters}
  * 
+ * Esta clase es una clase abstracta. Subclases deben implementar los Templates
+ * Method definidos en esta clase.
+ * 
  * 
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
 @SuppressWarnings({"unused"})
-public class CustomGrid<M> extends ContentPanel {
+public abstract class CustomGrid<M> extends ContentPanel {
 
 	/**
 	 * Guarda la configuración de filtros. El formato de la misma es
@@ -75,81 +78,81 @@ public class CustomGrid<M> extends ContentPanel {
 	 * 
 	 * Los tipos de filtros se definen en {@link AppConstants.Filtros}
 	 **/
-	private HashMap<String, AppConstants.Filtros> filtersConfig;
+	protected Map<String, AppConstants.Filtros> filtersConfig;
 	
 	/**
 	 * Define si se utilizará {@link GridFilters} en el Grid.
 	 **/
-	private Boolean hasFilters = false;
+	protected Boolean hasFilters = false;
 	
 	/**
 	 * Define si se utilizará {@link CheckBoxSelectionModel}
 	 **/
-	private Boolean useCheckBoxSm = false;
+	protected Boolean useCheckBoxSm = false;
 
-	
-	/**
-	 * Determina si se utiliza un {@link RowEditor}
-	 **/
-	private Boolean useRowEditor = false;
-	
-	private CheckBoxSelectionModel<BeanModel> cbsm;	
+	protected CheckBoxSelectionModel<BeanModel> cbsm;	
 	private Grid<BeanModel> grid;
 	private ToolBar topToolBar;
 	private ListStore<BeanModel> store;
-	private ColumnModel cm;
+	protected ColumnModel cm;
 	private String title = "Grid Panel";
 	private GridFilters filters;
 	private BeanModelReader reader;
-	private RpcProxy<PagingLoadResult<M>> proxy;
+	protected RpcProxy<PagingLoadResult<M>> proxy;
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
 
 	
-	/**
-	 * Realiza inicializaciones básicas.
-	 **/
-	private void basicSetups(String title, ColumnModel cm, RpcProxy<PagingLoadResult<M>> proxy) {
-		this.cm = cm;
+	public CustomGrid(String title, boolean useCheckBoxSm, boolean hasFilters){
 		this.title = title;
-		this.proxy = proxy;
-		this.setupToolBars();		
-	}
-	
-	
-	/**
-	 * Constructor del {@link CustomGrid}. En este caso se necesita que el grid tenga
-	 * capacidad de filtrado.
-	 **/
-	public CustomGrid(String title, ColumnModel cm, HashMap<String, AppConstants.Filtros> filtersConfig, 
-					  RpcProxy<PagingLoadResult<M>> proxy) {
-		super();
-		this.filtersConfig = filtersConfig;
-		this.hasFilters = true;
-		this.basicSetups(title, cm, proxy);
-		
+		this.useCheckBoxSm = useCheckBoxSm;
+		this.hasFilters = hasFilters;
+		build();
+		this.setupToolBars();
 	}
 	
 	/**
-	 * Contructor del {@link CustomGrid}. En este caso se crea un grid simple.
+	 * Template Method que construye el proxy utilizado por el {@link CustomGrid}
+	 * para cargar su {@link Store}
 	 **/
-	public CustomGrid(String title, ColumnModel cm, RpcProxy<PagingLoadResult<M>> proxy) {
-		super();
+	public abstract RpcProxy<PagingLoadResult<M>>  buildProxy();
+	
+	/**
+	 * Template Method que construye la configuración de Filtros
+	 * en caso de ser utilizado. Las subclases deben implementar 
+	 * este método y retornar null en caso de no utilizar filtros.
+	 **/
+	public abstract Map<String, AppConstants.Filtros> buildFiltersConfig();
+	
+	/**
+	 * Template Method que se encarga de construir el {@link ColumnModel}
+	 * utilizado por el {@link Grid}
+	 **/
+	public abstract ColumnModel buildColumnModel();
+	
+	
+	/**
+	 * Método que se encarga de construir los elementos necesarios para el
+	 * grid. Este utiliza Templates Method, que deben ser definidos
+	 * en las subclases.
+	 **/
+	public void build(){
+		proxy = buildProxy();
+		if(useCheckBoxSm){
+			cbsm = buildCheckBoxSelectionModel();
+		}
+		cm = buildColumnModel();
+		if(hasFilters){
+			filtersConfig = buildFiltersConfig();
+		}
 	}
 	
 	/**
-	 * Constructor del {@link CustomGrid}. En este caso se necesita capacidad de filtrado y
-	 * modificar el {@link SelectionModel} del grid por {@link CheckBoxSelectionModel}
+	 * Crea un {@link CheckBoxSelectionModel}
 	 **/
-	public CustomGrid(String title, ColumnModel cm, HashMap<String, Filtros> filtersConfig,
-			RpcProxy<PagingLoadResult<M>> proxy,
-			CheckBoxSelectionModel<BeanModel> cbsm) {
-		super();
-		this.filtersConfig = filtersConfig;
-		this.hasFilters = true;		
-		this.useCheckBoxSm = true;
-		this.cbsm = cbsm;
-		this.basicSetups(title, cm, proxy);
-	}	
+	public CheckBoxSelectionModel<BeanModel> buildCheckBoxSelectionModel() {
+		return new CheckBoxSelectionModel<BeanModel>();
+	}
+	
 	
 	/**
 	 * Crea los filtros
@@ -176,11 +179,11 @@ public class CustomGrid<M> extends ContentPanel {
 		return filters;
 	}
 
-	public HashMap<String, AppConstants.Filtros> getFiltersConfig() {
+	public Map<String, AppConstants.Filtros> getFiltersConfig() {
 		return filtersConfig;
 	}
 
-	public void setFiltersConfig(HashMap<String, AppConstants.Filtros> filtersConfig) {
+	public void setFiltersConfig(Map<String, AppConstants.Filtros> filtersConfig) {
 		this.filtersConfig = filtersConfig;
 	}
 	
@@ -302,16 +305,6 @@ public class CustomGrid<M> extends ContentPanel {
 
 	public void setGrid(Grid<BeanModel> grid) {
 		this.grid = grid;
-	}
-
-
-	public Boolean getUseRowEditor() {
-		return useRowEditor;
-	}
-
-
-	public void setUseRowEditor(Boolean useRowEditor) {
-		this.useRowEditor = useRowEditor;
 	}
 	
 }

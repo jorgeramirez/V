@@ -1,13 +1,13 @@
 package v.client.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import v.client.AppConstants;
 import v.client.AppViewport;
 import v.client.Util;
 import v.client.forms.UsuarioEditorForm;
+import v.client.grids.UsuariosCrudGrid;
 import v.client.rpc.AdministradorServiceAsync;
 import v.client.widgets.CrudGrid;
 import v.client.widgets.EditorForm;
@@ -15,25 +15,16 @@ import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BeanModel;
-import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
-import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -52,79 +43,8 @@ public class UsuariosController extends AbstractController {
 	@Override
 	public void init() {
 
-		RpcProxy<PagingLoadResult<Usuario>> proxy = new RpcProxy<PagingLoadResult<Usuario>>() {
-			@Override
-			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<Usuario>> callback) {
-				service.listarUsuarios((FilterPagingLoadConfig)loadConfig, callback);
-			}
-		};		
-
-		// Creamos los ColumnConfigs
-		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
-
-		// Selection Model para el grid
-		CheckBoxSelectionModel<BeanModel> cbsm = new CheckBoxSelectionModel<BeanModel>();
-		columns.add(cbsm.getColumn());
-
-		// username
-		ColumnConfig column = new ColumnConfig("username", "Username", 100);
-		columns.add(column);
-
-		// rol
-		column = new ColumnConfig("rol", "Rol", 100);
-		columns.add(column);
-
-		// cedula
-		column = new ColumnConfig("cedula", "Cédula", 100);
-		columns.add(column);
-
-		// nro. de caja field.
-		ColumnConfig nroCajaColumn = new ColumnConfig("nroCaja", "Nro. de Caja", 100);
-		nroCajaColumn.setRenderer(new GridCellRenderer<BeanModel>() {
-
-			@Override
-			public Object render(BeanModel model, String property,
-					ColumnData config, int rowIndex, int colIndex,
-					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				Usuario u = (Usuario)model.getBean();
-				if(u.getRol().equals(AppConstants.CAJERO_ROL)){
-					return u.getCaja().getNumeroCaja();
-				}
-				return null;
-			}
-		});
-		columns.add(nroCajaColumn);
-
-		// nombre
-		column = new ColumnConfig("nombre", "Nombre", 100);
-		columns.add(column);
-
-		// apellido
-		column = new ColumnConfig("apellido", "Apellido", 100);
-		columns.add(column);
-
-		// direccion
-		column = new ColumnConfig("direccion", "Dirección", 200);
-		columns.add(column);
-
-		// telefono
-		column = new ColumnConfig("telefono", "Teléfono", 100);
-		columns.add(column);
-
-		// email
-		column = new ColumnConfig("email", "Email", 200);
-		columns.add(column);
-
-		ColumnModel cm = new ColumnModel(columns);
-
-		// establecemos los filtros
-		HashMap<String, AppConstants.Filtros> fc = new HashMap<String, AppConstants.Filtros>();
-		fc.put("username", AppConstants.Filtros.STRING_FILTER);
-		fc.put("cedula", AppConstants.Filtros.STRING_FILTER);
-		fc.put("rol", AppConstants.Filtros.STRING_FILTER);
-
 		// creamos el CrudGrid para Usuarios
-		grid = new CrudGrid<Usuario>("ABM Usuarios", cm, fc, proxy, cbsm);
+		grid = new UsuariosCrudGrid("ABM Usuarios");
 		bindHandlers();
 
 		LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
