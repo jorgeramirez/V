@@ -64,4 +64,9 @@ public class CajaEao implements CajaEaoLocal {
 		return em.createNamedQuery("Caja.findAll", Caja.class).getResultList();
 	}
 
+	@Override
+	public Caja findById(Long id) {
+		return em.find(Caja.class, id);
+	}
+
 }

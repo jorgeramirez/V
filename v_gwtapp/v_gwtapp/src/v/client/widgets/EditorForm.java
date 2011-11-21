@@ -36,6 +36,7 @@ public class EditorForm extends Dialog {
 		this.cancelText = "Cancelar";
 		this.setButtons(Dialog.OKCANCEL);
 		this.setSize(width, height);
+		this.setModal(true);
 	}
 
 	public void onRender(Element parent, int pos) {

@@ -31,4 +31,5 @@ public interface AdministradorService extends RemoteService {
 	PagingLoadResult<Usuario> listarUsuarios(FilterPagingLoadConfig config);
 	List<Integer> listarNrosCaja();
 	ListLoadResult<Caja> listarCajas();
+	Usuario agregarUsuario(Usuario u);
 }

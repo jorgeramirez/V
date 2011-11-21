@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 
 import v.client.AppConstants;
 import v.client.rpc.AdministradorService;
+import v.excepciones.GuardarException;
 import v.facade.AdministradorFacadeLocal;
 
 import com.extjs.gxt.ui.client.data.BaseListLoadResult;
@@ -69,6 +70,23 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	public ListLoadResult<Caja> listarCajas() {
 		Converter<Caja> cc = new Converter<Caja>();
 		return new BaseListLoadResult<Caja>(cc.convertObjects(administradorFacade.listarCajas()));
+	}
+
+	@Override
+	public Usuario agregarUsuario(Usuario u) {
+		Usuario added = null;
+		try {
+			added = administradorFacade.agregarUsuario(u);
+			Converter<Usuario> uc = new Converter<Usuario>();
+			Usuario user = uc.convertObject(added);
+			if(user.getRol().equals(AppConstants.CAJERO_ROL)){
+				Converter<Caja> cc = new Converter<Caja>();
+				user.setCaja(cc.convertObject(user.getCaja()));
+			}			
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}
+		return added;
 	}
 	
 }

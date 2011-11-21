@@ -11,7 +11,8 @@ import v.modelo.Caja;
 import v.modelo.Usuario;
 
 public interface AdministradorServiceAsync {
-	public void listarUsuarios(FilterPagingLoadConfig config, AsyncCallback<PagingLoadResult<Usuario>> callback);
-	public void listarNrosCaja(AsyncCallback<List<Integer>> callback);
-	public void listarCajas(AsyncCallback<ListLoadResult<Caja>> callback);
+	void listarUsuarios(FilterPagingLoadConfig config, AsyncCallback<PagingLoadResult<Usuario>> callback);
+	void listarNrosCaja(AsyncCallback<List<Integer>> callback);
+	void listarCajas(AsyncCallback<ListLoadResult<Caja>> callback);
+	void agregarUsuario(Usuario u, AsyncCallback<Usuario> callback);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import v.excepciones.GuardarException;
 import v.modelo.Caja;
 import v.modelo.Usuario;
 
@@ -13,4 +14,5 @@ public interface AdministradorFacadeLocal {
 	public int getTotalUsuarios();
 	public List<Integer> listarNrosCaja();
 	public List<Caja> listarCajas();
+	public Usuario agregarUsuario(Usuario u) throws GuardarException;
 }

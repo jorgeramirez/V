@@ -6,6 +6,7 @@ import java.util.List;
 
 import v.client.AppConstants;
 import v.client.AppViewport;
+import v.client.Util;
 import v.client.VType;
 import v.client.VTypeValidator;
 import v.client.rpc.AdministradorServiceAsync;
@@ -33,6 +34,7 @@ import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
@@ -125,7 +127,7 @@ public class UsuariosController extends AbstractController {
 		columns.add(column);
 		
 		// email
-		column = new ColumnConfig("email", "Email", 110);
+		column = new ColumnConfig("email", "Email", 200);
 		columns.add(column);
 		
 		ColumnModel cm = new ColumnModel(columns);
@@ -219,7 +221,8 @@ public class UsuariosController extends AbstractController {
 		
 		// ComboBox para el campo Rol.
 		final SimpleComboBox<String> rolCombo = new SimpleComboBox<String>();  
-	    rolCombo.setForceSelection(true);  
+	    rolCombo.setForceSelection(true);
+	    rolCombo.setAllowBlank(false);
 	    rolCombo.setTriggerAction(TriggerAction.ALL);  
 	    rolCombo.add(AppConstants.ADMINISTRADOR_ROL);  
 	    rolCombo.add(AppConstants.CAJERO_ROL);  
@@ -228,6 +231,10 @@ public class UsuariosController extends AbstractController {
 	    rolCombo.setEditable(false);
 	    rolCombo.setFieldLabel("Rol");
 	    rolCombo.setName("rol");
+	    
+	    if(!create){
+	    	rolCombo.setEnabled(false);
+	    }
 	    
 	    // binding para el campo rol
 	    FieldBinding rolComboBinding = new FieldBinding(rolCombo, "rol") {
@@ -316,7 +323,7 @@ public class UsuariosController extends AbstractController {
 		text.setName("email");
 		fields.add(text);
 		
-		return new EditorForm("Usuario", fields, bindings, 500, 350);
+		return new EditorForm("Usuario", fields, bindings, 500, 370);
 	}
 	
 	/**
@@ -370,16 +377,66 @@ public class UsuariosController extends AbstractController {
 		
 		/**
 		 * Luego del rendering hacemos el binding del Modelo seleccionado
+		 * Tambien hacemos el bind de los handlers para los botones
+		 * del Form
 		 **/
 		form.addListener(Events.Render, new Listener<BaseEvent>() {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
 				form.getFormBindings().bind(ge.getModel());
+				bindButtonsHandlers(form, false);
 			}
-			
 		});
-		form.show();		
+		form.show();	
+	}
+	
+	/**
+	 * Asocia los botones del {@link EditorForm} con sus respectivos handlers
+	 * definidos en el {@link UsuariosController}
+	 **/
+	private void bindButtonsHandlers(final EditorForm form, final boolean create){
+		form.getButtonById(Dialog.OK).addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				if(create){
+					if(form.getForm().isValid()){
+						saveUser(((BeanModel)form.getFormBindings().getModel()));
+					}else{
+						form.show();
+					}
+				}else{
+					updateUser(((BeanModel)form.getFormBindings().getModel()));
+				}
+			}
+		});		
+	}
+	
+	/**
+	 * Guarda el usuario creado
+	 **/
+	private void saveUser(BeanModel u){
+		Usuario user = (Usuario)u.getBean();
+		service.agregarUsuario(user, new AsyncCallback<Usuario>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onSuccess(Usuario user) {
+				grid.getGrid().getStore().add(Util.createBeanModel(user));
+			}
+		});
+	}
+	
+	/**
+	 * Actualiza el usuario
+	 **/
+	private void updateUser(BeanModel u){
+		Usuario user = (Usuario)u.getBean();
 	}
 	
 	/**
@@ -387,7 +444,19 @@ public class UsuariosController extends AbstractController {
 	 * @param editorForm 
 	 **/
 	private void onAddClicked() {
-		EditorForm form = buildEditorForm(true);
+		final EditorForm form = buildEditorForm(true);
+		/**
+		 * Hacemos el bind de los handlers para los botones
+		 * del Form
+		 **/		
+		form.addListener(Events.Render, new Listener<BaseEvent>() {
+
+			@Override
+			public void handleEvent(BaseEvent be) {
+				form.getFormBindings().bind(Util.createBeanModel(new Usuario()));
+				bindButtonsHandlers(form, true);
+			}
+		});
 		form.show();
 	}
 

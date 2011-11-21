@@ -7,8 +7,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import v.client.AppConstants;
 import v.eao.CajaEaoLocal;
 import v.eao.UsuarioEaoLocal;
+import v.excepciones.GuardarException;
 import v.modelo.Caja;
 import v.modelo.Usuario;
 
@@ -53,6 +55,14 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	@Override
 	public List<Caja> listarCajas() {
 		return cajaEao.listar();
+	}
+
+	@Override
+	public Usuario agregarUsuario(Usuario u) throws GuardarException {
+		if(u.getRol().equals(AppConstants.CAJERO_ROL)){
+			u.setCaja(cajaEao.findById(u.getCaja().getId()));
+		}
+		return usuarioEao.agregar(u);
 	}
 
 }
