@@ -22,11 +22,15 @@ import javax.ejb.EJB;
 
 import v.client.AppConstants;
 import v.client.rpc.AdministradorService;
+import v.excepciones.EliminarException;
+import v.excepciones.GuardarException;
 import v.facade.AdministradorFacadeLocal;
 
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -62,5 +66,59 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	public List<Integer> listarNrosCaja() {
 		return administradorFacade.listarNrosCaja();
 	}
-	
+
+	@Override
+	public ListLoadResult<Caja> listarCajas() {
+		Converter<Caja> cc = new Converter<Caja>();
+		return new BaseListLoadResult<Caja>(cc.convertObjects(administradorFacade.listarCajas()));
+	}
+
+	@Override
+	public Usuario agregarUsuario(Usuario u) {
+		Usuario added = null;
+		try {
+			added = administradorFacade.agregarUsuario(u);
+			Converter<Usuario> uc = new Converter<Usuario>();
+			Usuario user = uc.convertObject(added);
+			if(user.getRol().equals(AppConstants.CAJERO_ROL)){
+				Converter<Caja> cc = new Converter<Caja>();
+				user.setCaja(cc.convertObject(user.getCaja()));
+			}			
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}
+		return added;
+	}
+
+	@Override
+	public void modificarUsuario(Usuario u) {
+		try {
+			administradorFacade.modificarUsuario(u);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}		
+	}
+
+	/**
+	 * Verifica si el username existe en la BD.
+	 **/
+	@Override
+	public boolean existeUsername(String username) {
+		return administradorFacade.findByUsername(username) != null;
+	}
+
+	@Override
+	public boolean eliminarUsuarios(List<Usuario> users) {
+		boolean ok = true;
+		for(Usuario u: users){
+			try {
+				administradorFacade.eliminarUsuario(u);
+			} catch (EliminarException e) {
+				e.printStackTrace();
+				ok = false;
+				break;
+			}
+		}
+		return ok;
+	}
 }

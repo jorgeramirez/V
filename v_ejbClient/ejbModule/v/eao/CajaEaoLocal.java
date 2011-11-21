@@ -17,5 +17,7 @@ public interface CajaEaoLocal {
 	void eliminar(Caja caja) throws EliminarException;
 	
 	List<Caja> listar();
+	
+	Caja findById(Long id);
 
 }

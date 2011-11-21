@@ -19,4 +19,6 @@ public interface ProveedorEaoLocal {
 
 	List<Proveedor> listar(HashMap<String, Object> filters, int start, int limit);
 
+	Proveedor getById(Long id);
+
 }

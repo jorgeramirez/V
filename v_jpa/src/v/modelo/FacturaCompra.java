@@ -39,11 +39,11 @@ public class FacturaCompra extends Factura {
 		super();
 	}
 
-	public Proveedor getProducto() {
+	public Proveedor getProveedor() {
 		return proveedor;
 	}
 
-	public void setProducto(Proveedor proveedor) {
+	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
 

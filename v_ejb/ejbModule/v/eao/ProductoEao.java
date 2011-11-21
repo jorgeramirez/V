@@ -84,4 +84,9 @@ public class ProductoEao implements ProductoEaoLocal {
 		query.setMaxResults(limit);
 		return query.getResultList();
 	}
+	
+	@Override
+	public Producto getById(Long id) {
+		return em.find(Producto.class, id);
+	}
 }

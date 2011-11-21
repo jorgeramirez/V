@@ -127,7 +127,8 @@ public class AppViewport extends Viewport {
 		        	new Funcionalidad(AppConstants.CLIENTE_LABEL),
 		        	new Funcionalidad(AppConstants.VENDEDOR_LABEL),
 		        	new Funcionalidad(AppConstants.PROVEEDOR_LABEL),
-		        	new Funcionalidad(AppConstants.CAJA_LABEL)
+		        	new Funcionalidad(AppConstants.CAJA_LABEL),
+		        	new Funcionalidad(AppConstants.PRODUCTO_LABEL)
 		    	}
 		    ),
 	        new Funcionalidad(AppConstants.VENTAS_LABEL,

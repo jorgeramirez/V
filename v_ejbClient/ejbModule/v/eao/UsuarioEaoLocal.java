@@ -11,10 +11,11 @@ import v.modelo.Usuario;
 @Local
 public interface UsuarioEaoLocal {
 
-	public Usuario agregar(Usuario usuario) throws GuardarException;
-	public void modificar(Usuario usuario) throws GuardarException;
-	public void eliminar(Usuario usuario) throws EliminarException;
-	public List<Usuario> listar(HashMap<String, Object> filters, int start, int limit);
-	public int getCount();
+	Usuario agregar(Usuario usuario) throws GuardarException;
+	void modificar(Usuario usuario) throws GuardarException;
+	void eliminar(Usuario usuario) throws EliminarException;
+	List<Usuario> listar(HashMap<String, Object> filters, int start, int limit);
+	int getCount();
+	Usuario findByUsername(String username);
 	
 }

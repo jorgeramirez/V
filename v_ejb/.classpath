@@ -17,5 +17,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/v_gwtapp"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
