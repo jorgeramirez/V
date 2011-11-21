@@ -65,4 +65,17 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 		return usuarioEao.agregar(u);
 	}
 
+	@Override
+	public void modificarUsuario(Usuario u) throws GuardarException {
+		if(u.getRol().equals(AppConstants.CAJERO_ROL)){
+			u.setCaja(cajaEao.findById(u.getCaja().getId()));
+		}
+		usuarioEao.modificar(u);
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		return usuarioEao.findByUsername(username);
+	}	
+	
 }

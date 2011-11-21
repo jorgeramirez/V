@@ -88,5 +88,21 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		}
 		return added;
 	}
-	
+
+	@Override
+	public void modificarUsuario(Usuario u) {
+		try {
+			administradorFacade.modificarUsuario(u);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}		
+	}
+
+	/**
+	 * Verifica si el username existe en la BD.
+	 **/
+	@Override
+	public boolean existeUsername(String username) {
+		return administradorFacade.findByUsername(username) != null;
+	}
 }

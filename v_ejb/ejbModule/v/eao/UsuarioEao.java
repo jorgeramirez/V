@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -89,6 +90,19 @@ public class UsuarioEao implements UsuarioEaoLocal {
 		query.setFirstResult(start);
 		query.setMaxResults(limit);
 		return query.getResultList();
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		Usuario u = null;
+		Query query = em.createNamedQuery("Usuario.findByUsername", Usuario.class);
+		query.setParameter("username", username);
+		try{
+			u = (Usuario) query.getSingleResult();
+		}catch (NoResultException nre) {
+			// ignored
+		}
+		return u;
 	}
 
 }

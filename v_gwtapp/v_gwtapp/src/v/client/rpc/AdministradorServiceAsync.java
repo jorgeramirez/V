@@ -15,4 +15,6 @@ public interface AdministradorServiceAsync {
 	void listarNrosCaja(AsyncCallback<List<Integer>> callback);
 	void listarCajas(AsyncCallback<ListLoadResult<Caja>> callback);
 	void agregarUsuario(Usuario u, AsyncCallback<Usuario> callback);
+	void modificarUsuario(Usuario u, AsyncCallback<Void> asyncCallback);
+	void existeUsername(String username, AsyncCallback<Boolean> asyncCallback);
 }

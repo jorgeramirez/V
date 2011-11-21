@@ -32,4 +32,6 @@ public interface AdministradorService extends RemoteService {
 	List<Integer> listarNrosCaja();
 	ListLoadResult<Caja> listarCajas();
 	Usuario agregarUsuario(Usuario u);
+	void modificarUsuario(Usuario u);
+	boolean existeUsername(String username);
 }

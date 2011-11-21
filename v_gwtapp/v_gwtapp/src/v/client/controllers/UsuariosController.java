@@ -36,13 +36,13 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboValue;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.Validator;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -157,12 +157,39 @@ public class UsuariosController extends AbstractController {
 		
 	
 		// username field
-		TextField<String> text = new TextField<String>();
-		text.setAllowBlank(false);
-		text.setMaxLength(25);
-		text.setFieldLabel("Username");
-		text.setName("username");
-		fields.add(text);
+		final TextField<String> username = new TextField<String>();
+		username.setAllowBlank(false);
+		username.setMaxLength(25);
+		username.setFieldLabel("Username");
+		username.setName("username");
+		
+		if(create){ // Comprobar que el nombre de usuario no existe todavía.
+			username.setValidator(new Validator() {  // Validator para username
+				
+				@Override
+				public String validate(Field<?> field, final String value) {
+					service.existeUsername(value, new AsyncCallback<Boolean>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// ignored
+						}
+
+						@Override
+						public void onSuccess(Boolean existe) {
+							if(existe){
+								username.markInvalid("El username " + value + " ya existe");
+							}
+						}
+						
+					});
+					return null;
+				}
+			});
+		}else{
+			username.setEnabled(false);
+		}
+		fields.add(username);
 				
 		// password field
 		final TextField<String> password = new TextField<String>();
@@ -180,17 +207,16 @@ public class UsuariosController extends AbstractController {
 		confirm.setPassword(true);
 		confirm.setFieldLabel("Confirmar");
 		confirm.setName("confirmar");
-		fields.add(confirm);
-		confirm.addListener(Events.Blur, new Listener<BaseEvent>() {
-
+		
+		confirm.setValidator(new Validator() { // validator para confirmación de password
+			
 			@Override
-			public void handleEvent(BaseEvent be) {
-				if(confirm.getValue().compareTo(password.getValue()) != 0){
-					MessageBox.alert("Error", "Confirmación de Password incorrecta", null);
-				}
+			public String validate(Field<?> field, String value) {
+				return value == password.getValue() ? null : "Confirmación de Password incorrecta";
 			}
 		});
-
+		
+		fields.add(confirm);
 				
 		// Creamos el combobox para Caja. El mismo trae los datos desde el server.
 		
@@ -268,6 +294,7 @@ public class UsuariosController extends AbstractController {
 		
 		
 		// cedula field
+		TextField<String> text = new TextField<String>();
 		text = new TextField<String>();
 		text.setMaxLength(10);
 		text.setValidator(new VTypeValidator(VType.NUMERIC));
@@ -407,7 +434,11 @@ public class UsuariosController extends AbstractController {
 						form.show();
 					}
 				}else{
-					updateUser(((BeanModel)form.getFormBindings().getModel()));
+					if(form.getForm().isValid()){
+						updateUser(((BeanModel)form.getFormBindings().getModel()));
+					}else{ // si hay campos invalidos mostramos de vuelta el form
+						form.show();
+					}
 				}
 			}
 		});		
@@ -435,8 +466,20 @@ public class UsuariosController extends AbstractController {
 	/**
 	 * Actualiza el usuario
 	 **/
-	private void updateUser(BeanModel u){
+	private void updateUser(final BeanModel u){
 		Usuario user = (Usuario)u.getBean();
+		service.modificarUsuario(user, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				grid.getGrid().getStore().update(u);
+			}
+		});
 	}
 	
 	/**
