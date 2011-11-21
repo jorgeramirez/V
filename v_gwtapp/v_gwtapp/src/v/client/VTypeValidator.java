@@ -21,7 +21,7 @@ public class VTypeValidator implements Validator {
 	public String validate(Field<?> field, String value) {
 		String res = null;
 		if(!value.matches(type.regex)){
-			res = value + "isn't a valid " + type.name;
+			res = value + " isn't a valid " + type.name;
 		}
 		return res;
 	}

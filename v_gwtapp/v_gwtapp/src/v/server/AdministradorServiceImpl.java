@@ -24,9 +24,11 @@ import v.client.AppConstants;
 import v.client.rpc.AdministradorService;
 import v.facade.AdministradorFacadeLocal;
 
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -61,6 +63,12 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	@Override
 	public List<Integer> listarNrosCaja() {
 		return administradorFacade.listarNrosCaja();
+	}
+
+	@Override
+	public ListLoadResult<Caja> listarCajas() {
+		Converter<Caja> cc = new Converter<Caja>();
+		return new BaseListLoadResult<Caja>(cc.convertObjects(administradorFacade.listarCajas()));
 	}
 	
 }

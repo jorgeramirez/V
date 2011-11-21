@@ -18,14 +18,17 @@ package v.client.rpc;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import v.modelo.Caja;
 import v.modelo.Usuario;
 
 @RemoteServiceRelativePath("AdministradorService")
 public interface AdministradorService extends RemoteService {
 	PagingLoadResult<Usuario> listarUsuarios(FilterPagingLoadConfig config);
 	List<Integer> listarNrosCaja();
+	ListLoadResult<Caja> listarCajas();
 }

@@ -50,4 +50,9 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 		return nrosCaja;
 	}
 
+	@Override
+	public List<Caja> listarCajas() {
+		return cajaEao.listar();
+	}
+
 }

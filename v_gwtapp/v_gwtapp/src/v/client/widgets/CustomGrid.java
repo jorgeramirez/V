@@ -103,13 +103,7 @@ public class CustomGrid<M> extends ContentPanel {
 	private BeanModelReader reader;
 	private RpcProxy<PagingLoadResult<M>> proxy;
 	private PagingLoader<PagingLoadResult<ModelData>> loader;
-	
-	/**
-	 * {@link RowEditor} utilizado para realizar cambios en los elementos
-	 * almacenados en el {@link Store}
-	 **/
-	private RowEditor<BeanModel> rowEditor;
-	
+
 	
 	/**
 	 * Realiza inicializaciones básicas.
@@ -248,11 +242,6 @@ public class CustomGrid<M> extends ContentPanel {
 			grid.addPlugin(this.cbsm);
 			grid.setSelectionModel(this.cbsm);
 		}
-		if(useRowEditor){
-			rowEditor = new RowEditor<BeanModel>();
-			rowEditor.setClicksToEdit(ClicksToEdit.TWO);
-			grid.addPlugin(rowEditor);
-		}
 	}
 	
 	/**
@@ -323,16 +312,6 @@ public class CustomGrid<M> extends ContentPanel {
 
 	public void setUseRowEditor(Boolean useRowEditor) {
 		this.useRowEditor = useRowEditor;
-	}
-
-
-	public RowEditor<BeanModel> getRowEditor() {
-		return rowEditor;
-	}
-
-
-	public void setRowEditor(RowEditor<BeanModel> re) {
-		this.rowEditor = re;
 	}
 	
 }

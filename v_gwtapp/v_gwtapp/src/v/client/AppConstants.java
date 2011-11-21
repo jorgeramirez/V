@@ -23,6 +23,7 @@ public class AppConstants {
 	public static final String VENDEDOR_LABEL = "Vendedor";
 	public static final String PROVEEDOR_LABEL = "Proveedor";
 	public static final String CAJA_LABEL = "Caja";
+	public static final String PRODUCTO_LABEL = "Producto";
 	public static final String REGISTRAR_VENTA_LABEL = "Registrar Venta";
 	public static final String REGISTRAR_COMPRA_LABEL = "Registrar Compra";
 	public static final String REGISTRAR_PAGO_LABEL = "Registrar Pago";
