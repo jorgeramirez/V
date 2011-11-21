@@ -24,7 +24,7 @@ public class ClienteEao implements ClienteEaoLocal {
 	private EntityManager em;
 	
     public ClienteEao() {
-        // TODO Auto-generated constructor stub
+
     }
     
     @Override
@@ -38,6 +38,7 @@ public class ClienteEao implements ClienteEaoLocal {
 			throw new GuardarException(pe.getMessage());
 		}
 	}
+    
     @Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void modificar(Cliente cliente) throws GuardarException {
