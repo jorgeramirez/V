@@ -12,6 +12,7 @@ import javax.persistence.PersistenceException;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Caja;
+import v.modelo.Pago;
 
 /**
  * Session Bean implementation class CajaEao
@@ -62,6 +63,24 @@ public class CajaEao implements CajaEaoLocal {
 	@Override
 	public List<Caja> listar() {
 		return em.createNamedQuery("Caja.findAll", Caja.class).getResultList();
+	}
+	
+	
+	@SuppressWarnings("null")
+	@Override
+	public List<Pago> pagosNoCerrados(Long idCaja){
+		
+		Caja caja = em.find(Caja.class,idCaja);
+		
+		List<Pago> listaDeCierre = null;
+		
+		for (Pago pago : caja.getPagos()){
+			if (pago.getEstado() != "cerrado") {
+				listaDeCierre.add(pago);				
+			}
+		}
+		
+		return listaDeCierre;
 	}
 
 }
