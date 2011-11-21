@@ -15,19 +15,23 @@ import com.google.gwt.user.client.Element;
 /**
  * Define un Formulario para Alta/Modificación de datos.
  * 
+ * La misma es una clase abstracta. Las subclases deben
+ * implementar el Template Method build.
+ * 
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
-public class EditorForm extends Dialog {
+public abstract class EditorForm extends Dialog {
 	private FormPanel form;
 	private FormData formData;
-	private List<Field<?>> fields;
+	protected List<Field<?>> fields;
 	private FormBinding formBindings;
-	private List<FieldBinding> bindings;
+	protected List<FieldBinding> bindings;
 	
-	public EditorForm(String title, List<Field<?>> fields, List<FieldBinding> bindings, int width, int height){
-		this.fields = fields;
+	public EditorForm(String title, boolean create, int width, int height){
 		formData = new FormData("-20");
-		this.bindings = bindings;
+		
+		build(create); // llamamos al template method.
+		
 		this.setBodyBorder(false);
 		this.setHeading(title);
 		this.setLayout(new FitLayout());
@@ -54,6 +58,15 @@ public class EditorForm extends Dialog {
 		formBindings.autoBind();
 		add(form);
 	}
+	
+	/**
+	 * Template method que se encarga de crear los {@link Field}
+	 * y los {@link FieldBinding} para el formulario en 
+	 * cuestión.
+	 * 
+	 * @param create: si es para creación o modificación.
+	 **/
+	public abstract void build(boolean create);
 	
 	
 	public FormPanel getForm() {
