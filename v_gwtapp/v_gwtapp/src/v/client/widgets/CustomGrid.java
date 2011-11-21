@@ -204,6 +204,9 @@ public class CustomGrid<M> extends ContentPanel {
 		this.setLayout(new FitLayout());
 		this.setHeading(this.title);
 		grid = createGrid();
+		
+		//para no haya espacio al pedo al final
+		grid.getView().setForceFit(true); 
 		setupGridPlugins();
 		this.add(grid);
 		LiveToolItem it = new LiveToolItem();
