@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Caja;
+import v.modelo.Pago;
 
 @Local
 public interface CajaEaoLocal {
@@ -19,5 +20,7 @@ public interface CajaEaoLocal {
 	List<Caja> listar();
 	
 	Caja findById(Long id);
+
+	List<Pago> pagosNoCerrados(Long idCaja);
 
 }
