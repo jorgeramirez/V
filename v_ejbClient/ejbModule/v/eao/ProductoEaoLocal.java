@@ -1,6 +1,9 @@
 package v.eao;
 
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.ejb.Local;
 
 import v.excepciones.EliminarException;
@@ -10,9 +13,9 @@ import v.modelo.Producto;
 @Local
 public interface ProductoEaoLocal {
 
-	public Producto agregar(Producto producto) throws GuardarException;
-	public void modificar(Producto producto) throws GuardarException;
-	public void eliminar(Producto producto) throws EliminarException;
-	
-
+	Producto agregar(Producto producto) throws GuardarException;
+	void modificar(Producto producto) throws GuardarException;
+	void eliminar(Producto producto) throws EliminarException;
+	List<Producto> listar(HashMap<String, Object> filters, int start, int limit);
+	Producto getById(Long long1);
 }

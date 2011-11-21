@@ -1,4 +1,7 @@
 package v.eao;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.ejb.Local;
 
 import v.excepciones.EliminarException;
@@ -13,5 +16,9 @@ public interface ProveedorEaoLocal {
 	void modificar(Proveedor proveedor) throws GuardarException;
 
 	void eliminar(Proveedor proveedor) throws EliminarException;
+
+	List<Proveedor> listar(HashMap<String, Object> filters, int start, int limit);
+
+	Proveedor getById(Long id);
 
 }
