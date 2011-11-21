@@ -329,7 +329,7 @@ public class UsuariosController extends AbstractController {
 		// direccion field
 		text = new TextField<String>();
 		text.setMaxLength(70);		
-		text.setValidator(new VTypeValidator(VType.ALPHABET));
+		text.setValidator(new VTypeValidator(VType.ALPHANUMERIC));
 		text.setFieldLabel("Dirección");
 		text.setName("direccion");
 		text.setAllowBlank(false);
@@ -459,7 +459,7 @@ public class UsuariosController extends AbstractController {
 
 			@Override
 			public void onSuccess(Usuario user) {
-				grid.getGrid().getStore().add(Util.createBeanModel(user));
+				grid.getGrid().getStore().getLoader().load();
 			}
 		});
 	}
@@ -478,7 +478,7 @@ public class UsuariosController extends AbstractController {
 
 			@Override
 			public void onSuccess(Void result) {
-				grid.getGrid().getStore().update(u);
+				grid.getGrid().getStore().getLoader().load();
 			}
 		});
 	}
