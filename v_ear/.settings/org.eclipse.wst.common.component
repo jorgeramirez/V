@@ -16,5 +16,9 @@
         <dependent-module archiveName="v_jpa.jar" deploy-path="/lib" handle="module:/resource/v_jpa/v_jpa">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="v_reports.war" deploy-path="/" handle="module:/resource/v_reports/v_reports">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

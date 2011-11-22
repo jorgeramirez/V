@@ -7,6 +7,7 @@
 		<project>v_ejbClient</project>
 		<project>v_gwtapp</project>
 		<project>v_jpa</project>
+		<project>v_reports</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
