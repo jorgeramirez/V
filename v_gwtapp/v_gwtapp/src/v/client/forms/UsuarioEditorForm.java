@@ -1,6 +1,12 @@
 package v.client.forms;
 
-import java.util.ArrayList;
+import v.client.AppConstants;
+import v.client.VType;
+import v.client.VTypeValidator;
+import v.client.rpc.AdministradorServiceAsync;
+import v.client.widgets.EditorForm;
+import v.modelo.Caja;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.binding.FieldBinding;
@@ -13,21 +19,13 @@ import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboValue;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.Validator;
-import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
-import v.client.AppConstants;
-import v.client.VType;
-import v.client.VTypeValidator;
-import v.client.rpc.AdministradorServiceAsync;
-import v.client.widgets.EditorForm;
-import v.modelo.Caja;
-import v.modelo.Usuario;
 
 /**
  * Define un Formulario para Alta/Modificación de {@link Usuario}
@@ -43,9 +41,6 @@ public class UsuarioEditorForm extends EditorForm {
 	@Override
 	public void build(boolean create) {
 		final AdministradorServiceAsync service = Registry.get(AppConstants.ADMINISTRADOR_SERVICE);
-		
-		fields = new ArrayList<Field<?>>();
-		bindings = new ArrayList<FieldBinding>();		
 		
 		// username field
 		final TextField<String> username = new TextField<String>();

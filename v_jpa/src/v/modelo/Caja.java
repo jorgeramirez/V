@@ -2,7 +2,6 @@ package v.modelo;
 
 import java.io.Serializable;
 import java.lang.Integer;
-import java.lang.Long;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,16 +23,18 @@ import javax.persistence.Transient;
 @Table(name="caja")
 @NamedQueries({
 	@NamedQuery(name="Caja.findAll", query="select c from Caja c"),
+	@NamedQuery(name="Caja.count", query="select count(c) from Caja c")
 })
 public class Caja implements Serializable {
 
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private Long id;
-	
-	@Column(name="numero_caja", nullable=false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)	
+	@Column(name="id", nullable=false)
 	private Integer numeroCaja;
+
+	@Column(name="descripcion", nullable=false, length=120)
+	private String descripcion;	
 	
 	@OneToMany(mappedBy="caja")
 	private List<Usuario> cajeros;
@@ -46,14 +47,6 @@ public class Caja implements Serializable {
 
 	public Caja() {
 		super();
-	}
-	
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public Integer getNumeroCaja() {
@@ -80,10 +73,18 @@ public class Caja implements Serializable {
 		this.pagos = pagos;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (numeroCaja != null ? numeroCaja.hashCode() : 0);
         return hash;
     }
 
@@ -93,8 +94,8 @@ public class Caja implements Serializable {
             return false;
         }
         Caja other = (Caja) object;
-        if ((this.id == null && other.id != null) ||
-                (this.id != null && !this.id.equals(other.id))) {
+        if ((this.numeroCaja == null && other.numeroCaja != null) ||
+                (this.numeroCaja != null && !this.numeroCaja.equals(other.numeroCaja))) {
             return false;
         }
         return true;

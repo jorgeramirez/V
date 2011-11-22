@@ -17,26 +17,18 @@ package v.client.rpc;
 
 import java.util.List;
 
+import v.modelo.Producto;
+
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import v.modelo.Caja;
-import v.modelo.Usuario;
-
-@RemoteServiceRelativePath("AdministradorService")
-public interface AdministradorService extends RemoteService {
-	PagingLoadResult<Usuario> listarUsuarios(FilterPagingLoadConfig config);
-	List<Integer> listarNrosCaja();
-	ListLoadResult<Caja> listarCajas();
-	Usuario agregarUsuario(Usuario u);
-	void modificarUsuario(Usuario u);
-	boolean existeUsername(String username);
-	boolean eliminarUsuarios(List<Usuario> users);
-	PagingLoadResult<Caja> listarCajas(FilterPagingLoadConfig loadConfig);
-	Caja agregarCaja(Caja cashBox);
-	void modificarCaja(Caja cashBox);
-	boolean eliminarCajas(List<Caja> cashBoxes);
+@RemoteServiceRelativePath("CompradorService")
+public interface CompradorService extends RemoteService {
+	boolean existeCodigoProducto(String codigo);
+	PagingLoadResult<Producto> listarProductos(FilterPagingLoadConfig loadConfig);
+	Producto agregarProducto(Producto p);
+	boolean modificarProducto(Producto p);
+	boolean eliminarProductos(List<Producto> products);
 }

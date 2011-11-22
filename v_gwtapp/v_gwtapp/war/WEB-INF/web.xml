@@ -47,4 +47,12 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
  	<servlet-name>AdministradorService</servlet-name>
  	<url-pattern>/v_gwtapp/AdministradorService</url-pattern>
  </servlet-mapping>
+ <servlet>
+ 	<servlet-name>CompradorService</servlet-name>
+ 	<servlet-class>v.server.CompradorServiceImpl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	<servlet-name>CompradorService</servlet-name>
+ 	<url-pattern>/v_gwtapp/CompradorService</url-pattern>
+ </servlet-mapping>
 </web-app>

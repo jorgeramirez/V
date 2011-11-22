@@ -76,6 +76,8 @@ public class UsuarioEao implements UsuarioEaoLocal {
 	public List<Usuario> listar(HashMap<String, Object> filters, int start, int limit) {
 		String q = "select u from Usuario u ";
 		Object val;
+		int i = 1, size = filters.size();
+		boolean use_and = size > 1;
 		if(!filters.isEmpty()){
 			q += "where ";
 			for(String key: filters.keySet()) {
@@ -84,6 +86,10 @@ public class UsuarioEao implements UsuarioEaoLocal {
 					val = (String)val;
 					q += "u." + key + " like '" + val + "'";
 				}
+				if(use_and && i < size){
+					q += " and ";
+				}
+				++i;				
 			}
 		}
 		Query query = em.createQuery(q, Usuario.class);

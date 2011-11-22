@@ -11,9 +11,9 @@ import v.modelo.Producto;
 import v.modelo.Proveedor;
 
 @Local
-public interface ComprasFacadeLocal {
+public interface CompradorFacadeLocal {
 
-	void agregarProducto(Producto producto) throws GuardarException;
+	Producto agregarProducto(Producto producto) throws GuardarException;
 
 	void modificarProducto(Producto producto) throws GuardarException;
 
@@ -32,5 +32,9 @@ public interface ComprasFacadeLocal {
 			int start, int limit);
 
 	void registrarCompra(FacturaCompra factura) throws GuardarException;
+
+	Producto findProductoByCodigo(String codigo);
+
+	int getTotalProductos();
 
 }

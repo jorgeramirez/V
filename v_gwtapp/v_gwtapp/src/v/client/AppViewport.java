@@ -1,15 +1,14 @@
 package v.client;
 
+import v.client.util.NavigationIconProvider;
+import v.client.widgets.NavigationTree;
 import v.shared.model.Funcionalidad;
 import v.shared.model.Roles;
-import v.client.widgets.NavigationTree;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
@@ -20,7 +19,6 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 public class AppViewport extends Viewport {
 	public static final String CENTER_REGION = "centerRegion";
@@ -72,17 +70,7 @@ public class AppViewport extends Viewport {
 		
 		final NavigationTree navTree = new NavigationTree(store);
 		navTree.setDisplayProperty("nombre");
-		navTree.setIconProvider(new ModelIconProvider<ModelData>() {
-			
-			@Override
-			public AbstractImagePrototype getIcon(ModelData model) {
-				String n = model.toString();
-				if("Usuarios".equals(n)){
-					return IconHelper.createPath("images/user.png");
-				}
-				return null;
-			}
-		});
+		navTree.setIconProvider(new NavigationIconProvider());
 		
 		ContentPanel west = new ContentPanel();
 		west.add(navTree);
@@ -143,7 +131,7 @@ public class AppViewport extends Viewport {
 		       		new Funcionalidad(AppConstants.LISTAR_LABEL)
 		    	}
 	        ),
-	        new Funcionalidad(AppConstants.CAJA_LABEL,
+	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,
 		       	new Funcionalidad[] {
 		       		new Funcionalidad(AppConstants.REGISTRAR_PAGO_LABEL),
 		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)

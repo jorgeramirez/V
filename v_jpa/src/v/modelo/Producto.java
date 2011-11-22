@@ -1,21 +1,14 @@
 package v.modelo;
 
 import java.io.Serializable;
-import java.lang.Double;
-import java.lang.Float;
-import java.lang.Integer;
-import java.lang.Long;
-import java.lang.String;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -25,7 +18,10 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="producto")
-
+@NamedQueries({
+	@NamedQuery(name="Producto.findByCodigo", query="select p from Producto p where p.codigo like :codigo"),
+	@NamedQuery(name="Producto.count", query="select count(p) from Producto p")
+})
 public class Producto implements Serializable {
 
 	@Id
@@ -39,22 +35,22 @@ public class Producto implements Serializable {
 	@Column(name="nombre", length=50, nullable=false)
 	private String nombre;
 	
-	@Column(name="costo", nullable=false)
+	@Column(name="costo")
 	private Double costo;
 	
-	@Column(name="cantidad", nullable=false)
+	@Column(name="cantidad")
 	private Integer cantidad;
 	
 	@Column(name="porcentaje_ganancia", nullable=false)
-	private Float porcentajeGanancia;
+	private Double porcentajeGanancia;
 	
-	@ManyToMany
+	/*@ManyToMany
 	@JoinTable(name="productos_proveedores", 
 		joinColumns=
 			@JoinColumn(name="id_producto", referencedColumnName="id"),
 		inverseJoinColumns=
 			@JoinColumn(name="id_proveedor", referencedColumnName="id"))	
-	private List<Proveedor> proveedores;
+	private List<Proveedor> proveedores;*/
 	
 	@Transient
 	private static final long serialVersionUID = 1L;
@@ -103,21 +99,21 @@ public class Producto implements Serializable {
 		this.cantidad = cantidad;
 	}
 	
-	public Float getPorcentajeGanancia() {
+	public Double getPorcentajeGanancia() {
 		return this.porcentajeGanancia;
 	}
 
-	public void setPorcentajeGanancia(Float porcentajeGanancia) {
+	public void setPorcentajeGanancia(Double porcentajeGanancia) {
 		this.porcentajeGanancia = porcentajeGanancia;
 	}
 
-    public List<Proveedor> getProveedores() {
+    /*public List<Proveedor> getProveedores() {
 		return proveedores;
 	}
 
 	public void setProveedores(List<Proveedor> proveedores) {
 		this.proveedores = proveedores;
-	}
+	}*/
 
 	@Override
     public int hashCode() {

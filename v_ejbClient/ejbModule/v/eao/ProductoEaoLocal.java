@@ -18,4 +18,6 @@ public interface ProductoEaoLocal {
 	void eliminar(Producto producto) throws EliminarException;
 	List<Producto> listar(HashMap<String, Object> filters, int start, int limit);
 	Producto getById(Long long1);
+	Producto findByCodigo(String codigo);
+	int getCount();
 }

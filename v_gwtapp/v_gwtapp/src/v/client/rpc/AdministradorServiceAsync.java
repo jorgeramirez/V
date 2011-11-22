@@ -18,4 +18,8 @@ public interface AdministradorServiceAsync {
 	void modificarUsuario(Usuario u, AsyncCallback<Void> asyncCallback);
 	void existeUsername(String username, AsyncCallback<Boolean> asyncCallback);
 	void eliminarUsuarios(List<Usuario> users, AsyncCallback<Boolean> asyncCallback);
+	void listarCajas(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<Caja>> callback);
+	void agregarCaja(Caja cashBox, AsyncCallback<Caja> asyncCallback);
+	void modificarCaja(Caja cashBox, AsyncCallback<Void> asyncCallback);
+	void eliminarCajas(List<Caja> cashBoxes, AsyncCallback<Boolean> asyncCallback);
 }
