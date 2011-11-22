@@ -1,5 +1,12 @@
 package v.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import v.client.controllers.AbstractController;
+
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.BeanModelFactory;
 import com.extjs.gxt.ui.client.data.BeanModelLookup;
@@ -15,7 +22,9 @@ import com.extjs.gxt.ui.client.widget.grid.CellEditor;
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
 public class Util {
-	
+	private static String reportBaseUrl = "http://localhost:8080/v_reports/reportes/";
+	private static List<String> reportesCompilados = new ArrayList<String>();
+
 	/**
 	 * Genera un BeanModel a partir de un Java Bean.
 	 * 
@@ -50,6 +59,23 @@ public class Util {
 				return ((ModelData) value).get("value");
 			}  
 		}; 
-	}	
+	}
+	
+	/**
+	 * Retorna la URL del reporte report en el formato tipo,
+	 * parametrizado por param.
+	 * La lista reportesCompilados contiene los reportes compilados, se revisa
+	 * para ver si el reporte está compilado, si no está se procesa
+	 * el archivo jrxml correspondiente
+	 **/	
+	public static String reporteUrl(String report, String tipo, String param) {
+		String url = reportBaseUrl + "preparar?reporte=" + report + "&id=" + param + "&tipo=" + tipo;
+		if (!reportesCompilados.contains(report)) {
+			reportesCompilados.add(report);
+			return url + "&compilar=True";
+		} else {
+			return url;
+		}
+	}
 
 }
