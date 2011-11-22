@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import v.client.controllers.AbstractController;
+import v.client.controllers.CajasController;
 import v.client.controllers.UsuariosController;
 import v.client.rpc.AdministradorService;
 import v.client.rpc.AdministradorServiceAsync;
@@ -30,6 +31,7 @@ public class V_gwtapp implements EntryPoint {
 		//seteamos controladores
 		List<AbstractController> controllers = new ArrayList<AbstractController>();
 		controllers.add(new UsuariosController());
+		controllers.add(new CajasController());
 		Dispatcher d = new Dispatcher(controllers);
 		Registry.register("dispatcher", d);
 		

@@ -79,10 +79,10 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		try {
 			added = administradorFacade.agregarUsuario(u);
 			Converter<Usuario> uc = new Converter<Usuario>();
-			Usuario user = uc.convertObject(added);
-			if(user.getRol().equals(AppConstants.CAJERO_ROL)){
+			added = uc.convertObject(added);
+			if(added.getRol().equals(AppConstants.CAJERO_ROL)){
 				Converter<Caja> cc = new Converter<Caja>();
-				user.setCaja(cc.convertObject(user.getCaja()));
+				added.setCaja(cc.convertObject(added.getCaja()));
 			}			
 		} catch (GuardarException e) {
 			e.printStackTrace();
@@ -113,6 +113,56 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		for(Usuario u: users){
 			try {
 				administradorFacade.eliminarUsuario(u);
+			} catch (EliminarException e) {
+				e.printStackTrace();
+				ok = false;
+				break;
+			}
+		}
+		return ok;
+	}
+
+	@Override
+	public PagingLoadResult<Caja> listarCajas(FilterPagingLoadConfig loadConfig) {
+		int count = administradorFacade.getTotalCajas();
+		List<FilterConfig> filters = loadConfig.getFilterConfigs();
+		int start = loadConfig.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<Caja> cashBoxes = administradorFacade.listarCajas(plainFilters, start, limit);
+		Converter<Caja> cc = new Converter<Caja>();
+		cashBoxes = cc.convertObjects(cashBoxes);
+		return new BasePagingLoadResult<Caja>(cashBoxes, loadConfig.getOffset(), count);		
+	}
+
+	@Override
+	public Caja agregarCaja(Caja c) {
+		Caja added = null;
+		try {
+			added = administradorFacade.agregarCaja(c);
+			Converter<Caja> cc = new Converter<Caja>();
+			added = cc.convertObject(added);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}
+		return added;		
+	}
+
+	@Override
+	public void modificarCaja(Caja c) {
+		try {
+			administradorFacade.modificarCaja(c);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean eliminarCajas(List<Caja> cashBoxes) {
+		boolean ok = true;
+		for(Caja c: cashBoxes){
+			try {
+				administradorFacade.eliminarCaja(c);
 			} catch (EliminarException e) {
 				e.printStackTrace();
 				ok = false;

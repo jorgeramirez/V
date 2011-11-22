@@ -19,4 +19,9 @@ public interface AdministradorFacadeLocal {
 	void modificarUsuario(Usuario u) throws GuardarException;
 	Usuario findByUsername(String username);
 	void eliminarUsuario(Usuario u) throws EliminarException;
+	int getTotalCajas();
+	List<Caja> listarCajas(HashMap<String, Object> plainFilters, int start, int limit);
+	Caja agregarCaja(Caja c) throws GuardarException;
+	void modificarCaja(Caja c) throws GuardarException;
+	void eliminarCaja(Caja c) throws EliminarException;
 }

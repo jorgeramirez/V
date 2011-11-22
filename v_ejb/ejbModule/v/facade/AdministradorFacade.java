@@ -61,7 +61,7 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	@Override
 	public Usuario agregarUsuario(Usuario u) throws GuardarException {
 		if(u.getRol().equals(AppConstants.CAJERO_ROL)){
-			u.setCaja(cajaEao.findById(u.getCaja().getId()));
+			u.setCaja(cajaEao.findByNumeroCaja(u.getCaja().getNumeroCaja()));
 		}
 		return usuarioEao.agregar(u);
 	}
@@ -69,7 +69,7 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	@Override
 	public void modificarUsuario(Usuario u) throws GuardarException {
 		if(u.getRol().equals(AppConstants.CAJERO_ROL)){
-			u.setCaja(cajaEao.findById(u.getCaja().getId()));
+			u.setCaja(cajaEao.findByNumeroCaja(u.getCaja().getNumeroCaja()));
 		}
 		usuarioEao.modificar(u);
 	}
@@ -83,13 +83,42 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	public void eliminarUsuario(Usuario u) throws EliminarException {
 		String rol = u.getRol();
 		if(rol.equals(AppConstants.CAJERO_ROL)){
-			u.setCaja(cajaEao.findById(u.getCaja().getId()));
+			u.setCaja(cajaEao.findByNumeroCaja(u.getCaja().getNumeroCaja()));
 		}else if(rol.equals(AppConstants.VENDEDOR_ROL)){
 			u.setVentas(usuarioEao.findByUsername(u.getUsername()).getVentas());
 		}else if(rol.equals(AppConstants.COMPRADOR_ROL)){
 			u.setCompras(usuarioEao.findByUsername(u.getUsername()).getCompras());
 		}
 		usuarioEao.eliminar(u);
+	}
+
+	@Override
+	public int getTotalCajas() {
+		return cajaEao.getCount();
+	}
+
+	@Override
+	public List<Caja> listarCajas(HashMap<String, Object> filters, int start, int limit) {
+		return cajaEao.listar(filters, start, limit);
+	}
+
+	@Override
+	public Caja agregarCaja(Caja c) throws GuardarException {
+		return cajaEao.agregar(c);		
+	}
+
+	@Override
+	public void modificarCaja(Caja c) throws GuardarException {
+		c.setCajeros(cajaEao.findByNumeroCaja(c.getNumeroCaja()).getCajeros());
+		c.setPagos(cajaEao.findByNumeroCaja(c.getNumeroCaja()).getPagos());
+		cajaEao.modificar(c);
+	}
+
+	@Override
+	public void eliminarCaja(Caja c) throws EliminarException {
+		c.setCajeros(cajaEao.findByNumeroCaja(c.getNumeroCaja()).getCajeros());
+		c.setPagos(cajaEao.findByNumeroCaja(c.getNumeroCaja()).getPagos());
+		cajaEao.eliminar(c);		
 	}	
 	
 }

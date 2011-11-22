@@ -26,6 +26,7 @@ public class AppConstants {
 	public static final String PRODUCTO_LABEL = "Producto";
 	public static final String REGISTRAR_VENTA_LABEL = "Registrar Venta";
 	public static final String REGISTRAR_COMPRA_LABEL = "Registrar Compra";
+	public static final String OPERACIONES_CAJA_LABEL = "Operaciones Caja";
 	public static final String REGISTRAR_PAGO_LABEL = "Registrar Pago";
 	public static final String CIERRE_CAJA_LABEL = "Cierre de Caja";
 	public static final String LISTAR_LABEL = "Listar";

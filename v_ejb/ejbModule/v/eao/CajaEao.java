@@ -1,5 +1,6 @@
 package v.eao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
@@ -65,8 +67,34 @@ public class CajaEao implements CajaEaoLocal {
 	}
 
 	@Override
-	public Caja findById(Long id) {
-		return em.find(Caja.class, id);
+	public Caja findByNumeroCaja(Integer nroCaja) {
+		return em.find(Caja.class, nroCaja);
+	}
+
+	@Override
+	public int getCount() {
+		Query q = em.createNamedQuery("Caja.count");
+		return Integer.parseInt(q.getSingleResult().toString());
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public List<Caja> listar(HashMap<String, Object> filters, int start, int limit) {
+		String q = "select c from Caja c ";
+		Object val;
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(String key: filters.keySet()) {
+				val = filters.get(key);
+				if(key.equals("numeroCaja")){
+					q += "c." + key + " = " + val.toString();
+				}
+			}
+		}
+		Query query = em.createQuery(q, Caja.class);
+		query.setFirstResult(start);
+		query.setMaxResults(limit);
+		return query.getResultList();
 	}
 
 }

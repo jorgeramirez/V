@@ -1,0 +1,37 @@
+package v.client.util;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import v.client.AppConstants;
+
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
+import com.extjs.gxt.ui.client.util.IconHelper;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
+
+/**
+ * Utilizado para asociar los iconos a los elementos
+ * del NavigationTree
+ * 
+ * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
+ **/
+public class NavigationIconProvider implements ModelIconProvider<ModelData> {
+	private Map<String, String> iconsMap;
+	
+	public NavigationIconProvider() {
+		iconsMap = new HashMap<String, String>();
+		iconsMap.put(AppConstants.USUARIOS_LABEL, "images/user.png");
+		iconsMap.put(AppConstants.CAJA_LABEL, "images/cashbox.png");
+	}
+	
+	@Override
+	public AbstractImagePrototype getIcon(ModelData model) {
+		String key = model.toString();
+		if(iconsMap.containsKey(key)){
+			return IconHelper.createPath(iconsMap.get(key));
+		}
+		return null;
+	}
+
+}

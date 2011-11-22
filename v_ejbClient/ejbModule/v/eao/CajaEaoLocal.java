@@ -1,4 +1,5 @@
 package v.eao;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -18,6 +19,10 @@ public interface CajaEaoLocal {
 	
 	List<Caja> listar();
 	
-	Caja findById(Long id);
+	Caja findByNumeroCaja(Integer numeroCaja);
+
+	int getCount();
+
+	List<Caja> listar(HashMap<String, Object> filters, int start, int limit);
 
 }

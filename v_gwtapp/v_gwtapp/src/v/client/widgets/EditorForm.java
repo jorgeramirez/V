@@ -1,5 +1,6 @@
 package v.client.widgets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.binding.FieldBinding;
@@ -30,6 +31,8 @@ public abstract class EditorForm extends Dialog {
 	public EditorForm(String title, boolean create, int width, int height){
 		formData = new FormData("-20");
 		
+		fields = new ArrayList<Field<?>>();
+		bindings = new ArrayList<FieldBinding>();		
 		build(create); // llamamos al template method.
 		
 		this.setBodyBorder(false);
