@@ -13,6 +13,8 @@ public interface PagoEaoLocal {
 	void modificar(Pago pago) throws GuardarException;
 
 	void eliminar(Pago pago) throws EliminarException;
+
+	Pago getById(Long id);
 	
 
 }

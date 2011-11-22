@@ -56,5 +56,10 @@ public class PagoEao implements PagoEaoLocal {
 			throw new EliminarException(pe.getMessage());
 		}
 	}
+	
+	@Override
+	public Pago getById(Long id){
+		return em.find(Pago.class, id);
+	}
 
 }
