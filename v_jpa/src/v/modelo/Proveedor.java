@@ -6,7 +6,7 @@ import java.lang.String;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+//import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -40,8 +40,8 @@ public class Proveedor implements Serializable {
 	@Column(name="telefono", length=20)
 	private String telefono;
 	
-	@ManyToMany(mappedBy="proveedores")
-	private List<Producto> productos;
+	/*@ManyToMany(mappedBy="proveedores")
+	private List<Producto> productos;*/
 
 	@OneToMany(mappedBy="proveedor")
 	private List<FacturaCompra> compras;
@@ -93,13 +93,13 @@ public class Proveedor implements Serializable {
 		this.telefono = telefono;
 	}
 
-    public List<Producto> getProductos() {
+    /*public List<Producto> getProductos() {
 		return productos;
 	}
 
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
-	}
+	}*/
 
 	public List<FacturaCompra> getCompras() {
 		return compras;

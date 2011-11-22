@@ -23,6 +23,7 @@ public class NavigationIconProvider implements ModelIconProvider<ModelData> {
 		iconsMap = new HashMap<String, String>();
 		iconsMap.put(AppConstants.USUARIOS_LABEL, "images/user.png");
 		iconsMap.put(AppConstants.CAJA_LABEL, "images/cashbox.png");
+		iconsMap.put(AppConstants.PRODUCTO_LABEL, "images/products.png");
 	}
 	
 	@Override

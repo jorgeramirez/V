@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -69,6 +70,8 @@ public class ProductoEao implements ProductoEaoLocal {
 	public List<Producto> listar(HashMap<String, Object> filters, int start, int limit) {
 		String q = "select p from Producto p ";
 		Object val;
+		int i = 1, size = filters.size();
+		boolean use_and = size > 1;
 		if(!filters.isEmpty()){
 			q += "where ";
 			for(String key: filters.keySet()) {
@@ -77,6 +80,10 @@ public class ProductoEao implements ProductoEaoLocal {
 					val = (String)val;
 					q += "p." + key + " like '" + val + "'";
 				}
+				if(use_and && i < size){
+					q += " and ";
+				}
+				++i;
 			}
 		}
 		Query query = em.createQuery(q, Producto.class);
@@ -89,4 +96,23 @@ public class ProductoEao implements ProductoEaoLocal {
 	public Producto getById(Long id) {
 		return em.find(Producto.class, id);
 	}
+
+	@Override
+	public Producto findByCodigo(String codigo) {
+		Producto p = null;
+		Query query = em.createNamedQuery("Producto.findByCodigo", Producto.class);
+		query.setParameter("codigo", codigo);
+		try{
+			p = (Producto) query.getSingleResult();
+		}catch (NoResultException nre) {
+			// ignored
+		}
+		return p;
+	}
+
+	@Override
+	public int getCount() {
+		Query q = em.createNamedQuery("Producto.count");
+		return Integer.parseInt(q.getSingleResult().toString());
+	}	
 }

@@ -101,6 +101,8 @@ public class CajaEao implements CajaEaoLocal {
 	public List<Caja> listar(HashMap<String, Object> filters, int start, int limit) {
 		String q = "select c from Caja c ";
 		Object val;
+		int i = 1, size = filters.size();
+		boolean use_and = size > 1;		
 		if(!filters.isEmpty()){
 			q += "where ";
 			for(String key: filters.keySet()) {
@@ -108,6 +110,10 @@ public class CajaEao implements CajaEaoLocal {
 				if(key.equals("numeroCaja")){
 					q += "c." + key + " = " + val.toString();
 				}
+				if(use_and && i < size){
+					q += " and ";
+				}
+				++i;				
 			}
 		}
 		Query query = em.createQuery(q, Caja.class);

@@ -18,7 +18,7 @@ import v.modelo.Proveedor;
 
 
 @Stateless
-public class CompradorFacade implements ComprasFacadeLocal {
+public class CompradorFacade implements CompradorFacadeLocal {
 
 	@EJB
 	ProductoEaoLocal productoEao;
@@ -34,8 +34,8 @@ public class CompradorFacade implements ComprasFacadeLocal {
     }
 
 	@Override
-	public void agregarProducto(Producto producto) throws GuardarException {
-		productoEao.agregar(producto);
+	public Producto agregarProducto(Producto producto) throws GuardarException {
+		return productoEao.agregar(producto);
 	}
 	
 	@Override
@@ -101,5 +101,15 @@ public class CompradorFacade implements ComprasFacadeLocal {
 		factura.setProveedor(proveedor);
 		
 		facturaEao.agregar(factura);
+	}
+
+	@Override
+	public Producto findProductoByCodigo(String codigo) {
+		return productoEao.findByCodigo(codigo);
+	}
+
+	@Override
+	public int getTotalProductos() {
+		return productoEao.getCount();
 	}
 }
