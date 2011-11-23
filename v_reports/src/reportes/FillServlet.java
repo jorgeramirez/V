@@ -61,7 +61,7 @@ public class FillServlet extends HttpServlet {
 			File reportFile = new File(reportFileName);
 			if (!reportFile.exists())
                 
-				throw new JRRuntimeException("No se encontr� el archivo " + rp + ".jasper");
+				throw new JRRuntimeException("No se encontró el archivo " + rp + ".jasper");
 
 			Map<String, Object> parameters = new HashMap<String, Object>();
             
@@ -73,7 +73,7 @@ public class FillServlet extends HttpServlet {
                 cnx = DriverManager.getConnection(db, "admin", "1234");
             } catch (SQLException s) {
                 out.println("<html>");
-                out.println("<span class=\"bnew\">Error en la conexi�n a la base de datos: </span>");
+                out.println("<span class=\"bnew\">Error en la conexión a la base de datos: </span>");
                 out.println("<pre>");
 
                 s.printStackTrace(out);

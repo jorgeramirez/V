@@ -67,6 +67,8 @@ public class ProveedorEao implements ProveedorEaoLocal {
 	public List<Proveedor> listar(HashMap<String, Object> filters, int start, int limit) {
 		String q = "select p from Proveedor p ";
 		Object val;
+		int i = 1, size = filters.size();
+		boolean use_and = size > 1;		
 		if(!filters.isEmpty()){
 			q += "where ";
 			for(String key: filters.keySet()) {
@@ -75,6 +77,10 @@ public class ProveedorEao implements ProveedorEaoLocal {
 					val = (String)val;
 					q += "p." + key + " like '" + val + "'";
 				}
+				if(use_and && i < size){
+					q += " and ";
+				}
+				++i;				
 			}
 		}
 		Query query = em.createQuery(q, Proveedor.class);
