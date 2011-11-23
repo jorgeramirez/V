@@ -10,4 +10,10 @@
       <context-root>v_gwtapp</context-root>
     </web>
   </module>
+  <module>
+    <web>
+      <web-uri>v_reports.war</web-uri>
+      <context-root>v_reports</context-root>
+    </web>
+  </module>
 </application>

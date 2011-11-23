@@ -205,6 +205,9 @@ public abstract class CustomGrid<M> extends ContentPanel {
 		this.setLayout(new FitLayout());
 		this.setHeading(this.title);
 		grid = createGrid();
+		
+		//para no haya espacio al pedo al final
+		grid.getView().setForceFit(true); 
 		setupGridPlugins();
 		this.add(grid);
 		final PagingToolBar toolBar = new PagingToolBar(AppConstants.PAGE_SIZE);  
