@@ -48,6 +48,7 @@ public class FillServlet extends HttpServlet {
             String tipo = request.getParameter("tipo");
             
             String reportFileName = context.getRealPath("/reportes/" + rp + ".jrxml");
+            String rootDir = context.getRealPath("");
             
             //compilar el archivo de reporte si se recibe como parámetro de la url compilar=True
             if (compilar != null) {
@@ -86,6 +87,7 @@ public class FillServlet extends HttpServlet {
             //colocar los parámetros para llenar el reporte
           
             parameters.put("id", new BigDecimal(parametro));
+            parameters.put("ROOT_DIR", rootDir);
 						
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
                                                                     reportFileName, 

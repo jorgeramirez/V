@@ -48,10 +48,12 @@ public class HtmlServlet extends HttpServlet {
 			String rp = request.getParameter("reporte");
             String parametro = request.getParameter("id");          
             String reportFileName = context.getRealPath("/reportes/" + rp + ".jasper");
+            String rootDir = context.getRealPath("");
+            
 			File reportFile = new File(reportFileName);
             
 			if (!reportFile.exists())
-				throw new JRRuntimeException("No se encontr� el archivo " + rp + ".jasper");
+				throw new JRRuntimeException("No se encontró el archivo " + rp + ".jasper");
 
 			Map<String, Object> parameters = new HashMap<String, Object>();
             
@@ -75,7 +77,10 @@ public class HtmlServlet extends HttpServlet {
             //colocar los parámetros para llenar el reporte
           
             parameters.put("id", new BigDecimal(parametro));
-			
+            parameters.put("ROOT_DIR", rootDir);
+            //debug
+            System.out.print(rootDir);
+            
             JasperReport jasperReport = (JasperReport)JRLoader.loadObject(reportFile.getPath());
             
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
