@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Entity;
 //import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -21,6 +23,10 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="proveedor")
+@NamedQueries({
+	@NamedQuery(name="Proveedor.count", query="select count(p) from Proveedor p"),
+	@NamedQuery(name="Proveedor.findByRuc", query="select p from Proveedor p where p.ruc like :ruc")
+})
 public class Proveedor implements Serializable {
 
 	@Id

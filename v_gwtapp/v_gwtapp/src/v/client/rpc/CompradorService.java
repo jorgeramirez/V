@@ -18,6 +18,7 @@ package v.client.rpc;
 import java.util.List;
 
 import v.modelo.Producto;
+import v.modelo.Proveedor;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -31,4 +32,9 @@ public interface CompradorService extends RemoteService {
 	Producto agregarProducto(Producto p);
 	boolean modificarProducto(Producto p);
 	boolean eliminarProductos(List<Producto> products);
+	PagingLoadResult<Proveedor> listarProveedores(FilterPagingLoadConfig loadConfig);
+	boolean existeRucProveedor(String ruc);
+	Proveedor agregarProveedor(Proveedor provider);
+	boolean modificarProveedor(Proveedor provider);
+	boolean eliminarProveedores(List<Proveedor> providers);
 }

@@ -30,7 +30,8 @@ public class AppConstants {
 	public static final String OPERACIONES_CAJA_LABEL = "Operaciones Caja";
 	public static final String REGISTRAR_PAGO_LABEL = "Registrar Pago";
 	public static final String CIERRE_CAJA_LABEL = "Cierre de Caja";
-	public static final String LISTAR_LABEL = "Listar";
+	public static final String LISTAR_VENTAS_LABEL = "Listar Ventas";
+	public static final String LISTAR_COMPRAS_LABEL = "Listar Compras";
 	public static final String LOGOUT_LABEL = "Salir";
 	
 	public static final int PAGE_SIZE = 50;

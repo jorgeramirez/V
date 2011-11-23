@@ -54,17 +54,19 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	}
 	
 	@Override
-	public void agregarProveedor(Proveedor proveedor) throws GuardarException {
-		proveedorEao.agregar(proveedor);
+	public Proveedor agregarProveedor(Proveedor proveedor) throws GuardarException {
+		return proveedorEao.agregar(proveedor);
 	}
 	
 	@Override
 	public void modificarProveedor(Proveedor proveedor) throws GuardarException {
+		proveedor.setCompras(proveedorEao.getById(proveedor.getId()).getCompras());
 		proveedorEao.modificar(proveedor);
 	}
 	
 	@Override
 	public void eliminarProveedor(Proveedor proveedor) throws EliminarException {
+		proveedor.setCompras(proveedorEao.getById(proveedor.getId()).getCompras());
 		proveedorEao.eliminar(proveedor);
 	}
 	
@@ -111,5 +113,15 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	@Override
 	public int getTotalProductos() {
 		return productoEao.getCount();
+	}
+
+	@Override
+	public int getTotalProveedores() {
+		return proveedorEao.getCount();
+	}
+
+	@Override
+	public Object findProductoByRuc(String ruc) {
+		return proveedorEao.findByRuc(ruc);
 	}
 }

@@ -122,13 +122,13 @@ public class AppViewport extends Viewport {
 	        new Funcionalidad(AppConstants.VENTAS_LABEL,
 	        	new Funcionalidad[] {
 	        		new Funcionalidad(AppConstants.REGISTRAR_VENTA_LABEL),
-	        		new Funcionalidad(AppConstants.LISTAR_LABEL)
+	        		new Funcionalidad(AppConstants.LISTAR_VENTAS_LABEL)
 	        	}
 	        ),
 	        new Funcionalidad(AppConstants.COMPRAS_LABEL,
 		       	new Funcionalidad[] {
 		       		new Funcionalidad(AppConstants.REGISTRAR_COMPRA_LABEL),
-		       		new Funcionalidad(AppConstants.LISTAR_LABEL)
+		       		new Funcionalidad(AppConstants.LISTAR_COMPRAS_LABEL)
 		    	}
 	        ),
 	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,

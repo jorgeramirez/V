@@ -116,7 +116,7 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 			} catch (EliminarException e) {
 				e.printStackTrace();
 				ok = false;
-				break;
+				//break;
 			}
 		}
 		return ok;
@@ -166,7 +166,7 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 			} catch (EliminarException e) {
 				e.printStackTrace();
 				ok = false;
-				break;
+				//break;
 			}
 		}
 		return ok;

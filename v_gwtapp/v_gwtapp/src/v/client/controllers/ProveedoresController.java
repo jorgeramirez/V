@@ -6,12 +6,12 @@ import java.util.List;
 import v.client.AppConstants;
 import v.client.AppViewport;
 import v.client.Util;
-import v.client.forms.ProductoEditorForm;
-import v.client.grids.ProductosCrudGrid;
+import v.client.forms.ProveedorEditorForm;
+import v.client.grids.ProveedoresCrudGrid;
 import v.client.rpc.CompradorServiceAsync;
 import v.client.widgets.CrudGrid;
 import v.client.widgets.EditorForm;
-import v.modelo.Producto;
+import v.modelo.Proveedor;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -28,23 +28,23 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * Controlador de ABM de Productos
+ * Controlador de ABM de Proveedores
  * 
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com> 
  **/
-public class ProductosController extends AbstractController {
-	private CrudGrid<Producto> grid;
+public class ProveedoresController extends AbstractController {
+	private CrudGrid<Proveedor> grid;
 	private final CompradorServiceAsync service = Registry.get(AppConstants.COMPRADOR_SERVICE);
-
-	public ProductosController() {
-		super(AppConstants.PRODUCTO_LABEL);
+	
+	public ProveedoresController() {
+		super(AppConstants.PROVEEDOR_LABEL);
 	}
 
 	@Override
 	public void init() {
 
-		// creamos el CrudGrid para Productos
-		grid = new ProductosCrudGrid("ABM Productos");
+		// creamos el CrudGrid para Proveedores
+		grid = new ProveedoresCrudGrid("ABM Proveedores");
 		bindHandlers();
 
 		LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
@@ -54,10 +54,10 @@ public class ProductosController extends AbstractController {
 	}
 
 	/**
-	 * Método que se encarga de construir el {@link ProductoEditorForm}
+	 * Método que se encarga de construir el {@link ProveedorEditorForm}
 	 **/
 	private EditorForm buildEditorForm(boolean create) {
-		return new ProductoEditorForm("Producto", create, 500, 280);
+		return new ProveedorEditorForm("Proveedor", create, 500, 280);
 	}
 
 	/**
@@ -137,9 +137,9 @@ public class ProductosController extends AbstractController {
 				if(form.getForm().isValid()){
 					BeanModel p = (BeanModel)form.getFormBindings().getModel();
 					if(create){
-						saveProduct(p);
+						saveProvider(p);
 					}else{
-						updateProduct(p);
+						updateProvider(p);
 					}
 				}else{ // si hay campos invalidos mostramos de vuelta el form
 					form.show();
@@ -149,11 +149,11 @@ public class ProductosController extends AbstractController {
 	}
 
 	/**
-	 * Guarda el producto creado
+	 * Guarda el proveedor creado
 	 **/
-	private void saveProduct(BeanModel p){
-		Producto product = (Producto)p.getBean();
-		service.agregarProducto(product, new AsyncCallback<Producto>() {
+	private void saveProvider(BeanModel p){
+		Proveedor provider = (Proveedor)p.getBean();
+		service.agregarProveedor(provider, new AsyncCallback<Proveedor>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -161,9 +161,9 @@ public class ProductosController extends AbstractController {
 			}
 
 			@Override
-			public void onSuccess(Producto product) {
-				if(product == null){
-					MessageBox.alert("Error", "No se pudo crear el producto", null);
+			public void onSuccess(Proveedor provider) {
+				if(provider == null){
+					MessageBox.alert("Error", "No se pudo crear el proveedor", null);
 				}else{
 					grid.getGrid().getStore().getLoader().load();
 				}
@@ -172,11 +172,11 @@ public class ProductosController extends AbstractController {
 	}
 
 	/**
-	 * Actualiza el producto
+	 * Actualiza el proveedor
 	 **/
-	private void updateProduct(final BeanModel p){
-		Producto product = (Producto)p.getBean();
-		service.modificarProducto(product, new AsyncCallback<Boolean>() {
+	private void updateProvider(final BeanModel p){
+		Proveedor provider = (Proveedor)p.getBean();
+		service.modificarProveedor(provider, new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -188,7 +188,7 @@ public class ProductosController extends AbstractController {
 				if(ok){
 					grid.getGrid().getStore().getLoader().load();
 				}else{
-					MessageBox.alert("Error", "No se pudo modificar el producto", null);
+					MessageBox.alert("Error", "No se pudo modificar el proveedor", null);
 				}
 			}
 		});
@@ -207,11 +207,7 @@ public class ProductosController extends AbstractController {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
-				Producto p = new Producto();
-				p.setPorcentajeGanancia(0.0);
-				p.setCosto(0.0);
-				p.setCantidad(0);
-				form.getFormBindings().bind(Util.createBeanModel(p));
+				form.getFormBindings().bind(Util.createBeanModel(new Proveedor()));
 				bindButtonsHandlers(form, true);
 			}
 		});
@@ -223,11 +219,11 @@ public class ProductosController extends AbstractController {
 	 **/	
 	private void onDeleteClicked() {
 		List<BeanModel> selected = grid.getGrid().getSelectionModel().getSelectedItems();
-		List<Producto> products = new ArrayList<Producto>();
+		List<Proveedor> providers = new ArrayList<Proveedor>();
 		for(BeanModel s: selected){
-			products.add((Producto)s.getBean());
+			providers.add((Proveedor)s.getBean());
 		}
-		service.eliminarProductos(products, new AsyncCallback<Boolean>() {
+		service.eliminarProveedores(providers, new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -238,10 +234,10 @@ public class ProductosController extends AbstractController {
 			@Override
 			public void onSuccess(Boolean ok) {
 				if(ok){
-					MessageBox.info("OK", "Productos eliminados correctamente", null);
+					MessageBox.info("OK", "Proveedores eliminados correctamente", null);
 					grid.getGrid().getStore().getLoader().load();
 				}else{
-					MessageBox.alert("Error", "Algunos productos no pudieron eliminarse", null);
+					MessageBox.alert("Error", "Algunos proveedores no pudieron eliminarse", null);
 				}
 			}
 		
@@ -249,4 +245,3 @@ public class ProductosController extends AbstractController {
 	}
 
 }
-

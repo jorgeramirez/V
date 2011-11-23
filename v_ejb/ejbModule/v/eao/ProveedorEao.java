@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -85,6 +86,25 @@ public class ProveedorEao implements ProveedorEaoLocal {
 	@Override
 	public Proveedor getById(Long id){
 		return em.find(Proveedor.class, id);
+	}
+
+	@Override
+	public int getCount() {
+		Query q = em.createNamedQuery("Proveedor.count");
+		return Integer.parseInt(q.getSingleResult().toString());		
+	}
+
+	@Override
+	public Proveedor findByRuc(String ruc) {
+		Proveedor p = null;
+		Query query = em.createNamedQuery("Proveedor.findByRuc", Proveedor.class);
+		query.setParameter("ruc", ruc);
+		try{
+			p = (Proveedor) query.getSingleResult();
+		}catch (NoResultException nre) {
+			// ignored
+		}
+		return p;
 	}
 
 }

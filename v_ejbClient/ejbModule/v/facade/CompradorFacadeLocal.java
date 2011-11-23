@@ -22,7 +22,7 @@ public interface CompradorFacadeLocal {
 	List<Producto> listarProductos(HashMap<String, Object> filters, int start,
 			int limit);
 
-	void agregarProveedor(Proveedor proveedor) throws GuardarException;
+	Proveedor agregarProveedor(Proveedor proveedor) throws GuardarException;
 
 	void modificarProveedor(Proveedor proveedor) throws GuardarException;
 
@@ -36,5 +36,9 @@ public interface CompradorFacadeLocal {
 	Producto findProductoByCodigo(String codigo);
 
 	int getTotalProductos();
+
+	int getTotalProveedores();
+
+	Object findProductoByRuc(String ruc);
 
 }
