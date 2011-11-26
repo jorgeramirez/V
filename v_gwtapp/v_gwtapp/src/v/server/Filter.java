@@ -1,24 +1,34 @@
 package v.server;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+
+import util.SimpleFilter;
 
 import com.extjs.gxt.ui.client.data.FilterConfig;
 
 
 /**
- * Procesa los filtros enviados por la interfaz y los convierte a un hash 
- * de la forma Campo => Valor
+ * Procesa los filtros enviados por la interfaz y los convierte a una 
+ * lista de {@link SimpleFilter}
  **/
 public class Filter {
 	
-	public static HashMap<String, Object> processFilters(List<FilterConfig> filters) {
-		HashMap<String, Object> pf = new HashMap<String, Object>();
+	public static List<SimpleFilter> processFilters(List<FilterConfig> filters) {
+		List<SimpleFilter> pf = new ArrayList<SimpleFilter>();
+		Object val;
+		String field;
+		String comparison = null;
 		if(filters != null){
 			for (FilterConfig f : filters) {
-				Object val = f.getValue();
-				String field = f.getField();
-				pf.put(field, val);
+				val = f.getValue();
+				field = f.getField();
+				if(f.getType().equals("string")){
+					comparison = "like";
+				}else if(f.getType().equals("numeric")){
+					comparison = f.getComparison();
+				}
+				pf.add(new SimpleFilter(field, val ,comparison));
 		    }
 		}
 		return pf;

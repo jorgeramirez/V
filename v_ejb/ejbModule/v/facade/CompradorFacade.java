@@ -1,11 +1,11 @@
 package v.facade;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import util.SimpleFilter;
 import v.eao.FacturaCompraEaoLocal;
 import v.eao.ProductoEaoLocal;
 import v.eao.ProveedorEaoLocal;
@@ -49,27 +49,29 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	}
 	
 	@Override
-	public List<Producto> listarProductos(HashMap<String, Object> filters, int start, int limit) {
+	public List<Producto> listarProductos(List<SimpleFilter> filters, int start, int limit) {
 		return productoEao.listar(filters, start, limit);
 	}
 	
 	@Override
-	public void agregarProveedor(Proveedor proveedor) throws GuardarException {
-		proveedorEao.agregar(proveedor);
+	public Proveedor agregarProveedor(Proveedor proveedor) throws GuardarException {
+		return proveedorEao.agregar(proveedor);
 	}
 	
 	@Override
 	public void modificarProveedor(Proveedor proveedor) throws GuardarException {
+		proveedor.setCompras(proveedorEao.getById(proveedor.getId()).getCompras());
 		proveedorEao.modificar(proveedor);
 	}
 	
 	@Override
 	public void eliminarProveedor(Proveedor proveedor) throws EliminarException {
+		proveedor.setCompras(proveedorEao.getById(proveedor.getId()).getCompras());
 		proveedorEao.eliminar(proveedor);
 	}
 	
 	@Override
-	public List<Proveedor> listarProveedores(HashMap<String, Object> filters, int start, int limit) {
+	public List<Proveedor> listarProveedores(List<SimpleFilter> filters, int start, int limit) {
 		return proveedorEao.listar(filters, start, limit);
 	}
 	
@@ -111,5 +113,15 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	@Override
 	public int getTotalProductos() {
 		return productoEao.getCount();
+	}
+
+	@Override
+	public int getTotalProveedores() {
+		return proveedorEao.getCount();
+	}
+
+	@Override
+	public Object findProductoByRuc(String ruc) {
+		return proveedorEao.findByRuc(ruc);
 	}
 }

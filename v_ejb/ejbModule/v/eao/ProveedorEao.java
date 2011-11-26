@@ -1,16 +1,17 @@
 package v.eao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Proveedor;
@@ -63,17 +64,17 @@ public class ProveedorEao implements ProveedorEaoLocal {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Proveedor> listar(HashMap<String, Object> filters, int start, int limit) {
+	public List<Proveedor> listar(List<SimpleFilter> filters, int start, int limit) {
 		String q = "select p from Proveedor p ";
-		Object val;
+		int i = 1, size = filters.size();
 		if(!filters.isEmpty()){
 			q += "where ";
-			for(String key: filters.keySet()) {
-				val = filters.get(key);
-				if(val instanceof String){
-					val = (String)val;
-					q += "p." + key + " like '" + val + "'";
+			for(SimpleFilter sf: filters){
+				q += "p." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
 				}
+				++i;
 			}
 		}
 		Query query = em.createQuery(q, Proveedor.class);
@@ -85,6 +86,25 @@ public class ProveedorEao implements ProveedorEaoLocal {
 	@Override
 	public Proveedor getById(Long id){
 		return em.find(Proveedor.class, id);
+	}
+
+	@Override
+	public int getCount() {
+		Query q = em.createNamedQuery("Proveedor.count");
+		return Integer.parseInt(q.getSingleResult().toString());		
+	}
+
+	@Override
+	public Proveedor findByRuc(String ruc) {
+		Proveedor p = null;
+		Query query = em.createNamedQuery("Proveedor.findByRuc", Proveedor.class);
+		query.setParameter("ruc", ruc);
+		try{
+			p = (Proveedor) query.getSingleResult();
+		}catch (NoResultException nre) {
+			// ignored
+		}
+		return p;
 	}
 
 }

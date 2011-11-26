@@ -1,4 +1,3 @@
-
 package reportes;
 
 import java.io.File;
@@ -94,10 +93,10 @@ public class FillServlet extends HttpServlet {
                                                                     parameters, 
                                                                     cnx
                                                                     );
-            //se pone en la sesion para que se pueda generar el pdf
+            //se pone en la sesión para que se pueda generar el pdf
             request.getSession().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
             
-            //redireccionar a la página del informe segun el tipo
+            //redireccionar a la página del informe según el tipo
             String url = "http://localhost:8080/v_reports/reportes/";
             response.sendRedirect(url + tipo + "?reporte=" + rp + "&id=" + parametro);
             

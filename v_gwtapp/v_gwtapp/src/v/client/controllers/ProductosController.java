@@ -43,7 +43,7 @@ public class ProductosController extends AbstractController {
 	@Override
 	public void init() {
 
-		// creamos el CrudGrid para Usuarios
+		// creamos el CrudGrid para Productos
 		grid = new ProductosCrudGrid("ABM Productos");
 		bindHandlers();
 

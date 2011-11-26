@@ -18,6 +18,8 @@ public class CajeroFacade implements CajeroFacadeLocal {
 
 	@EJB
 	CajaEaoLocal cajaEao;
+	
+	@EJB
 	PagoEaoLocal pagoEao;
 
     public CajeroFacade() {

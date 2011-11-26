@@ -43,3 +43,4 @@ public class AppConstants {
 	public static final String COMPRADOR_ROL = "comprador";
 
 }
+

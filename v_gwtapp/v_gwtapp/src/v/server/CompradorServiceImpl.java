@@ -15,17 +15,18 @@
  */
 package v.server;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 
+import util.SimpleFilter;
 import v.client.AppConstants;
 import v.client.rpc.CompradorService;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.facade.CompradorFacadeLocal;
 import v.modelo.Producto;
+import v.modelo.Proveedor;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -49,7 +50,7 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
 		Converter<Producto> pc = new Converter<Producto>();
 		products = pc.convertObjects(products);
@@ -90,7 +91,65 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 			} catch (EliminarException e) {
 				e.printStackTrace();
 				ok = false;
-				break;
+				//break;
+			}
+		}
+		return ok;
+	}
+
+	@Override
+	public PagingLoadResult<Proveedor> listarProveedores(FilterPagingLoadConfig loadConfig) {
+		int count = compradorFacade.getTotalProveedores();
+		List<FilterConfig> filters = loadConfig.getFilterConfigs();
+		int start = loadConfig.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		List<Proveedor> providers = compradorFacade.listarProveedores(plainFilters, start, limit);
+		Converter<Proveedor> pc = new Converter<Proveedor>();
+		providers = pc.convertObjects(providers);
+		return new BasePagingLoadResult<Proveedor>(providers, loadConfig.getOffset(), count);		
+	}
+
+	@Override
+	public boolean existeRucProveedor(String ruc) {
+		return compradorFacade.findProductoByRuc(ruc) != null;
+	}
+
+	@Override
+	public Proveedor agregarProveedor(Proveedor provider) {
+		Proveedor added = null;
+		try {
+			added = compradorFacade.agregarProveedor(provider);
+			Converter<Proveedor> pc = new Converter<Proveedor>();
+			added = pc.convertObject(added);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}
+		return added;
+	}
+
+	@Override
+	public boolean modificarProveedor(Proveedor provider) {
+		boolean ok = true;
+		try {
+			compradorFacade.modificarProveedor(provider);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+			ok = false;
+		}
+		return ok;
+	}
+
+	@Override
+	public boolean eliminarProveedores(List<Proveedor> providers) {
+		boolean ok = true;
+		for(Proveedor p: providers){
+			try {
+				compradorFacade.eliminarProveedor(p);
+			} catch (EliminarException e) {
+				e.printStackTrace();
+				ok = false;
+				//break;
 			}
 		}
 		return ok;

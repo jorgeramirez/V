@@ -14,7 +14,7 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
-//import com.extjs.gxt.ui.client.widget.custom.ThemeSelector;
+import com.extjs.gxt.ui.client.widget.custom.ThemeSelector;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -48,13 +48,11 @@ public class AppViewport extends Viewport {
 	    northPanel.setStateful(false);
 	    northPanel.setId("v-header");
 	    northPanel.addStyleName("x-small-editor");
-	    
-	    /*
-	    ThemeSelector selector = new ThemeSelector();
+
+	    /*ThemeSelector selector = new ThemeSelector();
 	    selector.setWidth(125);
-	    northPanel.add(selector, "#v-theme");
-		*/
-	    
+	    northPanel.add(selector, "#v-theme");*/
+
 	    BorderLayoutData data = new BorderLayoutData(LayoutRegion.NORTH, 33);
 	    data.setMargins(new Margins());
 	    this.add(northPanel, data);
@@ -115,7 +113,6 @@ public class AppViewport extends Viewport {
 		    	new Funcionalidad[] {
 		    		new Funcionalidad(AppConstants.USUARIOS_LABEL),
 		        	new Funcionalidad(AppConstants.CLIENTE_LABEL),
-		        	new Funcionalidad(AppConstants.VENDEDOR_LABEL),
 		        	new Funcionalidad(AppConstants.PROVEEDOR_LABEL),
 		        	new Funcionalidad(AppConstants.CAJA_LABEL),
 		        	new Funcionalidad(AppConstants.PRODUCTO_LABEL)
@@ -124,13 +121,13 @@ public class AppViewport extends Viewport {
 	        new Funcionalidad(AppConstants.VENTAS_LABEL,
 	        	new Funcionalidad[] {
 	        		new Funcionalidad(AppConstants.REGISTRAR_VENTA_LABEL),
-	        		new Funcionalidad(AppConstants.LISTAR_LABEL)
+	        		new Funcionalidad(AppConstants.LISTAR_VENTAS_LABEL)
 	        	}
 	        ),
 	        new Funcionalidad(AppConstants.COMPRAS_LABEL,
 		       	new Funcionalidad[] {
 		       		new Funcionalidad(AppConstants.REGISTRAR_COMPRA_LABEL),
-		       		new Funcionalidad(AppConstants.LISTAR_LABEL)
+		       		new Funcionalidad(AppConstants.LISTAR_COMPRAS_LABEL)
 		    	}
 	        ),
 	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,

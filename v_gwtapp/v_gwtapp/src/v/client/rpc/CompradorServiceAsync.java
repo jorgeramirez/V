@@ -3,6 +3,7 @@ package v.client.rpc;
 import java.util.List;
 
 import v.modelo.Producto;
+import v.modelo.Proveedor;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -21,6 +22,20 @@ public interface CompradorServiceAsync {
 			AsyncCallback<Boolean> asyncCallback);
 
 	void eliminarProductos(List<Producto> products,
+			AsyncCallback<Boolean> asyncCallback);
+
+	void listarProveedores(FilterPagingLoadConfig loadConfig,
+			AsyncCallback<PagingLoadResult<Proveedor>> callback);
+
+	void existeRucProveedor(String ruc, AsyncCallback<Boolean> asyncCallback);
+
+	void agregarProveedor(Proveedor provider,
+			AsyncCallback<Proveedor> asyncCallback);
+
+	void modificarProveedor(Proveedor provider,
+			AsyncCallback<Boolean> asyncCallback);
+
+	void eliminarProveedores(List<Proveedor> providers,
 			AsyncCallback<Boolean> asyncCallback);
 
 }

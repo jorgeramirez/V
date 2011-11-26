@@ -35,15 +35,20 @@ public class UsuariosGrid extends CustomGrid<Usuario> {
 	public UsuariosGrid(String title, boolean useCheckBoxSm, boolean hasFilters) {
 		super(title, useCheckBoxSm, hasFilters);
 	}
-	
+
 	public Map<String, AppConstants.Filtros> buildFiltersConfig() {
 		// establecemos los filtros
 		Map<String, AppConstants.Filtros> fc = null;
 		if(hasFilters){
-		fc = new HashMap<String, AppConstants.Filtros>();
+			fc = new HashMap<String, AppConstants.Filtros>();
 			fc.put("username", AppConstants.Filtros.STRING_FILTER);
 			fc.put("cedula", AppConstants.Filtros.STRING_FILTER);
 			fc.put("rol", AppConstants.Filtros.STRING_FILTER);
+			fc.put("nombre", AppConstants.Filtros.STRING_FILTER);
+			fc.put("apellido", AppConstants.Filtros.STRING_FILTER);
+			fc.put("email", AppConstants.Filtros.STRING_FILTER);
+			fc.put("direccion", AppConstants.Filtros.STRING_FILTER);
+			fc.put("telefono", AppConstants.Filtros.STRING_FILTER);
 		}
 		return fc;
 	}

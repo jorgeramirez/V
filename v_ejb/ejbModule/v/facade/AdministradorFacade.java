@@ -1,12 +1,12 @@
 package v.facade;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import util.SimpleFilter;
 import v.client.AppConstants;
 import v.eao.CajaEaoLocal;
 import v.eao.UsuarioEaoLocal;
@@ -34,7 +34,7 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	
 	@Override
 	//@RolesAllowed("administrador")
-	public List<Usuario> listarUsuarios(HashMap<String, Object> filters, int start, int limit) {
+	public List<Usuario> listarUsuarios(List<SimpleFilter> filters, int start, int limit) {
 		return usuarioEao.listar(filters, start, limit);
 	}
 
@@ -98,7 +98,7 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	}
 
 	@Override
-	public List<Caja> listarCajas(HashMap<String, Object> filters, int start, int limit) {
+	public List<Caja> listarCajas(List<SimpleFilter> filters, int start, int limit) {
 		return cajaEao.listar(filters, start, limit);
 	}
 
