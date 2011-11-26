@@ -38,6 +38,8 @@ public class ProveedoresGrid extends CustomGrid<Proveedor> {
 		fc = new HashMap<String, AppConstants.Filtros>();
 			fc.put("ruc", AppConstants.Filtros.STRING_FILTER);
 			fc.put("nombre", AppConstants.Filtros.STRING_FILTER);
+			fc.put("direccion", AppConstants.Filtros.STRING_FILTER);
+			fc.put("telefono", AppConstants.Filtros.STRING_FILTER);
 		}
 		return fc;
 	}

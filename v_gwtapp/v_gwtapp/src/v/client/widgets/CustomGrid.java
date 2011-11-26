@@ -7,6 +7,7 @@ import java.util.Map;
 import v.client.AppConstants;
 import v.client.AppViewport;
 import v.client.AppConstants.Filtros;
+import v.client.util.XNumericFilter;
 import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -173,7 +174,11 @@ public abstract class CustomGrid<M> extends ContentPanel {
 					break;
 				case BOOLEAN_FILTER:
 					filters.addFilter(new BooleanFilter(f));
-					break;					
+					break;
+				case INTEGER_FILTER:
+					XNumericFilter xnf = new XNumericFilter(f);
+					xnf.setPropertyEditorType(Integer.class);
+					filters.addFilter(xnf);
 			}
 		}
 		return filters;

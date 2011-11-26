@@ -39,6 +39,9 @@ public class ProductosGrid extends CustomGrid<Producto> {
 		fc = new HashMap<String, AppConstants.Filtros>();
 			fc.put("codigo", AppConstants.Filtros.STRING_FILTER);
 			fc.put("nombre", AppConstants.Filtros.STRING_FILTER);
+			fc.put("costo", AppConstants.Filtros.NUMERIC_FILTER);
+			fc.put("cantidad", AppConstants.Filtros.NUMERIC_FILTER);
+			fc.put("porcentajeGanancia", AppConstants.Filtros.NUMERIC_FILTER);
 		}
 		return fc;
 	}
@@ -65,10 +68,6 @@ public class ProductosGrid extends CustomGrid<Producto> {
 
 		// cantidad
 		column = new ColumnConfig("cantidad", "Cantidad", 100);
-		columns.add(column);
-
-		// apellido
-		column = new ColumnConfig("apellido", "Apellido", 100);
 		columns.add(column);
 
 		// porcentaje ganancia

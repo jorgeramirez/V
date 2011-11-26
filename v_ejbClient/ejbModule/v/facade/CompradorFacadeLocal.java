@@ -1,9 +1,9 @@
 package v.facade;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Local;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaCompra;
@@ -19,7 +19,7 @@ public interface CompradorFacadeLocal {
 
 	void eliminarProducto(Producto producto) throws EliminarException;
 
-	List<Producto> listarProductos(HashMap<String, Object> filters, int start,
+	List<Producto> listarProductos(List<SimpleFilter> filters, int start,
 			int limit);
 
 	Proveedor agregarProveedor(Proveedor proveedor) throws GuardarException;
@@ -28,7 +28,7 @@ public interface CompradorFacadeLocal {
 
 	void eliminarProveedor(Proveedor proveedor) throws EliminarException;
 
-	List<Proveedor> listarProveedores(HashMap<String, Object> filters,
+	List<Proveedor> listarProveedores(List<SimpleFilter> filters,
 			int start, int limit);
 
 	void registrarCompra(FacturaCompra factura) throws GuardarException;

@@ -1,11 +1,11 @@
 package v.facade;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import util.SimpleFilter;
 import v.eao.FacturaCompraEaoLocal;
 import v.eao.ProductoEaoLocal;
 import v.eao.ProveedorEaoLocal;
@@ -49,7 +49,7 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	}
 	
 	@Override
-	public List<Producto> listarProductos(HashMap<String, Object> filters, int start, int limit) {
+	public List<Producto> listarProductos(List<SimpleFilter> filters, int start, int limit) {
 		return productoEao.listar(filters, start, limit);
 	}
 	
@@ -71,7 +71,7 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	}
 	
 	@Override
-	public List<Proveedor> listarProveedores(HashMap<String, Object> filters, int start, int limit) {
+	public List<Proveedor> listarProveedores(List<SimpleFilter> filters, int start, int limit) {
 		return proveedorEao.listar(filters, start, limit);
 	}
 	

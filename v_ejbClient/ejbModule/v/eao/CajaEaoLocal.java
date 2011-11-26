@@ -1,9 +1,9 @@
 package v.eao;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Local;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Caja;
@@ -24,7 +24,7 @@ public interface CajaEaoLocal {
 
 	int getCount();
 
-	List<Caja> listar(HashMap<String, Object> filters, int start, int limit);
+	List<Caja> listar(List<SimpleFilter> filters, int start, int limit);
 
 	List<Pago> pagosNoCerrados(Long idCaja);
 

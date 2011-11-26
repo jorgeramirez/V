@@ -15,16 +15,18 @@
  */
 package v.server;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 
+import util.SimpleFilter;
 import v.client.AppConstants;
 import v.client.rpc.AdministradorService;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.facade.AdministradorFacadeLocal;
+import v.modelo.Caja;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.BaseListLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -33,9 +35,6 @@ import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-import v.modelo.Caja;
-import v.modelo.Usuario;
 
 @SuppressWarnings("serial")
 public class AdministradorServiceImpl extends RemoteServiceServlet implements AdministradorService {
@@ -49,7 +48,7 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Usuario> users = administradorFacade.listarUsuarios(plainFilters, start, limit);
 		Converter<Usuario> cu = new Converter<Usuario>();
 		Converter<Caja> cc = new Converter<Caja>();
@@ -128,7 +127,7 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Caja> cashBoxes = administradorFacade.listarCajas(plainFilters, start, limit);
 		Converter<Caja> cc = new Converter<Caja>();
 		cashBoxes = cc.convertObjects(cashBoxes);

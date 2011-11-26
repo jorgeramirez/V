@@ -5,7 +5,8 @@ import com.google.gwt.core.client.GWT;
 public class AppConstants {
 	
 	public static enum Filtros {
-		NUMERIC_FILTER,
+		NUMERIC_FILTER,  // valores double
+		INTEGER_FILTER,  // valores integer
 		DATE_FILTER,
 		STRING_FILTER,
 		BOOLEAN_FILTER

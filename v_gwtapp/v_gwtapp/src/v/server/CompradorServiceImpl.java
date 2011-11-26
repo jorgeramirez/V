@@ -15,11 +15,11 @@
  */
 package v.server;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
 
+import util.SimpleFilter;
 import v.client.AppConstants;
 import v.client.rpc.CompradorService;
 import v.excepciones.EliminarException;
@@ -50,7 +50,7 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
 		Converter<Producto> pc = new Converter<Producto>();
 		products = pc.convertObjects(products);
@@ -103,7 +103,7 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Proveedor> providers = compradorFacade.listarProveedores(plainFilters, start, limit);
 		Converter<Proveedor> pc = new Converter<Proveedor>();
 		providers = pc.convertObjects(providers);

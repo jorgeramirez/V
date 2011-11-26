@@ -1,6 +1,5 @@
 package v.eao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -12,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Proveedor;
@@ -64,23 +64,17 @@ public class ProveedorEao implements ProveedorEaoLocal {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Proveedor> listar(HashMap<String, Object> filters, int start, int limit) {
+	public List<Proveedor> listar(List<SimpleFilter> filters, int start, int limit) {
 		String q = "select p from Proveedor p ";
-		Object val;
 		int i = 1, size = filters.size();
-		boolean use_and = size > 1;		
 		if(!filters.isEmpty()){
 			q += "where ";
-			for(String key: filters.keySet()) {
-				val = filters.get(key);
-				if(val instanceof String){
-					val = (String)val;
-					q += "p." + key + " like '" + val + "'";
-				}
-				if(use_and && i < size){
+			for(SimpleFilter sf: filters){
+				q += "p." + sf;
+				if(size > 1 && i < size){
 					q += " and ";
 				}
-				++i;				
+				++i;
 			}
 		}
 		Query query = em.createQuery(q, Proveedor.class);

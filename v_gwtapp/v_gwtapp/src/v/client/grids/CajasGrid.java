@@ -49,7 +49,7 @@ public class CajasGrid extends CustomGrid<Caja> {
 		Map<String, AppConstants.Filtros> fc = null;
 		if(hasFilters){
 			fc = new HashMap<String, AppConstants.Filtros>();
-			fc.put("numeroCaja", AppConstants.Filtros.STRING_FILTER);
+			fc.put("numeroCaja", AppConstants.Filtros.INTEGER_FILTER);
 		}
 		return fc;
 	}
