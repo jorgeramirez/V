@@ -18,6 +18,7 @@ package v.server;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 
 import util.SimpleFilter;
 import v.client.AppConstants;
@@ -88,10 +89,11 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		for(Producto p: products){
 			try {
 				compradorFacade.eliminarProducto(p);
-			} catch (EliminarException e) {
+			}catch (EliminarException e){
 				e.printStackTrace();
 				ok = false;
-				//break;
+			}catch(EJBTransactionRolledbackException e){
+				ok = false;
 			}
 		}
 		return ok;
@@ -146,10 +148,11 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		for(Proveedor p: providers){
 			try {
 				compradorFacade.eliminarProveedor(p);
-			} catch (EliminarException e) {
+			}catch (EliminarException e){
 				e.printStackTrace();
 				ok = false;
-				//break;
+			}catch(EJBTransactionRolledbackException e){
+				ok = false;
 			}
 		}
 		return ok;

@@ -155,7 +155,7 @@ public class CajasController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 
 			@Override
@@ -174,7 +174,7 @@ public class CajasController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 
 			@Override
@@ -217,18 +217,17 @@ public class CajasController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);				
 			}
 
 			@Override
 			public void onSuccess(Boolean ok) {
 				if(ok){
 					MessageBox.info("OK", "Cajas eliminadas correctamente", null);
-					grid.getGrid().getStore().getLoader().load();
 				}else{
 					MessageBox.alert("Error", "Algunas cajas no pudieron eliminarse", null);
 				}
+				grid.getGrid().getStore().getLoader().load();
 			}
 		
 		});

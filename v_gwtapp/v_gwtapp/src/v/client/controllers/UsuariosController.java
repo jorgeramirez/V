@@ -157,7 +157,7 @@ public class UsuariosController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 
 			@Override
@@ -176,7 +176,7 @@ public class UsuariosController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 
 			@Override
@@ -219,7 +219,7 @@ public class UsuariosController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 				
 			}
 
@@ -227,10 +227,10 @@ public class UsuariosController extends AbstractController {
 			public void onSuccess(Boolean ok) {
 				if(ok){
 					MessageBox.info("OK", "Usuarios eliminados correctamente", null);
-					grid.getGrid().getStore().getLoader().load();
 				}else{
 					MessageBox.alert("Error", "Algunos usuarios no pudieron eliminarse", null);
 				}
+				grid.getGrid().getStore().getLoader().load();
 			}
 		
 		});

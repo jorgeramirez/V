@@ -56,11 +56,11 @@ public class UsuarioEao implements UsuarioEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(Usuario usuario) throws EliminarException {
 		try {
 			em.remove(em.merge(usuario));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}

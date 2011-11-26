@@ -53,11 +53,11 @@ public class CajaEao implements CajaEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(Caja caja) throws EliminarException {
 		try {
 			em.remove(em.merge(caja));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}

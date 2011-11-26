@@ -132,7 +132,7 @@ public class AppViewport extends Viewport {
 	        ),
 	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,
 		       	new Funcionalidad[] {
-		       		new Funcionalidad(AppConstants.REGISTRAR_PAGO_LABEL),
+		       		new Funcionalidad(AppConstants.COBRAR_FACTURA_LABEL),
 		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)
 	        	}
 	        ),

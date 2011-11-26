@@ -53,11 +53,11 @@ public class ProveedorEao implements ProveedorEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(Proveedor proveedor) throws EliminarException {
 		try {
 			em.remove(em.merge(proveedor));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}
