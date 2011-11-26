@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura_venta" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura_venta" pageWidth="595" pageHeight="432" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -67,6 +67,7 @@
 	<parameter name="id" class="java.math.BigDecimal">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="ROOT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select fecha, numero_factura, total, saldo, nombre, apellido, cedula, direccion from factura_venta f, cliente c where f.id_cliente = c.id and f.id = $P{id};]]>
 	</queryString>
@@ -78,161 +79,14 @@
 	<field name="apellido" class="java.lang.String"/>
 	<field name="cedula" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
-	<group name="Group1">
-		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<staticText>
-					<reportElement style="Column header" x="1" y="0" width="100" height="15"/>
-					<textElement>
-						<font isBold="true" isUnderline="false"/>
-					</textElement>
-					<text><![CDATA[Detalles:]]></text>
-				</staticText>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="35"/>
-		</groupFooter>
-	</group>
-	<group name="Group2">
-		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
-		<groupHeader>
-			<band height="93">
-				<componentElement>
-					<reportElement key="table 1" style="table 1" x="97" y="21" width="360" height="50"/>
-					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-						<datasetRun subDataset="detalle_factura">
-							<datasetParameter name="id_factura">
-								<datasetParameterExpression><![CDATA[$P{id}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="total">
-								<datasetParameterExpression><![CDATA[$F{total}]]></datasetParameterExpression>
-							</datasetParameter>
-							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-						</datasetRun>
-						<jr:column width="90">
-							<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
-								<staticText>
-									<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="31"/>
-									<textElement textAlignment="Center">
-										<font isBold="true"/>
-									</textElement>
-									<text><![CDATA[ Código]]></text>
-								</staticText>
-							</jr:columnHeader>
-							<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="90" height="20"/>
-									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="90">
-							<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
-								<staticText>
-									<reportElement x="0" y="0" width="90" height="30"/>
-									<textElement textAlignment="Center">
-										<font isBold="true"/>
-									</textElement>
-									<text><![CDATA[ Descripción]]></text>
-								</staticText>
-							</jr:columnHeader>
-							<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="90" height="20"/>
-									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[  $F{nombre}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="90">
-							<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
-								<staticText>
-									<reportElement x="0" y="0" width="90" height="30"/>
-									<textElement textAlignment="Center">
-										<font isBold="true"/>
-									</textElement>
-									<text><![CDATA[ Cantidad]]></text>
-								</staticText>
-							</jr:columnHeader>
-							<jr:columnFooter height="29" rowSpan="1"/>
-							<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="90" height="20"/>
-									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="90">
-							<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
-								<staticText>
-									<reportElement x="0" y="0" width="90" height="31"/>
-									<textElement textAlignment="Center">
-										<font isBold="true"/>
-									</textElement>
-									<text><![CDATA[ Precio]]></text>
-								</staticText>
-							</jr:columnHeader>
-							<jr:columnFooter style="table 1_TH" height="29" rowSpan="1">
-								<staticText>
-									<reportElement x="0" y="0" width="90" height="29"/>
-									<textElement textAlignment="Center">
-										<font size="14" isBold="true"/>
-									</textElement>
-									<text><![CDATA[TOTAL]]></text>
-								</staticText>
-							</jr:columnFooter>
-							<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="90" height="20"/>
-									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="90">
-							<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
-								<staticText>
-									<reportElement x="0" y="0" width="90" height="31"/>
-									<textElement textAlignment="Center">
-										<font isBold="true"/>
-									</textElement>
-									<text><![CDATA[ Subtotal]]></text>
-								</staticText>
-							</jr:columnHeader>
-							<jr:columnFooter style="table 1_TH" height="29" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="90" height="27"/>
-									<textElement textAlignment="Center">
-										<font size="12"/>
-									</textElement>
-									<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
-								</textField>
-							</jr:columnFooter>
-							<jr:detailCell height="30" rowSpan="1">
-								<textField>
-									<reportElement x="0" y="0" width="90" height="30"/>
-									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{precio} * $F{cantidad}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-					</jr:table>
-				</componentElement>
-			</band>
-		</groupHeader>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="98" splitType="Stretch">
-			<image>
-				<reportElement x="1" y="5" width="553" height="75"/>
-				<imageExpression><![CDATA["E:\\Facultad\\8vo\\Programación Web\\reportes\\fondo.jpg"]]></imageExpression>
+		<band height="154" splitType="Stretch">
+			<image isUsingCache="true">
+				<reportElement stretchType="RelativeToTallestObject" x="1" y="5" width="553" height="75" isPrintInFirstWholeBand="true"/>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "\\reportes\\fondo.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement style="Title" x="0" y="5" width="263" height="33"/>
@@ -242,30 +96,30 @@
 				<text><![CDATA[ V]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="SubTitle" x="353" y="5" width="200" height="22" forecolor="#FFFFFF"/>
+				<reportElement style="SubTitle" x="353" y="8" width="200" height="22" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
 					<font size="18"/>
 				</textElement>
 				<text><![CDATA[Factura Venta  ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="470" y="27" width="71" height="20" forecolor="#FFFFFF"/>
+				<reportElement x="461" y="29" width="71" height="20" forecolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{numero_factura}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="Column header" x="0" y="55" width="100" height="15"/>
+				<reportElement style="Column header" x="1" y="55" width="100" height="15"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Nombre Cliente:]]></text>
+				<text><![CDATA[  Nombre Cliente:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="0" y="70" width="67" height="15"/>
+				<reportElement style="Column header" x="1" y="70" width="67" height="15"/>
 				<textElement/>
-				<text><![CDATA[Dirección:]]></text>
+				<text><![CDATA[  Dirección:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="310" y="55" width="29" height="15"/>
@@ -298,29 +152,144 @@
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="Column header" x="441" y="27" width="29" height="15" forecolor="#FFFFFF"/>
+				<reportElement style="Column header" x="432" y="29" width="29" height="15" forecolor="#FFFFFF"/>
 				<textElement/>
 				<text><![CDATA[Nro:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="1" y="85" width="100" height="15"/>
+				<textElement>
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[  Detalles:]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="101" y="100" width="360" height="50"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="detalle_factura">
+						<datasetParameter name="id_factura">
+							<datasetParameterExpression><![CDATA[$P{id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="total">
+							<datasetParameterExpression><![CDATA[$F{total}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="55">
+						<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="55" height="31"/>
+								<textElement textAlignment="Center">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[ Código]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="55" height="20"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="183">
+						<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="183" height="30"/>
+								<textElement textAlignment="Center">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[ Descripción]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="183" height="20"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="56">
+						<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="56" height="30"/>
+								<textElement textAlignment="Center">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[ Cantidad]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="1" width="56" height="20"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="69">
+						<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="1" width="69" height="29"/>
+								<textElement textAlignment="Center">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[ Precio]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 1_TH" height="29" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="69" height="29"/>
+								<textElement textAlignment="Center">
+									<font size="14" isBold="true"/>
+								</textElement>
+								<text><![CDATA[TOTAL]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell style="table 1_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="69" height="20"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80">
+						<jr:columnHeader style="table 1_TH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="31"/>
+								<textElement textAlignment="Center">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[ Subtotal]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 1_TH" height="29" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="80" height="27"/>
+								<textElement textAlignment="Center">
+									<font size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell height="21" rowSpan="1">
+							<textField>
+								<reportElement style="table 1_TD" x="0" y="0" width="80" height="20"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$F{precio} * $F{cantidad}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
-	<columnHeader>
-		<band height="4" splitType="Stretch"/>
-	</columnHeader>
-	<pageFooter>
-		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement style="Column header" x="403" y="5" width="151" height="15"/>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="false" isItalic="true" isUnderline="false"/>
-				</textElement>
-				<text><![CDATA[TP de Programación Web]]></text>
-			</staticText>
-		</band>
-	</pageFooter>
 	<summary>
 		<band splitType="Stretch"/>
 	</summary>

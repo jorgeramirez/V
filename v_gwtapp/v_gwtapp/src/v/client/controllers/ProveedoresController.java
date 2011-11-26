@@ -235,13 +235,12 @@ public class ProveedoresController extends AbstractController {
 			public void onSuccess(Boolean ok) {
 				if(ok){
 					MessageBox.info("OK", "Proveedores eliminados correctamente", null);
-					grid.getGrid().getStore().getLoader().load();
 				}else{
 					MessageBox.alert("Error", "Algunos proveedores no pudieron eliminarse", null);
 				}
+				grid.getGrid().getStore().getLoader().load();
 			}
 		
 		});
 	}
-
 }

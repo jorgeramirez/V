@@ -239,14 +239,12 @@ public class ProductosController extends AbstractController {
 			public void onSuccess(Boolean ok) {
 				if(ok){
 					MessageBox.info("OK", "Productos eliminados correctamente", null);
-					grid.getGrid().getStore().getLoader().load();
 				}else{
 					MessageBox.alert("Error", "Algunos productos no pudieron eliminarse", null);
 				}
+				grid.getGrid().getStore().getLoader().load();
 			}
-		
 		});
 	}
 
 }
-

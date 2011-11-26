@@ -49,9 +49,9 @@ public class AppViewport extends Viewport {
 	    northPanel.setId("v-header");
 	    northPanel.addStyleName("x-small-editor");
 
-	    ThemeSelector selector = new ThemeSelector();
+	    /*ThemeSelector selector = new ThemeSelector();
 	    selector.setWidth(125);
-	    northPanel.add(selector, "#v-theme");
+	    northPanel.add(selector, "#v-theme");*/
 
 	    BorderLayoutData data = new BorderLayoutData(LayoutRegion.NORTH, 33);
 	    data.setMargins(new Margins());
