@@ -38,6 +38,7 @@ public class V_gwtapp implements EntryPoint {
 		
 		Registry.register(AppConstants.ADMINISTRADOR_SERVICE, adminService);
 		Registry.register(AppConstants.COMPRADOR_SERVICE, compradorService);
+		Registry.register(AppConstants.VENDEDOR_SERVICE, vendedorService);
 		
 		
 		//seteamos controladores
