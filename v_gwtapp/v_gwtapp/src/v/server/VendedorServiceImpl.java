@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 
+import util.SimpleFilter;
 import v.client.AppConstants;
 import v.client.rpc.VendedorService;
 import v.excepciones.EliminarException;
@@ -54,7 +55,7 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
 		Converter<Producto> pc = new Converter<Producto>();
 		products = pc.convertObjects(products);
@@ -108,7 +109,7 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
-		HashMap<String, Object> plainFilters = Filter.processFilters(filters);
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		List<Cliente> clientes = vendedorFacade.listarClientes(plainFilters, start, limit);
 		Converter<Cliente> cu = new Converter<Cliente>();
 		clientes = cu.convertObjects(clientes);

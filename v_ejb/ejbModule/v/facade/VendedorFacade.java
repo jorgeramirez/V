@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import util.SimpleFilter;
 import v.eao.CajaEaoLocal;
 import v.eao.ClienteEaoLocal;
 import v.excepciones.EliminarException;
@@ -32,7 +33,7 @@ public class VendedorFacade implements VendedorFacadeLocal {
     
 	@Override
 	//@RolesAllowed("administrador")
-	public List<Cliente> listarClientes(HashMap<String, Object> filters, int start, int limit) {
+	public List<Cliente> listarClientes(List<SimpleFilter> filters, int start, int limit) {
 		return clienteEao.listar(filters, start, limit);
 	}
 

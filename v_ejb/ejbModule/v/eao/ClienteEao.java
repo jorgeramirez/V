@@ -1,6 +1,5 @@
 package v.eao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -13,10 +12,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Cliente;
-import v.modelo.Usuario;
 
 /**
  * Session Bean implementation class ClienteEao
@@ -67,23 +66,17 @@ public class ClienteEao implements ClienteEaoLocal {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Cliente> listar(HashMap<String, Object> filters, int start, int limit) {
+	public List<Cliente> listar(List<SimpleFilter> filters, int start, int limit) {
 		String q = "select c from Cliente c ";
-		Object val;
 		int i = 1, size = filters.size();
-		boolean use_and = size > 1;
 		if(!filters.isEmpty()){
 			q += "where ";
-			for(String key: filters.keySet()) {
-				val = filters.get(key);
-				if(val instanceof String){
-					val = (String)val;
-					q += "c." + key + " like '" + val + "'";
-				}
-				if(use_and && i < size){
+			for(SimpleFilter sf: filters){
+				q += "c." + sf;
+				if(size > 1 && i < size){
 					q += " and ";
 				}
-				++i;				
+				++i;
 			}
 		}
 		Query query = em.createQuery(q, Cliente.class);
