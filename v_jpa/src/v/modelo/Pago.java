@@ -5,6 +5,7 @@ import java.lang.Double;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.String;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 
@@ -40,10 +43,18 @@ public class Pago implements Serializable {
 	
 	@Column(name="numero_pago", nullable=false)
 	private Integer numeroPago;
+
+	@Temporal(value=TemporalType.TIMESTAMP)
+	@Column(name="fecha", nullable=false)
+	private Date fecha;	
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER, cascade=CascadeType.REFRESH)
 	@JoinColumn(name="id_factura_venta", referencedColumnName="id")
 	private FacturaVenta factura;
+	
+	@ManyToOne(optional=false, fetch=FetchType.EAGER, cascade=CascadeType.REFRESH)
+	@JoinColumn(name="id_usuario", referencedColumnName="id")
+	private Usuario usuario;	
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER, cascade=CascadeType.REFRESH)
 	@JoinColumn(name="id_caja", referencedColumnName="id")
@@ -102,6 +113,22 @@ public class Pago implements Serializable {
 
 	public void setCaja(Caja caja) {
 		this.caja = caja;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
