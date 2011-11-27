@@ -3,6 +3,8 @@ package v.modelo;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -16,6 +18,10 @@ import v.modelo.FacturaVenta;
  */
 @Entity
 @Table(name="cliente")
+@NamedQueries({
+	@NamedQuery(name="Cliente.findAll", query="select c from Cliente c"),
+	@NamedQuery(name="Cliente.count", query="select count(c) from Cliente c"),
+})
 public class Cliente extends Persona {
 	
 	@OneToMany(mappedBy="cliente")

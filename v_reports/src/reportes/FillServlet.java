@@ -1,4 +1,3 @@
-
 package reportes;
 
 import java.io.File;
@@ -48,6 +47,7 @@ public class FillServlet extends HttpServlet {
             String tipo = request.getParameter("tipo");
             
             String reportFileName = context.getRealPath("/reportes/" + rp + ".jrxml");
+            String rootDir = context.getRealPath("");
             
             //compilar el archivo de reporte si se recibe como parámetro de la url compilar=True
             if (compilar != null) {
@@ -61,7 +61,7 @@ public class FillServlet extends HttpServlet {
 			File reportFile = new File(reportFileName);
 			if (!reportFile.exists())
                 
-				throw new JRRuntimeException("No se encontró el archivo " + rp + ".jasper");
+				throw new JRRuntimeException("No se encontr� el archivo " + rp + ".jasper");
 
 			Map<String, Object> parameters = new HashMap<String, Object>();
             
@@ -73,7 +73,7 @@ public class FillServlet extends HttpServlet {
                 cnx = DriverManager.getConnection(db, "admin", "1234");
             } catch (SQLException s) {
                 out.println("<html>");
-                out.println("<span class=\"bnew\">Error en la conexión a la base de datos: </span>");
+                out.println("<span class=\"bnew\">Error en la conexi�n a la base de datos: </span>");
                 out.println("<pre>");
 
                 s.printStackTrace(out);
@@ -86,16 +86,17 @@ public class FillServlet extends HttpServlet {
             //colocar los parámetros para llenar el reporte
           
             parameters.put("id", new BigDecimal(parametro));
+            parameters.put("ROOT_DIR", rootDir);
 						
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
                                                                     reportFileName, 
                                                                     parameters, 
                                                                     cnx
                                                                     );
-            //se pone en la sesion para que se pueda generar el pdf
+            //se pone en la sesión para que se pueda generar el pdf
             request.getSession().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
             
-            //redireccionar a la página del informe segun el tipo
+            //redireccionar a la página del informe según el tipo
             String url = "http://localhost:8080/v_reports/reportes/";
             response.sendRedirect(url + tipo + "?reporte=" + rp + "&id=" + parametro);
             

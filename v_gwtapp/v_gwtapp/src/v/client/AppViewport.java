@@ -14,7 +14,6 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
-import com.extjs.gxt.ui.client.widget.custom.ThemeSelector;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -61,9 +60,9 @@ public class AppViewport extends Viewport {
 	    northPanel.setId("v-header");
 	    northPanel.addStyleName("x-small-editor");
 
-	    ThemeSelector selector = new ThemeSelector();
+	    /*ThemeSelector selector = new ThemeSelector();
 	    selector.setWidth(125);
-	    northPanel.add(selector, "#v-theme");
+	    northPanel.add(selector, "#v-theme");*/
 
 	    BorderLayoutData data = new BorderLayoutData(LayoutRegion.NORTH, 33);
 	    data.setMargins(new Margins());
@@ -153,7 +152,7 @@ public class AppViewport extends Viewport {
 	        ),
 	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,
 		       	new Funcionalidad[] {
-		       		new Funcionalidad(AppConstants.REGISTRAR_PAGO_LABEL),
+		       		new Funcionalidad(AppConstants.COBRAR_FACTURA_LABEL),
 		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)
 	        	}
 	        ),
@@ -175,7 +174,7 @@ public class AppViewport extends Viewport {
 		Funcionalidad[] funcs = new Funcionalidad[] {
 	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,
 		       	new Funcionalidad[] {
-		       		new Funcionalidad(AppConstants.REGISTRAR_PAGO_LABEL),
+		       		new Funcionalidad(AppConstants.COBRAR_FACTURA_LABEL),
 		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)
 	        	}
 	        ),

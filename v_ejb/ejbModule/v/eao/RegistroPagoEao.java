@@ -48,11 +48,11 @@ public class RegistroPagoEao implements RegistroPagoEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(RegistroPago registroPago) throws EliminarException {
 		try {
 			em.remove(em.merge(registroPago));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}

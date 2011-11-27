@@ -39,20 +39,20 @@ public class ReportViewer extends LayoutContainer {
 
 		final Window window = new Window();  
 		window.setSize(500, 300);  
-		window.setPlain(true); 
+		window.setPlain(true);
 		window.setModal(true);  
-		window.setBlinkModal(true);  
+		//window.setBlinkModal(true);  
 		window.setHeading(this.titulo);  
 		window.setLayout(new FitLayout()); 	  
 		
 		Frame frame = new Frame(Util.reporteUrl(this.reporte, "html", this.id));
 		window.add(frame);
-		
+
 		window.addButton(new Button("PDF", new SelectionListener<ButtonEvent>() {  
 			@Override  
-			public void componentSelected(ButtonEvent ce) {  
+			public void componentSelected(ButtonEvent ce) {
 				window.setUrl(Util.reporteUrl(reporte, "pdf", id));
-			}  
+			}
 		}));  
 
 		window.show();  

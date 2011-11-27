@@ -18,6 +18,7 @@ package v.server;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 
 import util.SimpleFilter;
 import v.client.AppConstants;
@@ -112,10 +113,11 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		for(Usuario u: users){
 			try {
 				administradorFacade.eliminarUsuario(u);
-			} catch (EliminarException e) {
+			}catch (EliminarException e){
 				e.printStackTrace();
 				ok = false;
-				//break;
+			}catch(EJBTransactionRolledbackException e){
+				ok = false;
 			}
 		}
 		return ok;
@@ -162,10 +164,11 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 		for(Caja c: cashBoxes){
 			try {
 				administradorFacade.eliminarCaja(c);
-			} catch (EliminarException e) {
+			}catch (EliminarException e){
 				e.printStackTrace();
 				ok = false;
-				//break;
+			}catch(EJBTransactionRolledbackException e){
+				ok = false;
 			}
 		}
 		return ok;
