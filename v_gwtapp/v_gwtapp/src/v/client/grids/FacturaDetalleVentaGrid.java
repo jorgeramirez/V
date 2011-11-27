@@ -14,6 +14,7 @@ import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ColumnModelEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -49,7 +50,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class FacturaDetalleVentaGrid extends ContentPanel {
 
-
 	private EditorGrid<BeanModel> gridDetalle;
 	private ProductosGrid gridProductos;
 	private ListStore<BeanModel> store;
@@ -62,7 +62,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 	public FacturaDetalleVentaGrid(FacturaVenta v){
 		this.fv = v;
 		this.setHeading(this.title);  
-		this.setFrame(true);   
+		this.setFrame(true); 
 		this.setWidth(700);  
 		this.setLayout(new FitLayout());
 
@@ -78,7 +78,17 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 				};			
 			}
 		};
-		gridProductos.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
+		
+		gridProductos.addListener(Events.Render, new Listener<BaseEvent>() {
+
+			@Override
+			public void handleEvent(BaseEvent be) {
+				gridProductos.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
+				
+			}
+			
+		});
+		
 
 
 	}
@@ -156,11 +166,8 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		fdv.setCabecera(fv);
 		fdv.setProducto((Producto) p.getBean());
 
-
 		return Util.createBeanModel(fdv);  
 	}  
-
-
 
 	protected void doAutoHeight() {  
 		if (gridDetalle.isViewReady()) {  
@@ -269,23 +276,26 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		gridDetalle.addPlugin(r);
 		gridDetalle.getView().setForceFit(true);
 
-		gridDetalle.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
-		this.add(gridDetalle);  
-
-
-
-		//Controlamos enabled/disabled del botón delete del ToolBar
-		gridDetalle.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<BeanModel>() {
+		gridDetalle.addListener(Events.Render, new Listener<BaseEvent>() {
 
 			@Override
-			public void selectionChanged(SelectionChangedEvent<BeanModel> se) {
-				del.setEnabled(se.getSelection().size() > 0);
+			public void handleEvent(BaseEvent be) {
+				gridDetalle.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+				//Controlamos enabled/disabled del botón delete del ToolBar
+				gridDetalle.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<BeanModel>() {
+
+					@Override
+					public void selectionChanged(SelectionChangedEvent<BeanModel> se) {
+						del.setEnabled(se.getSelection().size() > 0);
+					}
+				});
+				
 			}
+			
 		});
-
-
-
-
+		
+		this.add(gridDetalle);  
+		
 		this.setButtonAlign(HorizontalAlignment.CENTER);  
 		this.addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {  
 
@@ -304,8 +314,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		}));  
 
 		add(this);  
-
-
 
 		gridDetalle.addListener(Events.ViewReady, new Listener<ComponentEvent>() {  
 			public void handleEvent(ComponentEvent be) {  

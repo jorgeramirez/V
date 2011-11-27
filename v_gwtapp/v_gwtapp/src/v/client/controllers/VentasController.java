@@ -4,20 +4,10 @@ import v.client.AppConstants;
 import v.client.AppViewport;
 import v.client.VType;
 import v.client.VTypeValidator;
-import v.client.forms.UsuarioEditorForm;
-import v.client.grids.ClientesCrudGrid;
-import v.client.grids.ClientesGrid;
 import v.client.grids.FacturaDetalleVentaGrid;
-import v.client.grids.ProductosGrid;
 import v.client.grids.VentasClienteGrid;
-import v.client.rpc.AdministradorServiceAsync;
 import v.client.rpc.VendedorServiceAsync;
-import v.client.widgets.CrudGrid;
-import v.client.widgets.EditorForm;
-import v.modelo.Factura;
-import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
-import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -25,16 +15,11 @@ import com.extjs.gxt.ui.client.binding.FormBinding;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.VerticalPanel;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -42,7 +27,7 @@ import com.extjs.gxt.ui.client.widget.layout.ColumnData;
 import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 
 public class VentasController extends AbstractController {
 	//private ContentPanel cp;
@@ -62,21 +47,18 @@ public class VentasController extends AbstractController {
 	public void init() {
 		//cp = new ContentPanel();
 
-		//boton de selecciona de clientes
-
-
-
-
 		// creamos el grid de selección de cliente
 		gridCliente = new VentasClienteGrid();
 
-		bindHandlers();
+		
 		//form que contiene los datos del cliente seleccionado
 		FormPanel panelCliente = crearFormCliente();  
 		formBindings = new FormBinding(panelCliente, true);  
 
-
+		//bindHandlers();
+		
 		FacturaVenta v = new FacturaVenta();
+		
 		//el grid de detalles de los producutos seleccionados
 		gridDetalle = new FacturaDetalleVentaGrid(v);
 
@@ -85,10 +67,11 @@ public class VentasController extends AbstractController {
 		panelVertical.setSpacing(20); 
 
 		panelVertical.add(gridCliente);
+		panelVertical.add(gridDetalle);
 
 		LayoutContainer lc = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 
-		lc.add(panelVertical);
+		lc.add(gridCliente);
 		lc.layout();
 
 	}
@@ -171,25 +154,31 @@ public class VentasController extends AbstractController {
 
 		panel.add(main, new FormData("100%")); 
 
-
-
 		return panel;  
 	}
 
 	private void bindHandlers() {
+		gridCliente.addListener(Events.Render, new Listener<BaseEvent>() {
 
-		//hacer el bind del form cliente con la fila seleccionada
-		gridCliente.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);  
-		gridCliente.getGrid().getSelectionModel().addListener(Events.SelectionChange,  
-				new Listener<SelectionChangedEvent<BeanModel>>() {  
-			public void handleEvent(SelectionChangedEvent<BeanModel> be) {  
-				if (be.getSelection().size() > 0) {  
-					formBindings.bind((ModelData) be.getSelection().get(0));  
-				} else {  
-					formBindings.unbind();  
-				}  
-			}  
-		}); 
+			@Override
+			public void handleEvent(BaseEvent be) {
+				//hacer el bind del form cliente con la fila seleccionada
+				gridCliente.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+				  
+				gridCliente.getGrid().getSelectionModel().addListener(Events.SelectionChange,  
+						new Listener<SelectionChangedEvent<BeanModel>>() {  
+					public void handleEvent(SelectionChangedEvent<BeanModel> be) {  
+						if (be.getSelection().size() > 0) {  
+							formBindings.bind((ModelData) be.getSelection().get(0));  
+						} else {  
+							formBindings.unbind();  
+						}  
+					}  
+				}); 
+			}
+		});
+		
+
 	}
 }
 
