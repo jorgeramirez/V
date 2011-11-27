@@ -37,7 +37,7 @@ public class ReportViewer extends LayoutContainer {
 		super.onRender(parent, pos);  
 		setLayout(new FlowLayout(10));  
 
-		final Window window = new Window();  
+		final Window window = new Window(); 
 		window.setSize(500, 300);  
 		window.setPlain(true);
 		window.setModal(true);  

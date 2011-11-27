@@ -5,6 +5,7 @@ import java.util.List;
 
 import v.client.controllers.AbstractController;
 import v.client.controllers.CajasController;
+import v.client.controllers.CerrarCajaController;
 import v.client.controllers.ClientesController;
 import v.client.controllers.CobrarFacturasController;
 import v.client.controllers.LogoutController;
@@ -63,6 +64,7 @@ public class V_gwtapp implements EntryPoint {
 		controllers.add(new ClientesController());
 		controllers.add(new CobrarFacturasController());
 		controllers.add(new VentasController());
+		controllers.add(new CerrarCajaController());
 		controllers.add(new LogoutController());
 
 		
