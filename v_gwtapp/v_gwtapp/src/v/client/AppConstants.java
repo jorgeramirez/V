@@ -5,8 +5,8 @@ import com.google.gwt.core.client.GWT;
 public class AppConstants {
 	
 	public static enum Filtros {
-		NUMERIC_FILTER,
-		INTEGER_FILTER,
+		NUMERIC_FILTER,  // valores double
+		INTEGER_FILTER,  // valores integer
 		DATE_FILTER,
 		STRING_FILTER,
 		BOOLEAN_FILTER
@@ -15,6 +15,8 @@ public class AppConstants {
 	public static final String ADMINISTRADOR_SERVICE = GWT.getModuleBaseURL() + "administrador";
 	public static final String COMPRADOR_SERVICE = GWT.getModuleBaseURL() + "comprador";
 	public static final String VENDEDOR_SERVICE = GWT.getModuleBaseURL() + "vendedor";
+	public static final String LOGIN_SERVICE = GWT.getModuleBaseURL() + "login";
+
 	
 	// labels utilizados en el Tree de navegacion.
 	public static final String ABM_LABEL = "ABM";
@@ -30,7 +32,7 @@ public class AppConstants {
 	public static final String REGISTRAR_VENTA_LABEL = "Registrar Venta";
 	public static final String REGISTRAR_COMPRA_LABEL = "Registrar Compra";
 	public static final String OPERACIONES_CAJA_LABEL = "Operaciones Caja";
-	public static final String REGISTRAR_PAGO_LABEL = "Registrar Pago";
+	public static final String COBRAR_FACTURA_LABEL = "Cobrar Factura";
 	public static final String CIERRE_CAJA_LABEL = "Cierre de Caja";
 	public static final String LISTAR_VENTAS_LABEL = "Listar Ventas";
 	public static final String LISTAR_COMPRAS_LABEL = "Listar Compras";
@@ -45,4 +47,3 @@ public class AppConstants {
 	public static final String COMPRADOR_ROL = "comprador";
 
 }
-

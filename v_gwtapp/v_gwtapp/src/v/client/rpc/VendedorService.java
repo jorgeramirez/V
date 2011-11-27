@@ -17,13 +17,10 @@ package v.client.rpc;
 
 import java.util.List;
 
-import v.modelo.Caja;
 import v.modelo.Cliente;
 import v.modelo.Producto;
-import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;

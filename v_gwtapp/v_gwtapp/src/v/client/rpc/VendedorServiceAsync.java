@@ -4,7 +4,6 @@ import java.util.List;
 
 import v.modelo.Cliente;
 import v.modelo.Producto;
-import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;

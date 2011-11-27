@@ -157,7 +157,7 @@ public class ProveedoresController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 
 			@Override
@@ -180,7 +180,7 @@ public class ProveedoresController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 
 			@Override
@@ -227,7 +227,7 @@ public class ProveedoresController extends AbstractController {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 				
 			}
 
@@ -235,13 +235,12 @@ public class ProveedoresController extends AbstractController {
 			public void onSuccess(Boolean ok) {
 				if(ok){
 					MessageBox.info("OK", "Proveedores eliminados correctamente", null);
-					grid.getGrid().getStore().getLoader().load();
 				}else{
 					MessageBox.alert("Error", "Algunos proveedores no pudieron eliminarse", null);
 				}
+				grid.getGrid().getStore().getLoader().load();
 			}
 		
 		});
 	}
-
 }

@@ -56,11 +56,11 @@ public class ProductoEao implements ProductoEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(Producto producto) throws EliminarException {
 		try {
 			em.remove(em.merge(producto));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}

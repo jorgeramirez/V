@@ -41,14 +41,14 @@ public class FacturaDetalleCompraEao implements FacturaDetalleCompraEaoLocal {
 	public void modificar(FacturaDetalleCompra facturaDetalleCompra) throws GuardarException {
 		try {
 			em.merge(facturaDetalleCompra);
-		}catch (PersistenceException pe) {
+		}catch (Exception pe) {
 			throw new GuardarException(pe.getMessage());
 		}
 		
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(FacturaDetalleCompra facturaDetalleCompra) throws EliminarException {
 		try {
 			em.remove(em.merge(facturaDetalleCompra));

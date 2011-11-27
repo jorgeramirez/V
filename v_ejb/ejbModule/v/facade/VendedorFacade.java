@@ -1,6 +1,5 @@
 package v.facade;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;

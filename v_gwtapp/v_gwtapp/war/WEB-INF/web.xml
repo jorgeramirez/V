@@ -63,4 +63,12 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
  	<servlet-name>VendedorService</servlet-name>
  	<url-pattern>/v_gwtapp/VendedorService</url-pattern>
  </servlet-mapping>
+ <servlet>
+ 	<servlet-name>LoginService</servlet-name>
+ 	<servlet-class>v.server.LoginServiceImpl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	<servlet-name>LoginService</servlet-name>
+ 	<url-pattern>/v_gwtapp/LoginService</url-pattern>
+ </servlet-mapping> 
 </web-app>

@@ -55,11 +55,11 @@ public class ClienteEao implements ClienteEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(Cliente cliente) throws EliminarException {
 		try {
 			em.remove(em.merge(cliente));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}

@@ -48,11 +48,11 @@ public class FacturaCompraEao implements FacturaCompraEaoLocal {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void eliminar(FacturaCompra facturaCompra) throws EliminarException {
 		try {
 			em.remove(em.merge(facturaCompra));
-		}catch(PersistenceException pe) {
+		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
 	}
