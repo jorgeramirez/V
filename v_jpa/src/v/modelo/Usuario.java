@@ -1,6 +1,5 @@
 package v.modelo;
 
-import java.lang.String;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,11 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import sun.misc.BASE64Encoder;
 
 /**
  * Entity implementation class for Entity: Usuario
@@ -74,8 +68,7 @@ public class Usuario extends Persona {
 	}
 
 	public void setPassword(String password) {
-		String passwordCifrado = Usuario.cifrarPassword(password);
-		this.password = passwordCifrado;
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -117,27 +110,4 @@ public class Usuario extends Persona {
 	public void setVentas(List<FacturaVenta> ventas) {
 		this.ventas = ventas;
 	}
-	
-	public static String cifrarPassword(String textoplano) throws IllegalStateException {
-        
-		MessageDigest md = null;
-
-        try {
-            md = MessageDigest.getInstance("SHA"); // Instancia de generador SHA-1
-        }
-        catch(NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e.getMessage());
-        }
-
-        try {
-            md.update(textoplano.getBytes("UTF-8")); // Generacion de resumen de mensaje
-        }
-        catch(UnsupportedEncodingException e) {
-            throw new IllegalStateException(e.getMessage());
-        }
-
-        byte raw[] = md.digest(); // Obtencion del resumen de mensaje
-        String hash = (new BASE64Encoder()).encode(raw); // Traduccion a BASE64
-        return hash;
-    }
 }

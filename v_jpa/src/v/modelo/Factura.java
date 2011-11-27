@@ -1,9 +1,6 @@
 package v.modelo;
 
 import java.io.Serializable;
-import java.lang.Double;
-import java.lang.Long;
-import java.lang.String;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -28,8 +25,9 @@ public class Factura implements Serializable {
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="numero_factura", length=10, nullable=false, unique=true)
-	private String numeroFactura;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="numero_factura")
+	private Integer numeroFactura;
 	
 	@Temporal(value=TemporalType.TIMESTAMP)
 	@Column(name="fecha", nullable=false)
@@ -53,11 +51,11 @@ public class Factura implements Serializable {
 		this.id = id;
 	}
 	
-	public String getNumeroFactura() {
+	public Integer getNumeroFactura() {
 		return this.numeroFactura;
 	}
 
-	public void setNumeroFactura(String numeroFactura) {
+	public void setNumeroFactura(Integer numeroFactura) {
 		this.numeroFactura = numeroFactura;
 	}
 	

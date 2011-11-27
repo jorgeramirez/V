@@ -17,5 +17,6 @@ public interface UsuarioEaoLocal {
 	List<Usuario> listar(List<SimpleFilter> filters, int start, int limit);
 	int getCount();
 	Usuario findByUsername(String username);
+	public String cifrarPassword(String textoplano) throws IllegalStateException;
 	
 }

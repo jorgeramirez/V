@@ -38,8 +38,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		Usuario u = administradorFacade.findByUsername(usuario);
 		boolean aceptado = false;
 		
-		String passwordCifrado = Usuario.cifrarPassword(password); 
-
 		Converter<Usuario> cu = new Converter<Usuario>();
 		Converter<Caja> cc = new Converter<Caja>();
 		
@@ -50,16 +48,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			if(u.getRol().equals(AppConstants.CAJERO_ROL)){
 				u.setCaja(cc.convertObject(u.getCaja()));
 			}
-						
-			if (passwordCifrado.equals(u.getPassword())){
+			
+			String encrypted = administradorFacade.cifrarPassword(password);
+
+			if(u.getPassword().equals(encrypted)){
 				aceptado = true;
 			}
 			
 			if (aceptado) {
 	            HttpSession session = getThreadLocalRequest().getSession(true);
 	            session.setAttribute("usuario", u);
-	/*            session.setAttribute("id", u.getId());
-	            session.setAttribute("rol", u.getRol());*/
 	            return u;
 			}
 		}

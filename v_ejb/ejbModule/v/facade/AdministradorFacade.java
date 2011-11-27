@@ -60,6 +60,7 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 
 	@Override
 	public Usuario agregarUsuario(Usuario u) throws GuardarException {
+		u.setPassword(cifrarPassword(u.getPassword()));
 		if(u.getRol().equals(AppConstants.CAJERO_ROL)){
 			u.setCaja(cajaEao.findByNumeroCaja(u.getCaja().getNumeroCaja()));
 		}
@@ -68,6 +69,10 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 
 	@Override
 	public void modificarUsuario(Usuario u) throws GuardarException {
+		Usuario old = usuarioEao.findByUsername(u.getUsername());
+		if(!old.getPassword().equals(u.getPassword())){
+			u.setPassword(cifrarPassword(u.getPassword()));
+		}
 		if(u.getRol().equals(AppConstants.CAJERO_ROL)){
 			u.setCaja(cajaEao.findByNumeroCaja(u.getCaja().getNumeroCaja()));
 		}
@@ -119,6 +124,10 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 		c.setCajeros(cajaEao.findByNumeroCaja(c.getNumeroCaja()).getCajeros());
 		c.setPagos(cajaEao.findByNumeroCaja(c.getNumeroCaja()).getPagos());
 		cajaEao.eliminar(c);		
-	}	
+	}
+	
+	public String cifrarPassword(String textoplano) throws IllegalStateException{
+		return usuarioEao.cifrarPassword(textoplano);
+	}
 	
 }

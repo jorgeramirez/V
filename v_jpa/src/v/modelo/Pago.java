@@ -1,10 +1,6 @@
 package v.modelo;
 
 import java.io.Serializable;
-import java.lang.Double;
-import java.lang.Integer;
-import java.lang.Long;
-import java.lang.String;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -41,9 +37,6 @@ public class Pago implements Serializable {
 	@Column(name="estado", nullable=false, length=20)
 	private String estado;
 	
-	@Column(name="numero_pago", nullable=false)
-	private Integer numeroPago;
-
 	@Temporal(value=TemporalType.TIMESTAMP)
 	@Column(name="fecha", nullable=false)
 	private Date fecha;	
@@ -89,14 +82,6 @@ public class Pago implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-	
-	public Integer getNumeroPago() {
-		return this.numeroPago;
-	}
-
-	public void setNumeroPago(Integer numeroPago) {
-		this.numeroPago = numeroPago;
 	}
 	
     public FacturaVenta getFactura() {
