@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 import util.SimpleFilter;
 import v.client.AppConstants;
 import v.client.rpc.CajeroService;
+import v.excepciones.GuardarException;
 import v.facade.CajeroFacadeLocal;
 import v.modelo.Cliente;
 import v.modelo.FacturaVenta;
@@ -60,8 +61,14 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 	}
 
 	@Override
-	public Pago registrarPago(Pago pago) {
-		// TODO Auto-generated method stub
-		return null;
+	public String registrarPago(Pago pago) {
+		String error = null;
+		try {
+			cajeroFacade.registrarPago(pago);
+		} catch (GuardarException e) {
+			e.printStackTrace();
+			error = e.getMessage();
+		}
+		return error;
 	}
 }

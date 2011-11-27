@@ -6,9 +6,11 @@ import v.client.Util;
 import v.client.forms.PagoEditorForm;
 import v.client.grids.CobroFacturasGrid;
 import v.client.rpc.CajeroServiceAsync;
+import v.client.rpc.LoginServiceAsync;
 import v.client.widgets.EditorForm;
 import v.modelo.FacturaVenta;
 import v.modelo.Pago;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BeanModel;
@@ -103,7 +105,7 @@ public class CobrarFacturasController extends AbstractController {
 	 **/
 	private void savePago(BeanModel p){
 		Pago pago = (Pago)p.getBean();
-		service.registrarPago(pago, new AsyncCallback<Pago>() {
+		service.registrarPago(pago, new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -111,11 +113,11 @@ public class CobrarFacturasController extends AbstractController {
 			}
 
 			@Override
-			public void onSuccess(Pago pago) {
-				if(pago == null){
-					MessageBox.alert("Error", "No se pudo registrar el pago", null);
-				}else{
+			public void onSuccess(String errorMsg) {
+				if(errorMsg == null){
 					grid.getGrid().getStore().getLoader().load();
+				}else{
+					MessageBox.alert("Error", errorMsg, null);
 				}
 			}
 		});
@@ -135,11 +137,25 @@ public class CobrarFacturasController extends AbstractController {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
+				final LoginServiceAsync loginService = (LoginServiceAsync)Registry.get(AppConstants.LOGIN_SERVICE);
 				FacturaVenta factura = (FacturaVenta)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
-				Pago p = new Pago();
+				final Pago p = new Pago();
 				p.setFactura(factura);
-				// setear atributos utilizando el loginService
-				form.getFormBindings().bind(Util.createBeanModel(p));
+				p.setEstado(AppConstants.PAGO_NO_CERRADO);
+				loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
+					}
+
+					@Override
+					public void onSuccess(Usuario cajero) {
+						p.setUsuario(cajero);
+						p.setCaja(cajero.getCaja());
+						form.getFormBindings().bind(Util.createBeanModel(p));
+					}
+				});
 				bindButtonsHandlers(form, true);
 			}
 		});

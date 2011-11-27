@@ -88,6 +88,8 @@ public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 			fc.put("numeroFactura", AppConstants.Filtros.INTEGER_FILTER);
 			fc.put("fecha", AppConstants.Filtros.DATE_FILTER);
 			fc.put("nombreCliente", AppConstants.Filtros.STRING_FILTER);
+			fc.put("cliente.nombre", AppConstants.Filtros.STRING_FILTER);
+			fc.put("vendedor.nombre", AppConstants.Filtros.STRING_FILTER);
 		}
 		return fc;
 	}
@@ -120,7 +122,7 @@ public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 		columns.add(column);
 		
 		// cliente
-		column = new ColumnConfig("cliente", "Cliente", 100);
+		column = new ColumnConfig("cliente.nombre", "Cliente", 100);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -134,7 +136,7 @@ public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 		columns.add(column);
 
 		// vendedor
-		column = new ColumnConfig("vendedor", "Vendedor", 100);
+		column = new ColumnConfig("vendedor.nombre", "Vendedor", 100);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override

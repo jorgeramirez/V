@@ -50,5 +50,9 @@ public class AppConstants {
 	// labels que indican el estado de una factura
 	public static final String FACTURA_PENDIENTE_PAGO = "pendiente de pago";
 	public static final String FACTURA_PAGADA = "pagada";
+	
+	// labels para el estado de los pagos.
+	public static final String PAGO_CERRADO = "cerrado";
+	public static final String PAGO_NO_CERRADO = "no cerrado";
 
 }

@@ -22,17 +22,18 @@ public class SimpleFilter {
 	 * El comparador utilizado. 
 	 * 		En el caso de cadenas de texto se utiliza 'like'
 	 * 		En el caso de valores numéricos se utilizan  '=', '>', '<'
+	 * 		En el caso de valores de tipo Date 'before', 'after', 'on'
 	 **/
 	private String comparison;
 	
 	public SimpleFilter(String field, Object value, String comparison){
 		this.field = field;
 		this.value = value;
-		if(comparison.equals("lt")){
+		if(comparison.equals("lt") || comparison.equals("before")){
 			this.comparison = "<";
-		}else if(comparison.equals("gt")){
+		}else if(comparison.equals("gt") || comparison.equals("after")){
 			this.comparison = ">";
-		}else if(comparison.equals("eq")){
+		}else if(comparison.equals("eq") || comparison.equals("on")){
 			this.comparison = "=";
 		}else{
 			this.comparison = comparison;

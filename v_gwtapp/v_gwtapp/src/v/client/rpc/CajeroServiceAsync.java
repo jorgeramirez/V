@@ -12,6 +12,6 @@ public interface CajeroServiceAsync {
 	void listarFacturasPendientes(FilterPagingLoadConfig config,
 			AsyncCallback<PagingLoadResult<FacturaVenta>> callback);
 
-	void registrarPago(Pago pago, AsyncCallback<Pago> asyncCallback);
+	void registrarPago(Pago pago, AsyncCallback<String> asyncCallback);
 
 }
