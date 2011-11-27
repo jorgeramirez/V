@@ -12,11 +12,14 @@ import v.client.rpc.AdministradorService;
 import v.client.rpc.AdministradorServiceAsync;
 import v.client.rpc.CompradorService;
 import v.client.rpc.CompradorServiceAsync;
-import v.shared.model.Roles;
+import v.client.rpc.LoginService;
+import v.client.rpc.LoginServiceAsync;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -31,6 +34,8 @@ public class V_gwtapp implements EntryPoint {
 		//creamos los servicios
 		AdministradorServiceAsync adminService = (AdministradorServiceAsync)GWT.create(AdministradorService.class);
 		CompradorServiceAsync compradorService = (CompradorServiceAsync)GWT.create(CompradorService.class);
+		final LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
+		Registry.register(AppConstants.LOGIN_SERVICE, loginService);
 		Registry.register(AppConstants.ADMINISTRADOR_SERVICE, adminService);
 		Registry.register(AppConstants.COMPRADOR_SERVICE, compradorService);
 		
@@ -43,7 +48,25 @@ public class V_gwtapp implements EntryPoint {
 		Dispatcher d = new Dispatcher(controllers);
 		Registry.register("dispatcher", d);
 		
-		AppViewport viewport = new AppViewport(Roles.ADMINISTRADOR);
-		RootPanel.get().add(viewport);
+		loginService.alreadyLoggedIn(new AsyncCallback<Usuario>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Usuario u) {
+				if(u != null){
+					AppViewport viewport = new AppViewport(u.getRol());
+					RootPanel.get().add(viewport);					
+				}else{
+					LoginDialog login = new LoginDialog();
+					login.show();					
+				}				
+			}
+			
+		});
 	}
 }
