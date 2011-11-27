@@ -77,7 +77,6 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 				++i;
 			}
 		}
-		System.out.println(q);
 		Query query = em.createQuery(q, FacturaVenta.class);
 		query.setFirstResult(start);
 		query.setMaxResults(limit);

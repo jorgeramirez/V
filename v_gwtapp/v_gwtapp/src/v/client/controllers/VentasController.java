@@ -7,7 +7,7 @@ import v.client.VTypeValidator;
 import v.client.forms.UsuarioEditorForm;
 import v.client.grids.ClientesCrudGrid;
 import v.client.grids.ClientesGrid;
-//import v.client.grids.Editorgrid;
+import v.client.grids.Editorgrid;
 import v.client.grids.FacturaDetalleVentaGrid;
 import v.client.grids.ProductosGrid;
 import v.client.grids.VentasClienteGrid;
@@ -180,7 +180,7 @@ public class VentasController extends AbstractController {
 
 	private void bindHandlers() {
 		//Asociamos a cada botón con su respectivo handler del controlador
-		/*grid.getSelectClientButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
+		grid.getSelectClientButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
@@ -194,12 +194,12 @@ public class VentasController extends AbstractController {
 			public void componentSelected(ButtonEvent ce) {
 				onDeleteClicked();
 			}
-		});*/
+		});
 
 		/** 
 		 * Agregamos el listener para el evento RowDoubleClick.
 		 **/
-		/*grid.addListener(Events.Render, new Listener<BaseEvent>() {
+		grid.addListener(Events.Render, new Listener<BaseEvent>() {
 
 			@Override  
 			public void handleEvent(BaseEvent be) {
@@ -225,7 +225,7 @@ public class VentasController extends AbstractController {
 					formBindings.unbind();  
 				}  
 			}  
-		});*/ 
+		}); 
 	}
 }
 
