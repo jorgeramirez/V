@@ -157,4 +157,19 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		}
 		return ok;
 	}
+
+	@Override
+	public PagingLoadResult<Producto> listarProductosConExistencia(
+			FilterPagingLoadConfig loadConfig) {
+		int count = compradorFacade.getTotalProductos();
+		List<FilterConfig> filters = loadConfig.getFilterConfigs();
+		int start = loadConfig.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		plainFilters.add(new SimpleFilter("cantidad", 0, ">"));
+		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
+		Converter<Producto> pc = new Converter<Producto>();
+		products = pc.convertObjects(products);
+		return new BasePagingLoadResult<Producto>(products, loadConfig.getOffset(), count);
+	}
 }

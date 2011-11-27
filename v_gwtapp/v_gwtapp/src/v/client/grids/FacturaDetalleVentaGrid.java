@@ -3,11 +3,17 @@ package v.client.grids;
 import java.util.ArrayList;
 import java.util.List;
 
+import v.client.Util;
 import v.modelo.FacturaDetalleVenta;
+import v.modelo.FacturaVenta;
+import v.modelo.Producto;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ColumnModelEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -16,11 +22,14 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.WindowEvent;
+import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
@@ -36,41 +45,119 @@ import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class FacturaDetalleVentaGrid extends ContentPanel {
 
 
 	private EditorGrid<BeanModel> gridDetalle;
-
+	private ProductosGrid gridProductos;
 	private ListStore<BeanModel> store;
 	private ColumnModel cm;
 	private String title = "Detalles de Venta";
 	private Button add;
 	private Button del;
-	
-	public FacturaDetalleVentaGrid(){
+	private FacturaVenta fv;
 
+	public FacturaDetalleVentaGrid(FacturaVenta v){
+		this.fv = v;
 		this.setHeading(this.title);  
 		this.setFrame(true);   
 		this.setWidth(700);  
 		this.setLayout(new FitLayout());
-		
-/*		ToolBar tb = new ToolBar();
-		add = new Button();
-		del = new Button();
-		tb.add(add);
-		tb.add(del);
-		this.setTopComponent(tb);*/
+
+		//creamos el grid de selección de productos
+		gridProductos = new ProductosGrid() {
+			@Override
+			public RpcProxy<PagingLoadResult<Producto>> buildProxy() {
+				return new RpcProxy<PagingLoadResult<Producto>>() {
+					@Override
+					public void load(Object loadConfig, AsyncCallback<PagingLoadResult<Producto>> callback) {
+						service.listarProductosConExistencia((FilterPagingLoadConfig)loadConfig, callback);
+					}
+				};			
+			}
+		};
+		gridProductos.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
+
 
 	}
-	
-	
-	protected FacturaDetalleVenta crearDetalle() { 
+
+
+	protected void selectorProductos() {     
+
+		final Window window = new Window();  
+		window.setSize(500, 300);  
+		window.setPlain(true);  
+		window.setModal(true);  
+		window.setBlinkModal(true);  
+		window.setHeading("Productos");  
+		window.setLayout(new FitLayout());  
+		window.addWindowListener(new WindowListener() {  
+			@Override  
+			public void windowHide(WindowEvent we) {  
+				Button open = we.getWindow().getData("productos");  
+				open.focus();  
+			}  
+		});  
+
+		window.add(gridProductos);
+		window.addButton(new Button("Ok", new SelectionListener<ButtonEvent>() {  
+			@Override  
+			public void componentSelected(ButtonEvent ce) {  
+
+				store.insert(crearDetalle(gridProductos.getGrid().getSelectionModel().getSelectedItem()), 0); 
+				gridDetalle.startEditing(0, 3);
+				window.hide();  
+			}  
+		}));  
+
+		window.setFocusWidget(window.getButtonBar().getItem(0));  
+
+
+
+		add = new Button("Agregar Producto", new SelectionListener<ButtonEvent>() {  
+			@Override  
+			public void componentSelected(ButtonEvent ce) {  
+				gridDetalle.stopEditing(); 
+				window.show();  
+			}  
+		}); 
+
+
+		ToolBar topToolBar= new ToolBar();  
+
+
+
+		topToolBar.add(add);
+		del = new Button("Remover Seleccionado", new SelectionListener<ButtonEvent>() {  
+			@Override  
+			public void componentSelected(ButtonEvent ce) {
+				//arreglar para que borre el seleccionado
+				gridDetalle.getStore().remove(gridDetalle.getSelectionModel().getSelectedItem());  
+				/*
+					if (gridDetalle.getStore().getCount() == 0) {  
+						ce.<Component> getComponent().disable();  
+					}
+				 */
+			}
+		});
+
+		topToolBar.add(del);
+		this.setTopComponent(topToolBar);  
+
+	}
+
+
+	protected BeanModel crearDetalle(BeanModel p) { 
 		//aca hay que crear un Facutura detalle a partir de los seleccionado en el grid de productos
 		FacturaDetalleVenta fdv = new FacturaDetalleVenta();
+		fdv.setCantidad(1);
+		fdv.setCabecera(fv);
+		fdv.setProducto((Producto) p.getBean());
 
 
-		return fdv;  
+		return Util.createBeanModel(fdv);  
 	}  
 
 
@@ -87,6 +174,8 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 	@Override  
 	protected void onRender(Element parent, int index) {  
 		super.onRender(parent, index);  
+
+		selectorProductos();
 
 		setLayout(new FlowLayout(10));  
 		RowNumberer r = new RowNumberer(); 
@@ -184,39 +273,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		this.add(gridDetalle);  
 
 
-		ToolBar topToolBar= new ToolBar();  
-		add = new Button("Agregar Detalle");  
-		add.addSelectionListener(new SelectionListener<ButtonEvent>() {  
-
-			@Override  
-			public void componentSelected(ButtonEvent ce) {  
-
-				gridDetalle.stopEditing();  
-				//mostrar el grid de selección de productos
-
-				//pasar el foco a la columna cantidad del nuevo producto seleccionado
-
-				//store.insert(createPlant(), 0);  
-				gridDetalle.startEditing(0, 0);  
-
-			}  
-
-		});  
-
-
-		topToolBar.add(add);
-		del = new Button("Remover Seleccionado", new SelectionListener<ButtonEvent>() {  
-			@Override  
-			public void componentSelected(ButtonEvent ce) {
-				//arreglar para que borre el seleccionado
-				gridDetalle.getStore().remove(gridDetalle.getSelectionModel().getSelectedItem());  
-				/*
-				if (gridDetalle.getStore().getCount() == 0) {  
-					ce.<Component> getComponent().disable();  
-				}
-				*/
-			}
-		});
 
 		//Controlamos enabled/disabled del botón delete del ToolBar
 		gridDetalle.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<BeanModel>() {
@@ -226,10 +282,10 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 				del.setEnabled(se.getSelection().size() > 0);
 			}
 		});
-		
-		topToolBar.add(del);
 
-		this.setTopComponent(topToolBar);  
+
+
+
 		this.setButtonAlign(HorizontalAlignment.CENTER);  
 		this.addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {  
 
@@ -248,7 +304,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		}));  
 
 		add(this);  
-		//store.insert(createPlant(), 0);  
+
 
 
 		gridDetalle.addListener(Events.ViewReady, new Listener<ComponentEvent>() {  

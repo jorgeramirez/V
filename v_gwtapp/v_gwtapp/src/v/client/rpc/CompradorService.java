@@ -37,4 +37,6 @@ public interface CompradorService extends RemoteService {
 	Proveedor agregarProveedor(Proveedor provider);
 	boolean modificarProveedor(Proveedor provider);
 	boolean eliminarProveedores(List<Proveedor> providers);
+	PagingLoadResult<Producto> listarProductosConExistencia(
+			FilterPagingLoadConfig loadConfig);
 }

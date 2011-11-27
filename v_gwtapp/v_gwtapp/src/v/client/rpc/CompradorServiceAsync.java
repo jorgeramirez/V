@@ -38,4 +38,7 @@ public interface CompradorServiceAsync {
 	void eliminarProveedores(List<Proveedor> providers,
 			AsyncCallback<Boolean> asyncCallback);
 
+	void listarProductosConExistencia(FilterPagingLoadConfig loadConfig,
+			AsyncCallback<PagingLoadResult<Producto>> callback);
+
 }

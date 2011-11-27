@@ -1,6 +1,7 @@
 package v.client.grids;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.WindowEvent;
@@ -8,13 +9,14 @@ import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.Element;
 
 public class VentasClienteGrid extends ContentPanel {
 	private ClientesGrid gridCliente;
-	private ToolBar topToolBar;
+	//private ToolBar topToolBar;
 	private Button addCliente; 
 	
 	  protected void onRender(Element parent, int pos) {  
@@ -64,4 +66,10 @@ public class VentasClienteGrid extends ContentPanel {
 		    window.setData("clientes", addCliente);  
 		    this.setTopComponent(tb);
 	  }
+	  
+		public Grid<BeanModel> getGrid() {
+			return gridCliente.getGrid();
+		}
+
+
 }

@@ -31,12 +31,17 @@ public class ProductosGrid extends CustomGrid<Producto> {
 	public ProductosGrid(String title, boolean useCheckBoxSm, boolean hasFilters) {
 		super(title, useCheckBoxSm, hasFilters);
 	}
-	
+
+	public ProductosGrid() {
+		//SOLO UTILIZADO EN LA FACTURADETALLE
+		super("Productos", false, true);
+	}
+
 	public Map<String, AppConstants.Filtros> buildFiltersConfig() {
 		// establecemos los filtros
 		Map<String, AppConstants.Filtros> fc = null;
 		if(hasFilters){
-		fc = new HashMap<String, AppConstants.Filtros>();
+			fc = new HashMap<String, AppConstants.Filtros>();
 			fc.put("codigo", AppConstants.Filtros.STRING_FILTER);
 			fc.put("nombre", AppConstants.Filtros.STRING_FILTER);
 			fc.put("costo", AppConstants.Filtros.NUMERIC_FILTER);
