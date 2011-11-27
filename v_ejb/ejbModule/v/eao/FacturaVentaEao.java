@@ -8,7 +8,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaVenta;
@@ -60,9 +62,30 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<FacturaVenta> listar() {
-		return em.createNamedQuery("FacturaVenta.findAll", FacturaVenta.class).getResultList();
+	public List<FacturaVenta> listar(List<SimpleFilter> filters, int start, int limit) {
+		String q = "select f from FacturaVenta f ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "f." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q, FacturaVenta.class);
+		query.setFirstResult(start);
+		query.setMaxResults(limit);
+		return query.getResultList();
 	}
 
+	@Override
+	public int getTotalPendientes() {
+		Query q = em.createNamedQuery("FacturaVenta.countPendientes");
+		return Integer.parseInt(q.getSingleResult().toString());
+	}
 }

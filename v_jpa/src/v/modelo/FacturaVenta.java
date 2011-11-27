@@ -26,7 +26,8 @@ import v.modelo.Cliente;
 @Entity
 @Table(name="factura_venta")
 @NamedQueries({
-	@NamedQuery(name="FacturaVenta.findAll", query="select f from FacturaVenta f")
+	@NamedQuery(name="FacturaVenta.findAll", query="select f from FacturaVenta f"),
+	@NamedQuery(name="FacturaVenta.countPendientes", query="select count(f) from FacturaVenta f where f.estado like 'pendiente de pago'")
 })
 public class FacturaVenta extends Factura {
 
