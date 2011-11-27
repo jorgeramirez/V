@@ -15,7 +15,6 @@
  */
 package v.server;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -138,7 +137,7 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 			vendedorFacade.modificarCliente(c);
 		} catch (GuardarException e) {
 			e.printStackTrace();
-		}		
+		}	
 	}
 
 
