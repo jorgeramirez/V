@@ -39,7 +39,7 @@ public class LoginDialog extends Dialog {
 		setButtonAlign(HorizontalAlignment.LEFT);
 		setButtons("");
 		setIcon(IconHelper.createStyle("user"));
-		setHeading("GXT Mail Demo Login");
+		setHeading("V Login");
 		setModal(true);
 		setBodyBorder(true);
 		setBodyStyle("padding: 8px;background: none");
@@ -67,6 +67,7 @@ public class LoginDialog extends Dialog {
 		add(password);
 
 		setFocusWidget(userName);
+		this.setClosable(false);
 
 	}
 	
