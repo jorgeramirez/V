@@ -27,5 +27,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface CajeroService extends RemoteService {
 	
 	PagingLoadResult<FacturaVenta> listarFacturasPendientes(FilterPagingLoadConfig config);
-	Pago registrarPago(Pago pago);
+	String registrarPago(Pago pago);
 }

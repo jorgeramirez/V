@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import util.SimpleFilter;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaVenta;
+import v.modelo.Pago;
 
 @Local
 public interface CajeroFacadeLocal {
@@ -16,5 +17,7 @@ public interface CajeroFacadeLocal {
 
 	List<FacturaVenta> listarFacturasPendientes(
 			List<SimpleFilter> plainFilters, int start, int limit);
+
+	boolean registrarPago(Pago pago) throws GuardarException;
 
 }

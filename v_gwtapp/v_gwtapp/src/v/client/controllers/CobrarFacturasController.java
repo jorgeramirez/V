@@ -105,7 +105,7 @@ public class CobrarFacturasController extends AbstractController {
 	 **/
 	private void savePago(BeanModel p){
 		Pago pago = (Pago)p.getBean();
-		service.registrarPago(pago, new AsyncCallback<Pago>() {
+		service.registrarPago(pago, new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -113,11 +113,11 @@ public class CobrarFacturasController extends AbstractController {
 			}
 
 			@Override
-			public void onSuccess(Pago pago) {
-				if(pago == null){
-					MessageBox.alert("Error", "No se pudo registrar el pago", null);
-				}else{
+			public void onSuccess(String errorMsg) {
+				if(errorMsg == null){
 					grid.getGrid().getStore().getLoader().load();
+				}else{
+					MessageBox.alert("Error", errorMsg, null);
 				}
 			}
 		});
@@ -141,6 +141,7 @@ public class CobrarFacturasController extends AbstractController {
 				FacturaVenta factura = (FacturaVenta)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
 				final Pago p = new Pago();
 				p.setFactura(factura);
+				p.setEstado(AppConstants.PAGO_NO_CERRADO);
 				loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
 
 					@Override

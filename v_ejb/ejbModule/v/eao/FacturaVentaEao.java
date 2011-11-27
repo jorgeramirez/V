@@ -88,4 +88,9 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 		Query q = em.createNamedQuery("FacturaVenta.countPendientes");
 		return Integer.parseInt(q.getSingleResult().toString());
 	}
+	
+	@Override
+	public FacturaVenta findById(Long id) {
+		return em.find(FacturaVenta.class, id);
+	}	
 }
