@@ -10,9 +10,9 @@ import v.modelo.FacturaVenta;
 
 @Local
 public interface FacturaVentaEaoLocal {
-	FacturaVenta agregar(FacturaVenta usuario) throws GuardarException;
-	void modificar(FacturaVenta usuario) throws GuardarException;
-	void eliminar(FacturaVenta usuario) throws EliminarException;
+	FacturaVenta agregar(FacturaVenta fv) throws GuardarException;
+	void modificar(FacturaVenta fv) throws GuardarException;
+	void eliminar(FacturaVenta fv) throws EliminarException;
 	List<FacturaVenta> listar(List<SimpleFilter> filters, int start, int limit);
 	int getTotalPendientes();
 	FacturaVenta findById(Long id);

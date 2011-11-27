@@ -18,7 +18,7 @@ package v.client.rpc;
 import java.util.List;
 
 import v.modelo.Cliente;
-import v.modelo.Producto;
+import v.modelo.FacturaVenta;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -27,15 +27,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("VendedorService")
 public interface VendedorService extends RemoteService {
-	//modificar
-	boolean existeCodigoProducto(String codigo);
-	PagingLoadResult<Producto> listarProductos(FilterPagingLoadConfig loadConfig);
-	Producto agregarProducto(Producto p);
-	boolean modificarProducto(Producto p);
-	boolean eliminarProductos(List<Producto> products);
 	
 	PagingLoadResult<Cliente> listarClientes(FilterPagingLoadConfig config);
 	Cliente agregarCliente(Cliente c);
 	void modificarCliente(Cliente c);
 	boolean eliminarClientes(List<Cliente> clientes);
+	boolean agregarVenta(FacturaVenta v);
+	
 }

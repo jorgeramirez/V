@@ -7,6 +7,7 @@ import v.client.Util;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
 import v.modelo.Producto;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -19,6 +20,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ColumnModelEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
@@ -71,6 +73,9 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		this.fv = v;
 		this.setHeading(this.title);  
 		this.setFrame(true);
+		
+		gridDetalle = new EditorGrid<BeanModel>(store, cm);  
+		gridDetalle.setAutoExpandColumn("nombre");
 		
 		//this.setWidth(700);  
 		this.setLayout(new FitLayout());
@@ -203,7 +208,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		ColumnConfig column; 
 
 		// código producto field
-		column = new ColumnConfig("codProd", "Código", 100);
+		column = new ColumnConfig("codProd", "Código", 50);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -249,12 +254,24 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			}
 		});
 
-		column = new ColumnConfig("cantidad", "Cantidad", 100);     
+		column = new ColumnConfig("cantidad", "Cantidad", 50);     
 		column.setAlignment(HorizontalAlignment.RIGHT);  
 		//column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
 		NumberField nf = new NumberField();
 		nf.setPropertyEditorType(Integer.class);
 		column.setEditor(new CellEditor(nf));
+		
+		column.addListener(Events.OnBlur, new Listener<BaseEvent>() {
+
+			@Override
+			public void handleEvent(BaseEvent be) {
+				GridEvent<BeanModel> gw = (GridEvent<BeanModel>)be;
+				BeanModel fd = gw.getModel();
+				fd.set("subtotal", (Integer) fd.get("cantidad") * (Double) fd.get("precio"));
+		
+			}
+			
+		});
 
 		configs.add(column);
 
@@ -272,15 +289,15 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 			}
 		});
+		
+		
 
 		configs.add(column);
 
 		store = new ListStore<BeanModel>();  
 
 		cm = new ColumnModel(configs);  
-
-		gridDetalle = new EditorGrid<BeanModel>(store, cm);  
-		gridDetalle.setAutoExpandColumn("nombre");  
+		
 		gridDetalle.setBorders(true);  
 		gridDetalle.setStripeRows(true);
 		gridDetalle.setColumnLines(true);
@@ -314,19 +331,10 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 			@Override  
 			public void componentSelected(ButtonEvent ce) {  
-				store.rejectChanges();  
+				store.removeAll();
 			}  
 		}));  
 
-		bottomToolBar.add(new Button("Guardar", new SelectionListener<ButtonEvent>() {  
-
-			@Override  
-			public void componentSelected(ButtonEvent ce) {  
-				store.commitChanges();  
-			}  
-		}));  
-
-		//add(this);  
 
 		gridDetalle.addListener(Events.ViewReady, new Listener<ComponentEvent>() {  
 			public void handleEvent(ComponentEvent be) {  
@@ -350,6 +358,14 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 				doAutoHeight();  
 			}  
 		});  
-	}  
+		
+		
+	}
+	
+	public List<BeanModel> guardarDetalles() {
+		//retorna la lista de detalles para guardar la factura
+		store.commitChanges();  
+		return store.getModels();
+	}
 }  
 
