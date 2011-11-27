@@ -60,7 +60,6 @@ public class LoginDialog extends Dialog {
 		add(userName);
 
 		password = new TextField<String>();
-		password.setMinLength(4);
 		password.setPassword(true);
 		password.setFieldLabel("Password");
 		password.addKeyListener(keyListener);
@@ -144,7 +143,7 @@ public class LoginDialog extends Dialog {
 
 	protected void validate() {
 		login.setEnabled(hasValue(userName) && hasValue(password)
-				&& password.getValue().length() > 3);
+				&& password.getValue().length() > 1);
 	}
 
 }

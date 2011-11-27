@@ -58,12 +58,21 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 	private Button add;
 	private Button del;
 	private FacturaVenta fv;
+	private final Window window = new Window();
+	private ToolBar topToolBar;
+	private ToolBar bottomToolBar;
+
+	public Window getWindow() {
+		return window;
+	}
+
 
 	public FacturaDetalleVentaGrid(FacturaVenta v){
 		this.fv = v;
 		this.setHeading(this.title);  
-		this.setFrame(true); 
-		this.setWidth(700);  
+		this.setFrame(true);
+		
+		//this.setWidth(700);  
 		this.setLayout(new FitLayout());
 
 		//creamos el grid de selección de productos
@@ -79,7 +88,8 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			}
 		};
 		
-		gridProductos.addListener(Events.Render, new Listener<BaseEvent>() {
+		//gridProductos.addListener(Events.Render, new Listener<BaseEvent>() {
+		window.addListener(Events.Render, new Listener<BaseEvent>() {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
@@ -89,14 +99,16 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			
 		});
 		
-
-
+		topToolBar= new ToolBar();
+		bottomToolBar = new ToolBar();
+		this.setTopComponent(topToolBar);
+		this.setBottomComponent(bottomToolBar);
 	}
 
 
 	protected void selectorProductos() {     
 
-		final Window window = new Window();  
+		//final Window window = new Window();  
 		window.setSize(500, 300);  
 		window.setPlain(true);  
 		window.setModal(true);  
@@ -135,9 +147,9 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		}); 
 
 
-		ToolBar topToolBar= new ToolBar();  
+		//ToolBar topToolBar= new ToolBar();  
 
-
+		window.setData("productos", add);  
 
 		topToolBar.add(add);
 		del = new Button("Remover Seleccionado", new SelectionListener<ButtonEvent>() {  
@@ -154,7 +166,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		});
 
 		topToolBar.add(del);
-		this.setTopComponent(topToolBar);  
+		//this.setTopComponent(topToolBar);  
 
 	}
 
@@ -184,7 +196,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 		selectorProductos();
 
-		setLayout(new FlowLayout(10));  
 		RowNumberer r = new RowNumberer(); 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();  
 		configs.add(r);
@@ -240,8 +251,10 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 		column = new ColumnConfig("cantidad", "Cantidad", 100);     
 		column.setAlignment(HorizontalAlignment.RIGHT);  
-		column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
-		column.setEditor(new CellEditor(new NumberField()));  
+		//column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
+		NumberField nf = new NumberField();
+		nf.setPropertyEditorType(Integer.class);
+		column.setEditor(new CellEditor(nf));
 
 		configs.add(column);
 
@@ -297,7 +310,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		this.add(gridDetalle);  
 		
 		this.setButtonAlign(HorizontalAlignment.CENTER);  
-		this.addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {  
+		bottomToolBar.add(new Button("Limpiar", new SelectionListener<ButtonEvent>() {  
 
 			@Override  
 			public void componentSelected(ButtonEvent ce) {  
@@ -305,7 +318,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			}  
 		}));  
 
-		this.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {  
+		bottomToolBar.add(new Button("Guardar", new SelectionListener<ButtonEvent>() {  
 
 			@Override  
 			public void componentSelected(ButtonEvent ce) {  
@@ -313,7 +326,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			}  
 		}));  
 
-		add(this);  
+		//add(this);  
 
 		gridDetalle.addListener(Events.ViewReady, new Listener<ComponentEvent>() {  
 			public void handleEvent(ComponentEvent be) {  

@@ -22,12 +22,19 @@ public class VentasClienteGrid extends ContentPanel {
 	private ToolBar tb;
 	//private ToolBar topToolBar;
 	private Button addCliente; 
-
+	private final Window window = new Window(); 
+	
 	public VentasClienteGrid(){
 		tb = new ToolBar();
-		this.setTopComponent(tb);
-		
+		this.setTopComponent(tb);		
 	}
+	
+	
+	public Window getWindow() {
+		return window;
+	}
+
+
 	protected void onRender(Element parent, int pos) {  
 		super.onRender(parent, pos);   
 
@@ -44,7 +51,7 @@ public class VentasClienteGrid extends ContentPanel {
 		});
 
 
-		final Window window = new Window();  
+		//final Window window = new Window();  
 		window.setSize(500, 300);  
 		window.setPlain(true);  
 		window.setModal(true);  

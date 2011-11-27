@@ -55,7 +55,7 @@ public class VentasController extends AbstractController {
 		FormPanel panelCliente = crearFormCliente();  
 		formBindings = new FormBinding(panelCliente, true);  
 
-		//bindHandlers();
+		bindHandlers();
 		
 		FacturaVenta v = new FacturaVenta();
 		
@@ -64,14 +64,16 @@ public class VentasController extends AbstractController {
 
 
 		panelVertical = new VerticalPanel();  
-		panelVertical.setSpacing(20); 
+		panelVertical.setSpacing(20);
+		
 
 		panelVertical.add(gridCliente);
+		panelVertical.add(panelCliente);
 		panelVertical.add(gridDetalle);
 
 		LayoutContainer lc = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 
-		lc.add(gridCliente);
+		lc.add(panelVertical);
 		lc.layout();
 
 	}
@@ -158,12 +160,12 @@ public class VentasController extends AbstractController {
 	}
 
 	private void bindHandlers() {
-		gridCliente.addListener(Events.Render, new Listener<BaseEvent>() {
+		gridCliente.getWindow().addListener(Events.Render, new Listener<BaseEvent>() {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
 				//hacer el bind del form cliente con la fila seleccionada
-				gridCliente.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+				//gridCliente.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				  
 				gridCliente.getGrid().getSelectionModel().addListener(Events.SelectionChange,  
 						new Listener<SelectionChangedEvent<BeanModel>>() {  
