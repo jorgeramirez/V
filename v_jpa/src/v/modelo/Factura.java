@@ -29,7 +29,7 @@ public class Factura implements Serializable {
 	@Column(name="numero_factura")
 	private Integer numeroFactura;
 	
-	@Temporal(value=TemporalType.TIMESTAMP)
+	@Temporal(value=TemporalType.DATE)
 	@Column(name="fecha", nullable=false)
 	private Date fecha;
 	

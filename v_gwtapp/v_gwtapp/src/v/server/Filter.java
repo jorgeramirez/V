@@ -25,7 +25,7 @@ public class Filter {
 				field = f.getField();
 				if(f.getType().equals("string")){
 					comparison = "like";
-				}else if(f.getType().equals("numeric")){
+				}else if(f.getType().equals("numeric") || f.getType().equals("date")){
 					comparison = f.getComparison();
 				}
 				pf.add(new SimpleFilter(field, val ,comparison));

@@ -33,7 +33,7 @@ public class RegistroPago implements Serializable {
 	@Column(name="id_pago")
 	private Long idPago;
 	
-	@Temporal(value=TemporalType.TIMESTAMP)
+	@Temporal(value=TemporalType.DATE)
 	@Column(name="fecha", nullable=false)
 	private Date fecha;
 	
