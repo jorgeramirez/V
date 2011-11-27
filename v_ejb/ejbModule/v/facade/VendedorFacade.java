@@ -8,9 +8,11 @@ import javax.ejb.Stateless;
 import util.SimpleFilter;
 import v.eao.CajaEaoLocal;
 import v.eao.ClienteEaoLocal;
+import v.eao.FacturaVentaEaoLocal;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Cliente;
+import v.modelo.FacturaVenta;
 
 /**
  * Session Bean implementation class VendedorFacade
@@ -22,6 +24,9 @@ public class VendedorFacade implements VendedorFacadeLocal {
 	
 	@EJB
 	CajaEaoLocal cajaEao;
+	
+	@EJB
+	FacturaVentaEaoLocal facturaVentaEao;
 	
     /**
      * Default constructor. 
@@ -54,5 +59,17 @@ public class VendedorFacade implements VendedorFacadeLocal {
 	@Override
 	public int getTotalClientes() {
 		return clienteEao.getCount();
+	}
+
+	@Override
+	public boolean agregarVenta(FacturaVenta v) throws GuardarException {
+		FacturaVenta fv = null;
+		fv = facturaVentaEao.agregar(v);
+		if (fv == null) {
+			return false;
+		} else {
+			return true;
+		}		
+		
 	}
 }

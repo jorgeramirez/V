@@ -95,4 +95,8 @@ public class VentasClienteGrid extends ContentPanel {
 	public Grid<BeanModel> getGrid() {
 		return gridCliente.getGrid();
 	}
+	
+	public BeanModel obtenerCliente() {
+		return gridCliente.getGrid().getSelectionModel().getSelectedItem();	
+	}
 }

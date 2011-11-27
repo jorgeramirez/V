@@ -24,10 +24,9 @@ import v.client.AppConstants;
 import v.client.rpc.VendedorService;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
-import v.facade.CompradorFacadeLocal;
 import v.facade.VendedorFacadeLocal;
 import v.modelo.Cliente;
-import v.modelo.Producto;
+import v.modelo.FacturaVenta;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -40,67 +39,15 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 	@EJB
 	VendedorFacadeLocal vendedorFacade;
 	
-	@EJB
-	CompradorFacadeLocal compradorFacade;
-
-	@Override
-	public boolean existeCodigoProducto(String codigo) {
-		return compradorFacade.findProductoByCodigo(codigo) != null;
-	}
-
-	@Override
-	public PagingLoadResult<Producto> listarProductos(FilterPagingLoadConfig loadConfig) {
-		int count = compradorFacade.getTotalProductos();
-		List<FilterConfig> filters = loadConfig.getFilterConfigs();
-		int start = loadConfig.getOffset();
-		int limit = AppConstants.PAGE_SIZE;
-		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
-		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
-		Converter<Producto> pc = new Converter<Producto>();
-		products = pc.convertObjects(products);
-		return new BasePagingLoadResult<Producto>(products, loadConfig.getOffset(), count);
-	}
-
-	@Override
-	public Producto agregarProducto(Producto p) {
-		Producto added = null;
+	public boolean agregarVenta(FacturaVenta v) {
+		boolean added = false;
 		try {
-			added = compradorFacade.agregarProducto(p);
-			Converter<Producto> pc = new Converter<Producto>();
-			added = pc.convertObject(added);
-		} catch (GuardarException e) {
+			added = vendedorFacade.agregarVenta(v);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return added;			
+		return added;	
 	}
-
-	@Override
-	public boolean modificarProducto(Producto p) {
-		boolean ok = true;
-		try {
-			compradorFacade.modificarProducto(p);
-		} catch (GuardarException e) {
-			e.printStackTrace();
-			ok = false;
-		}
-		return ok;
-	}
-
-	@Override
-	public boolean eliminarProductos(List<Producto> products) {
-		boolean ok = true;
-		for(Producto p: products){
-			try {
-				compradorFacade.eliminarProducto(p);
-			} catch (EliminarException e) {
-				e.printStackTrace();
-				ok = false;
-				break;
-			}
-		}
-		return ok;
-	}
-	
 	
 	@Override
 	public PagingLoadResult<Cliente> listarClientes(FilterPagingLoadConfig config) {
@@ -155,7 +102,6 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 		}
 		return ok;
 	}
-
 
 
 }

@@ -7,6 +7,7 @@ import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Cliente;
+import v.modelo.FacturaVenta;
 
 @Local
 public interface VendedorFacadeLocal {
@@ -20,5 +21,7 @@ public interface VendedorFacadeLocal {
 	void eliminarCliente(Cliente c) throws EliminarException;
 
 	int getTotalClientes();
+
+	boolean agregarVenta(FacturaVenta v) throws GuardarException;
 
 }
