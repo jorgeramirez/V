@@ -38,5 +38,14 @@ public class FacturaDetalleVenta extends FacturaDetalle {
 
 	public void setCabecera(FacturaVenta cabecera) {
 		this.cabecera = cabecera;
-	}   
+	}
+	
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+	
 }

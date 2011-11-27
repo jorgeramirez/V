@@ -139,5 +139,8 @@ public class Producto implements Serializable {
     public String toString() {
         return this.nombre + " [" + this.codigo + "]";
     }	
-   
+    
+    public double getPrecioVenta() {
+    	return (this.costo + (this.costo * this.porcentajeGanancia));
+    }
 }

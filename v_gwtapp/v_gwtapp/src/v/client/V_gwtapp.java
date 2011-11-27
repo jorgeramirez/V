@@ -11,6 +11,7 @@ import v.client.controllers.LogoutController;
 import v.client.controllers.ProductosController;
 import v.client.controllers.ProveedoresController;
 import v.client.controllers.UsuariosController;
+import v.client.controllers.VentasController;
 import v.client.rpc.AdministradorService;
 import v.client.rpc.AdministradorServiceAsync;
 import v.client.rpc.CajeroService;
@@ -61,7 +62,9 @@ public class V_gwtapp implements EntryPoint {
 		controllers.add(new ProveedoresController());
 		controllers.add(new ClientesController());
 		controllers.add(new CobrarFacturasController());
+		controllers.add(new VentasController());
 		controllers.add(new LogoutController());
+
 		
 		Dispatcher d = new Dispatcher(controllers);
 		Registry.register("dispatcher", d);

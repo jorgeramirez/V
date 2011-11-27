@@ -137,7 +137,7 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 			vendedorFacade.modificarCliente(c);
 		} catch (GuardarException e) {
 			e.printStackTrace();
-		}		
+		}	
 	}
 
 
