@@ -16,7 +16,8 @@ public class AppConstants {
 	public static final String COMPRADOR_SERVICE = GWT.getModuleBaseURL() + "comprador";
 	public static final String VENDEDOR_SERVICE = GWT.getModuleBaseURL() + "vendedor";
 	public static final String CAJERO_SERVICE = GWT.getModuleBaseURL() + "cajero";
-	
+	public static final String LOGIN_SERVICE = GWT.getModuleBaseURL() + "login";
+
 	// labels utilizados en el Tree de navegacion.
 	public static final String ABM_LABEL = "ABM";
 	public static final String VENTAS_LABEL = "Ventas";

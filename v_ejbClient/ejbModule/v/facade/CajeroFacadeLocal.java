@@ -6,12 +6,11 @@ import javax.ejb.Local;
 import util.SimpleFilter;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaVenta;
-import v.modelo.Pago;
 
 @Local
 public interface CajeroFacadeLocal {
 
-	List<Pago> cerrarCaja(Long idCaja) throws GuardarException;
+	void cierredeCaja(Long idCaja) throws GuardarException;
 
 	int getTotalFacturasPendientes();
 

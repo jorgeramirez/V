@@ -33,7 +33,7 @@ public class CajeroFacade implements CajeroFacadeLocal {
     }
     
     @Override
-    public List<Pago> cerrarCaja(Long idCaja) throws GuardarException{
+    public void cierredeCaja(Long idCaja) throws GuardarException{
     	
     	List<Pago> pagosDelDia = cajaEao.pagosNoCerrados(idCaja);
     	
@@ -42,8 +42,6 @@ public class CajeroFacade implements CajeroFacadeLocal {
     		pago.setEstado("cerrado");
     		pagoEao.modificar(pago);
     	}
-    	
-    	return pagosDelDia;
     }
 
 	@Override

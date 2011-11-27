@@ -1,5 +1,8 @@
 package v.eao;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -13,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import sun.misc.BASE64Encoder;
 import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
@@ -103,6 +107,29 @@ public class UsuarioEao implements UsuarioEaoLocal {
 			// ignored
 		}
 		return u;
+	}
+	
+	public String cifrarPassword(String textoplano) throws IllegalStateException {
+
+		MessageDigest md = null;
+
+		try {
+			md = MessageDigest.getInstance("SHA"); // Instancia de generador SHA-1
+		}
+		catch(NoSuchAlgorithmException e) {
+			throw new IllegalStateException(e.getMessage());
+		}
+
+		try {
+			md.update(textoplano.getBytes("UTF-8")); // Generacion de resumen de mensaje
+		}
+		catch(UnsupportedEncodingException e) {
+			throw new IllegalStateException(e.getMessage());
+		}
+
+		byte raw[] = md.digest(); // Obtencion del resumen de mensaje
+		String hash = (new BASE64Encoder()).encode(raw); // Traduccion a BASE64
+		return hash;
 	}
 
 }

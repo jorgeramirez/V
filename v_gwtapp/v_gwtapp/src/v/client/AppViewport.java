@@ -30,6 +30,18 @@ public class AppViewport extends Viewport {
 		this.userRol = userRol;
 	}
 	
+	public AppViewport(String rol) {
+		if(rol.equals(AppConstants.ADMINISTRADOR_ROL)){
+			this.userRol = Roles.ADMINISTRADOR;
+		}else if (rol.equals(AppConstants.CAJERO_ROL)){
+			this.userRol = Roles.CAJERO;
+		}else if (rol.equals(AppConstants.VENDEDOR_ROL)){
+			this.userRol = Roles.VENDEDOR;
+		}else if (rol.equals(AppConstants.COMPRADOR_ROL)){
+			this.userRol = Roles.COMPRADOR;
+		}		
+	}
+	
 	public void onRender(Element parent, int pos) {
 		super.onRender(parent, pos);
 		final BorderLayout borderLayout = new BorderLayout();
@@ -102,6 +114,15 @@ public class AppViewport extends Viewport {
 		switch(userRol){
 		case ADMINISTRADOR:
 			ret = getAdminTreeModel();
+		break;
+		case CAJERO:
+			ret = getCajeroTreeModel();
+		break;
+		case VENDEDOR:
+			ret = getVendedorTreeModel();
+		break;
+		case COMPRADOR:
+			ret = getCompradorTreeModel();
 		}
 		return ret;
 	}
@@ -134,6 +155,83 @@ public class AppViewport extends Viewport {
 		       		new Funcionalidad(AppConstants.COBRAR_FACTURA_LABEL),
 		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)
 	        	}
+	        ),
+	        new Funcionalidad(AppConstants.SISTEMA_LABEL,
+		       	new Funcionalidad[] {
+		       		new Funcionalidad(AppConstants.LOGOUT_LABEL)
+		        }
+	        )
+		};
+
+		Funcionalidad root = new Funcionalidad("root");
+		for (int i = 0; i < funcs.length; i++) {
+			root.add((Funcionalidad) funcs[i]);
+		}
+		return root;		
+	}
+	
+	private static Funcionalidad getCajeroTreeModel() {
+		Funcionalidad[] funcs = new Funcionalidad[] {
+	        new Funcionalidad(AppConstants.OPERACIONES_CAJA_LABEL,
+		       	new Funcionalidad[] {
+		       		new Funcionalidad(AppConstants.COBRAR_FACTURA_LABEL),
+		       		new Funcionalidad(AppConstants.CIERRE_CAJA_LABEL)
+	        	}
+	        ),
+	        new Funcionalidad(AppConstants.SISTEMA_LABEL,
+		       	new Funcionalidad[] {
+		       		new Funcionalidad(AppConstants.LOGOUT_LABEL)
+		        }
+	        )
+		};
+
+		Funcionalidad root = new Funcionalidad("root");
+		for (int i = 0; i < funcs.length; i++) {
+			root.add((Funcionalidad) funcs[i]);
+		}
+		return root;		
+	}
+	
+	private static Funcionalidad getVendedorTreeModel() {
+		Funcionalidad[] funcs = new Funcionalidad[] {
+		    new Funcionalidad(AppConstants.ABM_LABEL,
+		    	new Funcionalidad[] {
+		        	new Funcionalidad(AppConstants.CLIENTE_LABEL)
+		    	}
+		    ),
+	        new Funcionalidad(AppConstants.VENTAS_LABEL,
+	        	new Funcionalidad[] {
+	        		new Funcionalidad(AppConstants.REGISTRAR_VENTA_LABEL),
+	        		new Funcionalidad(AppConstants.LISTAR_VENTAS_LABEL)
+	        	}
+	        ),
+	        new Funcionalidad(AppConstants.SISTEMA_LABEL,
+		       	new Funcionalidad[] {
+		       		new Funcionalidad(AppConstants.LOGOUT_LABEL)
+		        }
+	        )
+		};
+		
+		Funcionalidad root = new Funcionalidad("root");
+		for (int i = 0; i < funcs.length; i++) {
+			root.add((Funcionalidad) funcs[i]);
+		}
+		return root;		
+	}
+	
+	private static Funcionalidad getCompradorTreeModel() {
+		Funcionalidad[] funcs = new Funcionalidad[] {
+		    new Funcionalidad(AppConstants.ABM_LABEL,
+		    	new Funcionalidad[] {
+		        	new Funcionalidad(AppConstants.PROVEEDOR_LABEL),
+		        	new Funcionalidad(AppConstants.PRODUCTO_LABEL)
+		    	}
+		    ),
+	        new Funcionalidad(AppConstants.COMPRAS_LABEL,
+		       	new Funcionalidad[] {
+		       		new Funcionalidad(AppConstants.REGISTRAR_COMPRA_LABEL),
+		       		new Funcionalidad(AppConstants.LISTAR_COMPRAS_LABEL)
+		    	}
 	        ),
 	        new Funcionalidad(AppConstants.SISTEMA_LABEL,
 		       	new Funcionalidad[] {
