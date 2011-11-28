@@ -27,7 +27,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="pago")
 @NamedQueries({
-	@NamedQuery(name="Pago.findNoCerrados", query="select p from Pago p where p.usuario.id = :id and p.estado like 'no cerrado'")
+	@NamedQuery(name="Pago.findNoCerrados", query="select p from Pago p where p.usuario.id = :id and p.estado like 'no cerrado'"),
+	@NamedQuery(name="Pago.count", query="select count(p) from Pago p"),
+	@NamedQuery(name="Pago.getTotalPagosFactura", query="select count(p) from Pago p where p.factura.numeroFactura = :id")
 })
 public class Pago implements Serializable {
 

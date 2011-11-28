@@ -25,6 +25,7 @@ import v.client.AppConstants;
 import v.client.rpc.CajeroService;
 import v.excepciones.GuardarException;
 import v.facade.CajeroFacadeLocal;
+import v.modelo.Caja;
 import v.modelo.Cliente;
 import v.modelo.FacturaVenta;
 import v.modelo.Pago;
@@ -85,5 +86,38 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 			errorMsg = e.getMessage();
 		}
 		return errorMsg;
+	}
+
+	@Override
+	public PagingLoadResult<Pago> listarPagos(FilterPagingLoadConfig config, FacturaVenta factura) {
+		int count;
+		List<FilterConfig> filters = config.getFilterConfigs();
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		
+		if(factura != null){
+			count = cajeroFacade.getTotalPagosFactura(factura.getNumeroFactura());
+			plainFilters.add(new SimpleFilter("factura.numeroFactura", factura.getNumeroFactura(), "="));
+		}else{
+			count = cajeroFacade.getTotalPagos();
+		}
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<Pago> payments = cajeroFacade.listarPagos(plainFilters, start, limit);
+		Converter<Pago> pc = new Converter<Pago>();
+		Converter<FacturaVenta> fc = new Converter<FacturaVenta>();
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Caja> cc = new Converter<Caja>();
+		Converter<Cliente> clc = new Converter<Cliente>();
+		payments = pc.convertObjects(payments);
+		FacturaVenta f;
+		for(Pago p: payments){
+			p.setUsuario(uc.convertObject(p.getUsuario()));
+			p.setCaja(cc.convertObject(p.getCaja()));
+			f = fc.convertObject(p.getFactura());
+			f.setVendedor(uc.convertObject(f.getVendedor()));
+			f.setCliente(clc.convertObject(f.getCliente()));
+			p.setFactura(f);
+		}
+		return new BasePagingLoadResult<Pago>(payments, config.getOffset(), count);
 	}
 }

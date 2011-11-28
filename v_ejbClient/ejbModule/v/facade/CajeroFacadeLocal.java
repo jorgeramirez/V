@@ -23,4 +23,10 @@ public interface CajeroFacadeLocal {
 
 	String registrarPagos(List<PagoWs> pagos) throws GuardarException;
 
+	int getTotalPagos();
+
+	int getTotalPagosFactura(Integer numeroFactura);
+
+	List<Pago> listarPagos(List<SimpleFilter> filters, int start, int limit);
+
 }

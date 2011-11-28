@@ -29,4 +29,5 @@ public interface CajeroService extends RemoteService {
 	PagingLoadResult<FacturaVenta> listarFacturasPendientes(FilterPagingLoadConfig config);
 	String registrarPago(Pago pago);
 	String cierreCaja(Long idCajero);
+	PagingLoadResult<Pago> listarPagos(FilterPagingLoadConfig config, FacturaVenta factura);
 }

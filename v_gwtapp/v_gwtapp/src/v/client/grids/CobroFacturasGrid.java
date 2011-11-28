@@ -30,9 +30,15 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/**
+ * Define un {@link Grid} para Cobro de Facturas
+ * 
+ * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
+ **/
 public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 	final CajeroServiceAsync service = (CajeroServiceAsync)Registry.get(AppConstants.CAJERO_SERVICE);
 	private Button addPagoButton;
+	private Button verPagosButton;
 	
 	public CobroFacturasGrid(String title) {
 		super(title, true, true);
@@ -46,6 +52,14 @@ public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 		this.addPagoButton = addPagoButton;
 	}
 
+	public Button getVerPagosButton() {
+		return verPagosButton;
+	}
+
+	public void setVerPagosButton(Button verPagosButton) {
+		this.verPagosButton = verPagosButton;
+	}
+
 	@Override
 	protected ToolBar createTopToolBar() {
 		ToolBar tb = super.createTopToolBar();
@@ -53,6 +67,12 @@ public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 		addPagoButton.setEnabled(false);
 		addPagoButton.setIconStyle("icon-add");
 		tb.add(addPagoButton);
+
+		verPagosButton = new Button("Ver Pagos");
+		verPagosButton.setEnabled(false);
+		verPagosButton.setIconStyle("icon-ver-pagos");
+		tb.add(verPagosButton);
+		
 		return tb;
 	}
 
@@ -64,7 +84,9 @@ public class CobroFacturasGrid extends CustomGrid<FacturaVenta> {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent<BeanModel> se) {
-				addPagoButton.setEnabled(se.getSelection().size() > 0);
+				boolean enabled = se.getSelection().size() > 0;
+				addPagoButton.setEnabled(enabled);
+				verPagosButton.setEnabled(enabled);
 			}
 		});
 	}	
