@@ -10,7 +10,6 @@ public class PagoWs {
 	}
 	
 	public PagoWs(Long idCajero, Integer idFactura, Double monto) {
-		super();
 		this.idCajero = idCajero;
 		this.idFactura = idFactura;
 		this.monto = monto;
