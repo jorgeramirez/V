@@ -7,7 +7,6 @@ import v.client.Util;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
 import v.modelo.Producto;
-import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -30,7 +29,6 @@ import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreEvent;
-import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -44,9 +42,7 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.RowNumberer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -137,12 +133,12 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		
 		column.addListener(Events.OnBlur, new Listener<BaseEvent>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void handleEvent(BaseEvent be) {
 				GridEvent<BeanModel> gw = (GridEvent<BeanModel>)be;
 				BeanModel fd = gw.getModel();
 				fd.set("subtotal", (Integer) fd.get("cantidad") * (Double) fd.get("precio"));
-		
 			}
 			
 		});
@@ -170,7 +166,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		
 		cm = new ColumnModel(configs); 
 		
-		gridDetalle = new EditorGrid<BeanModel>(store, cm);  
+		gridDetalle = new EditorGrid<BeanModel>(store, cm);
 		gridDetalle.setAutoExpandColumn("nombre");
 		gridDetalle.addPlugin(r);
 		
@@ -229,7 +225,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		window.addButton(new Button("Ok", new SelectionListener<ButtonEvent>() {  
 			@Override  
 			public void componentSelected(ButtonEvent ce) {  
-
 				store.insert(crearDetalle(gridProductos.getGrid().getSelectionModel().getSelectedItem()), 0); 
 				gridDetalle.startEditing(0, 3);
 				window.hide();  
@@ -283,14 +278,14 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		return Util.createBeanModel(fdv);  
 	}  
 
-	protected void doAutoHeight() {  
+	/*protected void doAutoHeight() {  
 		if (gridDetalle.isViewReady()) {  
 			gridDetalle.getView().getScroller().setStyleAttribute("overflowY", "hidden");  
 			this.setHeight((gridDetalle.getView().getBody().isScrollableX() ? 19 : 0) + gridDetalle.el().getFrameWidth("tb")  
 					+ gridDetalle.getView().getHeader().getHeight() + this.getFrameHeight()  
 					+ gridDetalle.getView().getBody().firstChild().getHeight());  
 		}  
-	}  
+	} */ 
 
 	@Override  
 	protected void onRender(Element parent, int index) {  
@@ -433,7 +428,9 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		}));  
 
 
-		gridDetalle.addListener(Events.ViewReady, new Listener<ComponentEvent>() {  
+		/*  
+		 esto comente, porque hace que el scroller del content panel no funcione.
+		 gridDetalle.addListener(Events.ViewReady, new Listener<ComponentEvent>() {  
 			public void handleEvent(ComponentEvent be) {  
 				gridDetalle.getStore().addListener(Store.Add, new Listener<StoreEvent<BeanModel>>() {  
 					public void handleEvent(StoreEvent<BeanModel> be) {  
@@ -454,7 +451,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			public void handleEvent(ColumnModelEvent be) {  
 				doAutoHeight();  
 			}  
-		});  
+		});*/  
 		
 		
 	}

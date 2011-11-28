@@ -6,7 +6,6 @@ import java.util.List;
 
 import v.client.AppConstants;
 import v.client.AppViewport;
-import v.client.Util;
 import v.client.VType;
 import v.client.VTypeValidator;
 import v.client.grids.FacturaDetalleVentaGrid;
@@ -16,7 +15,6 @@ import v.client.rpc.VendedorServiceAsync;
 import v.modelo.Cliente;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
-import v.modelo.Pago;
 import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -29,27 +27,28 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
-import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.layout.AnchorData;
+import com.extjs.gxt.ui.client.widget.layout.AnchorLayout;
 import com.extjs.gxt.ui.client.widget.layout.ColumnData;
 import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class VentasController extends AbstractController {
-	//private ContentPanel cp;
-
 	private FacturaDetalleVentaGrid gridDetalle;
 	private VentasClienteGrid gridCliente;
 
 	private FormBinding formBindings; 
-	private VerticalPanel panelVertical;
+	private ContentPanel panelVertical;
 	private final VendedorServiceAsync service = Registry.get(AppConstants.VENDEDOR_SERVICE);
 
 	final private FacturaVenta venta = new FacturaVenta();
@@ -60,7 +59,6 @@ public class VentasController extends AbstractController {
 
 	@Override
 	public void init() {
-		//cp = new ContentPanel();
 
 		// creamos el grid de selección de cliente
 		gridCliente = new VentasClienteGrid();
@@ -77,14 +75,27 @@ public class VentasController extends AbstractController {
 		//el grid de detalles de los producutos seleccionados
 		gridDetalle = new FacturaDetalleVentaGrid(venta);
 
-
-		panelVertical = new VerticalPanel();  
+		/*panelVertical = new VerticalPanel();
 		panelVertical.setSpacing(20);
 		
 
 		panelVertical.add(gridCliente);
 		panelVertical.add(panelCliente);
-		panelVertical.add(gridDetalle);
+		panelVertical.add(gridDetalle);*/
+		
+		
+		panelVertical = new ContentPanel();
+		panelVertical.setLayout(new AnchorLayout());
+		
+		AnchorData data = new AnchorData();
+		data.setAnchorSpec("100% 40%");
+		panelVertical.add(panelCliente, data);
+		
+		data = new AnchorData();
+		data.setAnchorSpec("100% 60%");
+		panelVertical.add(gridDetalle, data);
+		
+		panelVertical.setTopComponent(gridCliente);
 		
 	    Button guardar = new Button("Guardar", new SelectionListener<ButtonEvent>() {  
 
@@ -143,12 +154,14 @@ public class VentasController extends AbstractController {
 			}  
 		});  
 		
-	    panelVertical.add(guardar);
+	    ToolBar bottom = new ToolBar();
+	    bottom.add(guardar);
+	    panelVertical.setBottomComponent(bottom);
 	    
 		LayoutContainer lc = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 
 		lc.add(panelVertical);
-		lc.layout();
+		lc.layout(true);
 
 	}
 
