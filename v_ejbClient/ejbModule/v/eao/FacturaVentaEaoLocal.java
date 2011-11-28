@@ -15,5 +15,5 @@ public interface FacturaVentaEaoLocal {
 	void eliminar(FacturaVenta fv) throws EliminarException;
 	List<FacturaVenta> listar(List<SimpleFilter> filters, int start, int limit);
 	int getTotalPendientes();
-	FacturaVenta findById(Long id);
+	FacturaVenta findById(Integer id);
 }

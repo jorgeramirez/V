@@ -23,10 +23,6 @@ public class Factura implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private Long id;
-	
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="numero_factura")
 	private Integer numeroFactura;
 	
 	@Temporal(value=TemporalType.DATE)
@@ -41,14 +37,6 @@ public class Factura implements Serializable {
 
 	public Factura() {
 		super();
-	}
-	
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public Integer getNumeroFactura() {
@@ -78,7 +66,7 @@ public class Factura implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (numeroFactura != null ? numeroFactura.hashCode() : 0);
         return hash;
     }
 
@@ -88,8 +76,8 @@ public class Factura implements Serializable {
             return false;
         }
         Factura other = (Factura) object;
-        if ((this.id == null && other.id != null) ||
-                (this.id != null && !this.id.equals(other.id))) {
+        if ((this.numeroFactura == null && other.numeroFactura != null) ||
+                (this.numeroFactura != null && !this.numeroFactura.equals(other.numeroFactura))) {
             return false;
         }
         return true;

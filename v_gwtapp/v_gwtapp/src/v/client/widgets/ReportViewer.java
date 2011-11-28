@@ -31,7 +31,7 @@ public class ReportViewer extends Dialog {
 		this.id = id;
 		this.reporte = reporte;
 		this.titulo = titulo;
-		this.setSize(500, 300);
+		this.setSize(650, 450);
 		this.setBlinkModal(true);
 		this.setPlain(true);
 		this.setModal(true);
@@ -40,7 +40,6 @@ public class ReportViewer extends Dialog {
 		this.cancelText = "PDF";
 		this.setHeading(this.titulo);
 		this.setButtons(Dialog.YESNOCANCEL);
-		this.setHideOnButtonClick(true);
 	}
 	
 	@Override  
@@ -56,6 +55,13 @@ public class ReportViewer extends Dialog {
 			@Override  
 			public void componentSelected(ButtonEvent ce) {
 				me.setUrl(Util.reporteUrl(reporte, "pdf", id));
+			}
+		});
+		
+		this.getButtonById(CANCELAR).addSelectionListener(new SelectionListener<ButtonEvent>() {
+			@Override  
+			public void componentSelected(ButtonEvent ce) {
+				me.hide();
 			}
 		});
 	}  

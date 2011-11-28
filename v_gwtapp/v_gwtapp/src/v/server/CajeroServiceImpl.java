@@ -74,16 +74,16 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 	}
 
 	@Override
-	public boolean cierreCaja(Long idCajero) {
-		boolean ok = true;
+	public String cierreCaja(Long idCajero) {
+		String errorMsg = null;
 		try {
 			cajeroFacade.cierredeCaja(idCajero);
 		} catch (GuardarException e){
 			e.printStackTrace();
-			ok = false;
+			errorMsg = e.getMessage();
 		}catch(EJBTransactionRolledbackException e){
-			ok = false;
+			errorMsg = e.getMessage();
 		}
-		return ok;
+		return errorMsg;
 	}
 }

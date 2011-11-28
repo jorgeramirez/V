@@ -9,7 +9,6 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.event.WindowListener;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -17,16 +16,16 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.Element;
 
-public class VentasClienteGrid extends ContentPanel {
+public class VentasClienteGrid extends ToolBar {
 	private ClientesGrid gridCliente;
-	private ToolBar tb;
+	//private ToolBar tb;
 	//private ToolBar topToolBar;
 	private Button addCliente; 
 	private final Window window = new Window(); 
 	
 	public VentasClienteGrid(){
-		tb = new ToolBar();
-		this.setTopComponent(tb);		
+		//tb = new ToolBar();
+		//this.setTopComponent(tb);
 	}
 	
 	
@@ -86,7 +85,8 @@ public class VentasClienteGrid extends ContentPanel {
 		}); 
 
 		addCliente.setIconStyle("icon-add");
-		tb.add(addCliente);
+		//tb.add(addCliente);
+		add(addCliente);
 		
 		window.setData("clientes", addCliente);  
 		//this.setTopComponent(tb);
