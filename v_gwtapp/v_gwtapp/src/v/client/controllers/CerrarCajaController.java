@@ -75,6 +75,7 @@ public class CerrarCajaController extends AbstractController {
 								}else{
 									MessageBox.alert("Error", "Ocurrieron problemas y la operación no finalizó con éxito", null);
 								}
+								viewer.hide();
 							}
 						
 						});

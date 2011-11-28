@@ -90,7 +90,7 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 	}
 	
 	@Override
-	public FacturaVenta findById(Long id) {
+	public FacturaVenta findById(Integer id) {
 		return em.find(FacturaVenta.class, id);
 	}	
 }

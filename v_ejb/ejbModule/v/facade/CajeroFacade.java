@@ -64,7 +64,7 @@ public class CajeroFacade implements CajeroFacadeLocal {
 
 	@Override
 	public boolean registrarPago(Pago pago) throws GuardarException {
-		FacturaVenta factura = 	ventaEao.findById(pago.getFactura().getId());
+		FacturaVenta factura = 	ventaEao.findById(pago.getFactura().getNumeroFactura());
 		Usuario cajero = usuarioEao.findByUsername(pago.getUsuario().getUsername());
 		Caja caja = cajero.getCaja();
 		
