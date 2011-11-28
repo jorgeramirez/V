@@ -31,7 +31,7 @@ public class ReportViewer extends Dialog {
 		this.id = id;
 		this.reporte = reporte;
 		this.titulo = titulo;
-		this.setSize(500, 300);
+		this.setSize(650, 450);
 		this.setBlinkModal(true);
 		this.setPlain(true);
 		this.setModal(true);

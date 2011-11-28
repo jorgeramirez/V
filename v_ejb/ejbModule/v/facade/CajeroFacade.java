@@ -44,6 +44,10 @@ public class CajeroFacade implements CajeroFacadeLocal {
     	
     	List<Pago> pagosDelDia = cajaEao.pagosNoCerrados(idCajero);
     	
+    	if(pagosDelDia.isEmpty()){
+    		throw new GuardarException("No existen pagos para cerrar");
+    	}
+    	
     	for (Pago pagoCierre : pagosDelDia){
     		Pago pago = pagoEao.getById(pagoCierre.getId());
     		pago.setEstado("cerrado");

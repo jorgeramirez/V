@@ -13,5 +13,5 @@ public interface CajeroServiceAsync {
 			AsyncCallback<PagingLoadResult<FacturaVenta>> callback);
 
 	void registrarPago(Pago pago, AsyncCallback<String> asyncCallback);
-	void cierreCaja(Long idCajero, AsyncCallback<Boolean> asyncCallback);
+	void cierreCaja(Long idCajero, AsyncCallback<String> asyncCallback);
 }

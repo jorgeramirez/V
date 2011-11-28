@@ -37,7 +37,7 @@ public class CerrarCajaController extends AbstractController {
 			@Override
 			public void onSuccess(Usuario u) {
 				user = u;
-				viewer = new ReportViewer(u.getCaja().getNumeroCaja().toString(), "cierre_caja", "Cierre de Caja");
+				viewer = new ReportViewer(u.getId().toString(), "cierre_caja", "Cierre de Caja");
 				bindHandlers();
 				viewer.show();
 			}
@@ -61,7 +61,7 @@ public class CerrarCajaController extends AbstractController {
 					
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						cajeroService.cierreCaja(user.getId(), new AsyncCallback<Boolean>() {
+						cajeroService.cierreCaja(user.getId(), new AsyncCallback<String>() {
 
 							@Override
 							public void onFailure(Throwable caught) {
@@ -69,11 +69,11 @@ public class CerrarCajaController extends AbstractController {
 							}
 
 							@Override
-							public void onSuccess(Boolean ok) {
-								if(ok){
+							public void onSuccess(String errorMsg) {
+								if(errorMsg == null){
 									MessageBox.info("Operación Exitosa", "El cierre de caja finalizó exitosamente", null);
 								}else{
-									MessageBox.alert("Error", "Ocurrieron problemas y la operación no finalizó con éxito", null);
+									MessageBox.alert("Error", errorMsg, null);
 								}
 								viewer.hide();
 							}
