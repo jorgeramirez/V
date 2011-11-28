@@ -7,6 +7,7 @@ import util.SimpleFilter;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaVenta;
 import v.modelo.Pago;
+import v.ws.PagoWs;
 
 @Local
 public interface CajeroFacadeLocal {
@@ -19,5 +20,7 @@ public interface CajeroFacadeLocal {
 			List<SimpleFilter> plainFilters, int start, int limit);
 
 	boolean registrarPago(Pago pago) throws GuardarException;
+
+	String registrarPagos(List<PagoWs> pagos) throws GuardarException;
 
 }

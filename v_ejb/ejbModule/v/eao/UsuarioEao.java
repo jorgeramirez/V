@@ -109,6 +109,11 @@ public class UsuarioEao implements UsuarioEaoLocal {
 		return u;
 	}
 	
+	@Override
+	public Usuario findById(Long id){
+		return em.find(Usuario.class, id);
+	}
+	
 	public String cifrarPassword(String textoplano) throws IllegalStateException {
 
 		MessageDigest md = null;
