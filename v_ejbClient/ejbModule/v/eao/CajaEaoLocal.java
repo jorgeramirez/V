@@ -26,6 +26,6 @@ public interface CajaEaoLocal {
 
 	List<Caja> listar(List<SimpleFilter> filters, int start, int limit);
 
-	List<Pago> pagosNoCerrados(Long idCaja);
+	List<Pago> pagosNoCerrados(Long idCajero);
 
 }

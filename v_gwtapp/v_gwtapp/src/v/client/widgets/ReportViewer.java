@@ -4,11 +4,8 @@ import v.client.Util;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.Window;
-import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Frame;
 
@@ -21,42 +18,46 @@ import com.google.gwt.user.client.ui.Frame;
  **/
 
 
-public class ReportViewer extends LayoutContainer {
+public class ReportViewer extends Dialog {
 	private String id;
 	private String reporte;
 	private String titulo;
+	private Frame frame;
+	public static String ACEPTAR = Dialog.YES;
+	public static String CANCELAR = Dialog.NO;
+	public static String PDF = Dialog.CANCEL;
 	
 	public ReportViewer(String id, String reporte, String titulo) {
 		this.id = id;
 		this.reporte = reporte;
 		this.titulo = titulo;
+		this.setSize(500, 300);
+		this.setBlinkModal(true);
+		this.setPlain(true);
+		this.setModal(true);
+		this.yesText = "Aceptar";
+		this.noText = "Cancelar";
+		this.cancelText = "PDF";
+		this.setHeading(this.titulo);
+		this.setButtons(Dialog.YESNOCANCEL);
+		this.setHideOnButtonClick(true);
 	}
 	
 	@Override  
 	protected void onRender(Element parent, int pos) {  
 		super.onRender(parent, pos);  
-		setLayout(new FlowLayout(10));  
+		frame = new Frame(Util.reporteUrl(reporte, "html", id));
+		this.setLayout(new FitLayout());
+		this.add(frame);
 
-		final Window window = new Window(); 
-		window.setSize(500, 300);  
-		window.setPlain(true);
-		window.setModal(true);  
-		//window.setBlinkModal(true);  
-		window.setHeading(this.titulo);  
-		window.setLayout(new FitLayout()); 	  
+		final Dialog me = this;
 		
-		Frame frame = new Frame(Util.reporteUrl(this.reporte, "html", this.id));
-		window.add(frame);
-
-		window.addButton(new Button("PDF", new SelectionListener<ButtonEvent>() {  
+		this.getButtonById(PDF).addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override  
 			public void componentSelected(ButtonEvent ce) {
-				window.setUrl(Util.reporteUrl(reporte, "pdf", id));
+				me.setUrl(Util.reporteUrl(reporte, "pdf", id));
 			}
-		}));  
-
-		window.show();  
-
+		});
 	}  
 
 }  
