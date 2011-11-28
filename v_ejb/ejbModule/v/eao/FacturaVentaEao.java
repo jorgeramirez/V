@@ -13,7 +13,9 @@ import javax.persistence.Query;
 import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
+import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
+import v.modelo.Producto;
 
 /**
  * Session Bean implementation class FacturaVentaEao
@@ -35,8 +37,22 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 		try {
 			em.persist(facturaVenta);
 			em.flush();
+			
+			
+			//actualizar el stock
+			Producto p;
+			int nuevaCantidad;
+			for (FacturaDetalleVenta fdv : facturaVenta.getDetalles()) {
+				p = fdv.getProducto();
+				nuevaCantidad = p.getCantidad() - fdv.getCantidad();
+				if (nuevaCantidad < 0) {
+					throw new GuardarException("Cantidad mayor que existencia");
+				}
+				p.setCantidad(nuevaCantidad);
+			}
+			
 			return em.merge(facturaVenta);
-		}catch (PersistenceException pe) {
+		} catch (PersistenceException pe) {
 			throw new GuardarException(pe.getMessage());
 		}
 	}

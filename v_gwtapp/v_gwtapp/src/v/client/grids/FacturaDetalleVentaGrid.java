@@ -32,6 +32,7 @@ import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
@@ -115,7 +116,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		configs.add(column);
 
 		// precio
-		column = new ColumnConfig("precio", "Precio", 100);
+		column = new ColumnConfig("precio", "Precio", 80);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -141,8 +142,15 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			public void handleEvent(BaseEvent be) {
 				GridEvent<BeanModel> gw = (GridEvent<BeanModel>)be;
 				BeanModel fd = gw.getModel();
-				fd.set("subtotal", (Integer) fd.get("cantidad") * (Double) fd.get("precio"));
-		
+				
+				FacturaDetalleVenta fdv = (FacturaDetalleVenta) fd.getBean();
+				if (fdv.getProducto().getCantidad() < fdv.getCantidad()) {
+					MessageBox.alert("Cantidad de Producto", "Sólo existen " +  fdv.getProducto().getCantidad().toString()
+							+ "unidades", null);
+					gridDetalle.startEditing(gw.getRowIndex(), 3);
+				} else {
+					fd.set("subtotal", (Integer) fd.get("cantidad") * (Double) fd.get("precio"));
+				}
 			}
 			
 		});
@@ -150,7 +158,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		configs.add(column);
 
 		// subtotal
-		column = new ColumnConfig("subtotal", "Subtotales", 100);
+		column = new ColumnConfig("subtotal", "Subtotales", 80);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -173,6 +181,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		gridDetalle = new EditorGrid<BeanModel>(store, cm);  
 		gridDetalle.setAutoExpandColumn("nombre");
 		gridDetalle.addPlugin(r);
+		
 		
 		//this.setWidth(700);  
 		this.setLayout(new FitLayout());

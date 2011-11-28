@@ -78,7 +78,8 @@ public class VentasController extends AbstractController {
 		gridDetalle = new FacturaDetalleVentaGrid(venta);
 
 
-		panelVertical = new VerticalPanel();  
+		panelVertical = new VerticalPanel();
+		panelVertical.setAutoWidth(true);
 		panelVertical.setSpacing(20);
 		
 
