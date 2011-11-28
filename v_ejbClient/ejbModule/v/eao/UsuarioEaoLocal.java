@@ -18,5 +18,6 @@ public interface UsuarioEaoLocal {
 	int getCount();
 	Usuario findByUsername(String username);
 	public String cifrarPassword(String textoplano) throws IllegalStateException;
+	Usuario findById(Long id);
 	
 }
