@@ -18,6 +18,7 @@ package v.server;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 
 import util.SimpleFilter;
 import v.client.AppConstants;
@@ -70,5 +71,19 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 			error = e.getMessage();
 		}
 		return error;
+	}
+
+	@Override
+	public boolean cierreCaja(Long idCajero) {
+		boolean ok = true;
+		try {
+			cajeroFacade.cierredeCaja(idCajero);
+		} catch (GuardarException e){
+			e.printStackTrace();
+			ok = false;
+		}catch(EJBTransactionRolledbackException e){
+			ok = false;
+		}
+		return ok;
 	}
 }

@@ -68,21 +68,13 @@ public class CajaEao implements CajaEaoLocal {
 	}
 	
 	
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "unchecked" })
 	@Override
-	public List<Pago> pagosNoCerrados(Long idCaja){
+	public List<Pago> pagosNoCerrados(Long idCajero){
+		Query q = em.createNamedQuery("Pago.findNoCerrados", Pago.class);
+		q.setParameter("id", idCajero);
+		return q.getResultList();
 		
-		Caja caja = em.find(Caja.class,idCaja);
-		
-		List<Pago> listaDeCierre = null;
-		
-		for (Pago pago : caja.getPagos()){
-			if (pago.getEstado() != "cerrado") {
-				listaDeCierre.add(pago);				
-			}
-		}
-		
-		return listaDeCierre;
 	}
 
 	@Override

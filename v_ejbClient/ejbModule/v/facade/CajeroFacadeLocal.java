@@ -11,7 +11,7 @@ import v.modelo.Pago;
 @Local
 public interface CajeroFacadeLocal {
 
-	void cierredeCaja(Long idCaja) throws GuardarException;
+	void cierredeCaja(Long idCajero) throws GuardarException;
 
 	int getTotalFacturasPendientes();
 
