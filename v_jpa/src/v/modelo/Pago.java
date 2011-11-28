@@ -37,7 +37,7 @@ public class Pago implements Serializable {
 	@Column(name="estado", nullable=false, length=20)
 	private String estado;
 	
-	@Temporal(value=TemporalType.DATE)
+	@Temporal(value=TemporalType.TIMESTAMP)
 	@Column(name="fecha", nullable=false)
 	private Date fecha;	
 	

@@ -1,18 +1,23 @@
 package v.client.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import v.client.AppConstants;
 import v.client.AppViewport;
+import v.client.Util;
 import v.client.VType;
 import v.client.VTypeValidator;
 import v.client.grids.FacturaDetalleVentaGrid;
 import v.client.grids.VentasClienteGrid;
+import v.client.rpc.LoginServiceAsync;
 import v.client.rpc.VendedorServiceAsync;
 import v.modelo.Cliente;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
+import v.modelo.Pago;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.binding.FormBinding;
@@ -47,7 +52,7 @@ public class VentasController extends AbstractController {
 	private VerticalPanel panelVertical;
 	private final VendedorServiceAsync service = Registry.get(AppConstants.VENDEDOR_SERVICE);
 
-	private FacturaVenta venta;
+	final private FacturaVenta venta = new FacturaVenta();
 	
 	public VentasController() {
 		super(AppConstants.REGISTRAR_VENTA_LABEL);
@@ -67,7 +72,7 @@ public class VentasController extends AbstractController {
 
 		bindHandlers();
 		
-		venta = new FacturaVenta();
+		
 		
 		//el grid de detalles de los producutos seleccionados
 		gridDetalle = new FacturaDetalleVentaGrid(venta);
@@ -87,15 +92,25 @@ public class VentasController extends AbstractController {
 			public void componentSelected(ButtonEvent ce) {
 				List<BeanModel> detalles = gridDetalle.guardarDetalles();
 				List<FacturaDetalleVenta> fdv = new ArrayList<FacturaDetalleVenta>();
+				Double total = 0.0;
 				for (BeanModel f : detalles) {
-					fdv.add((FacturaDetalleVenta)f.getBean());
+					FacturaDetalleVenta fd = (FacturaDetalleVenta)f.getBean();
+					fd.setPrecio(fd.getProducto().getPrecioVenta());
+					fdv.add(fd);
+					total += fd.getPrecio() * fd.getCantidad();
+					
 				}
 				venta.setDetalles(fdv);
-				
+				venta.setTotal(total);
+				venta.setSaldo(total);
 				BeanModel cliente = gridCliente.obtenerCliente();
 				venta.setCliente((Cliente) cliente.getBean());
+				venta.setFecha(new Date());
+				venta.setEstado(AppConstants.FACTURA_PENDIENTE_PAGO);
+
 				
-				service.agregarVenta(venta,  new AsyncCallback<Boolean>() {
+				final LoginServiceAsync loginService = (LoginServiceAsync)Registry.get(AppConstants.LOGIN_SERVICE);
+				loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -103,15 +118,27 @@ public class VentasController extends AbstractController {
 					}
 
 					@Override
-					public void onSuccess(Boolean b) {
-						if (b) {
-							//mostrar el reporte de la factura
-						} else {
-						//no se puedo guardar la venta
-						}
+					public void onSuccess(Usuario vendedor) {
+						venta.setVendedor(vendedor);
+						service.agregarVenta(venta,  new AsyncCallback<Boolean>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
+							}
+
+							@Override
+							public void onSuccess(Boolean b) {
+								if (b) {
+									//mostrar el reporte de la factura
+								} else {
+								//no se puedo guardar la venta
+								}
+							}
+						});						
 					}
-				});
-			
+				});				
+				
 				
 			}  
 		});  

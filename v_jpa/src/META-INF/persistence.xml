@@ -19,7 +19,7 @@
 		<class>v.modelo.RegistroPago</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-			<property name="hibernate.hbm2ddl.auto" value="create"/>
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 			<property name="hibernate.connection.url" value="jdbc:postgresql:vdb"/>
 			<property name="hibernate.connection.username" value="admin"/>

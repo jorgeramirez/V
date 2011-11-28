@@ -9,10 +9,12 @@ import util.SimpleFilter;
 import v.eao.CajaEaoLocal;
 import v.eao.ClienteEaoLocal;
 import v.eao.FacturaVentaEaoLocal;
+import v.eao.UsuarioEaoLocal;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Cliente;
 import v.modelo.FacturaVenta;
+import v.modelo.Usuario;
 
 /**
  * Session Bean implementation class VendedorFacade
@@ -27,6 +29,9 @@ public class VendedorFacade implements VendedorFacadeLocal {
 	
 	@EJB
 	FacturaVentaEaoLocal facturaVentaEao;
+	
+	@EJB
+	UsuarioEaoLocal usuarioEao;
 	
     /**
      * Default constructor. 

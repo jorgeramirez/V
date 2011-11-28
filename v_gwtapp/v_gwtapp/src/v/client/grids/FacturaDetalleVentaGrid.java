@@ -74,8 +74,105 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		this.setHeading(this.title);  
 		this.setFrame(true);
 		
+		store = new ListStore<BeanModel>();  
+
+		RowNumberer r = new RowNumberer(); 
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();  
+		configs.add(r);
+
+		ColumnConfig column; 
+
+		// código producto field
+		column = new ColumnConfig("codProd", "Código", 50);
+		column.setRenderer(new GridCellRenderer<BeanModel>() {
+
+			@Override
+			public Object render(BeanModel model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<BeanModel> store, Grid<BeanModel> grid) {
+				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+
+				return fd.getProducto().getCodigo();
+			}
+		});
+
+		configs.add(column);
+
+		// nombre de producto
+		column = new ColumnConfig("nombProd", "Nombre Producto", 100);
+		column.setRenderer(new GridCellRenderer<BeanModel>() {
+
+			@Override
+			public Object render(BeanModel model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<BeanModel> store, Grid<BeanModel> grid) {
+				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+
+				return fd.getProducto().getNombre();
+			}
+		});
+
+		configs.add(column);
+
+		// precio
+		column = new ColumnConfig("precio", "Precio", 100);
+		column.setRenderer(new GridCellRenderer<BeanModel>() {
+
+			@Override
+			public Object render(BeanModel model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<BeanModel> store, Grid<BeanModel> grid) {
+				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+				return fd.getProducto().getPrecioVenta();
+
+			}
+		});
+
+		column = new ColumnConfig("cantidad", "Cantidad", 50);     
+		column.setAlignment(HorizontalAlignment.RIGHT);  
+		//column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
+		NumberField nf = new NumberField();
+		nf.setPropertyEditorType(Integer.class);
+		column.setEditor(new CellEditor(nf));
+		
+		column.addListener(Events.OnBlur, new Listener<BaseEvent>() {
+
+			@Override
+			public void handleEvent(BaseEvent be) {
+				GridEvent<BeanModel> gw = (GridEvent<BeanModel>)be;
+				BeanModel fd = gw.getModel();
+				fd.set("subtotal", (Integer) fd.get("cantidad") * (Double) fd.get("precio"));
+		
+			}
+			
+		});
+
+		configs.add(column);
+
+		// subtotal
+		column = new ColumnConfig("subtotal", "Subtotales", 100);
+		column.setRenderer(new GridCellRenderer<BeanModel>() {
+
+			@Override
+			public Object render(BeanModel model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<BeanModel> store, Grid<BeanModel> grid) {
+				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+
+				return fd.getProducto().getPrecioVenta() * fd.getCantidad();
+
+			}
+		});
+		
+		
+
+		configs.add(column);		
+		
+		cm = new ColumnModel(configs); 
+		
 		gridDetalle = new EditorGrid<BeanModel>(store, cm);  
 		gridDetalle.setAutoExpandColumn("nombre");
+		gridDetalle.addPlugin(r);
 		
 		//this.setWidth(700);  
 		this.setLayout(new FitLayout());
@@ -200,7 +297,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		super.onRender(parent, index);  
 
 		selectorProductos();
-
+/*
 		RowNumberer r = new RowNumberer(); 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();  
 		configs.add(r);
@@ -296,14 +393,14 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 		store = new ListStore<BeanModel>();  
 
-		cm = new ColumnModel(configs);  
+		cm = new ColumnModel(configs);  */
 		
 		gridDetalle.setBorders(true);  
 		gridDetalle.setStripeRows(true);
 		gridDetalle.setColumnLines(true);
 
 		//plugin de numeración
-		gridDetalle.addPlugin(r);
+		//gridDetalle.addPlugin(r);
 		gridDetalle.getView().setForceFit(true);
 
 		gridDetalle.addListener(Events.Render, new Listener<BaseEvent>() {
