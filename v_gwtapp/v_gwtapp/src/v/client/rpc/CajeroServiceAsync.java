@@ -16,4 +16,5 @@ public interface CajeroServiceAsync {
 	void cierreCaja(Long idCajero, AsyncCallback<String> asyncCallback);
 
 	void listarPagos(FilterPagingLoadConfig config, FacturaVenta factura, AsyncCallback<PagingLoadResult<Pago>> callback);
+	void listarFacturas(FilterPagingLoadConfig config, AsyncCallback<PagingLoadResult<FacturaVenta>> callback);
 }

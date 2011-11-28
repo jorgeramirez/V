@@ -62,6 +62,26 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 		return new BasePagingLoadResult<FacturaVenta>(sales, config.getOffset(), count);
 	}
 
+	
+	@Override
+	public PagingLoadResult<FacturaVenta> listarFacturas(FilterPagingLoadConfig config) {
+		int count = cajeroFacade.getTotalFacturas();
+		List<FilterConfig> filters = config.getFilterConfigs();
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		List<FacturaVenta> sales = cajeroFacade.listarFacturas(plainFilters, start, limit);
+		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Cliente> cc = new Converter<Cliente>();
+		sales = fvc.convertObjects(sales);
+		for(FacturaVenta fv: sales){
+			fv.setVendedor(uc.convertObject(fv.getVendedor()));
+			fv.setCliente(cc.convertObject(fv.getCliente()));
+		}
+		return new BasePagingLoadResult<FacturaVenta>(sales, config.getOffset(), count);
+	}	
+	
 	@Override
 	public String registrarPago(Pago pago) {
 		String error = null;

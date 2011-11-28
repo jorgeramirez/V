@@ -92,5 +92,11 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 	@Override
 	public FacturaVenta findById(Integer id) {
 		return em.find(FacturaVenta.class, id);
+	}
+
+	@Override
+	public int getTotalFacturas() {
+		Query q = em.createNamedQuery("FacturaVenta.count");
+		return Integer.parseInt(q.getSingleResult().toString());			
 	}	
 }

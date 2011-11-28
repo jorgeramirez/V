@@ -74,6 +74,11 @@ public class CajeroFacade implements CajeroFacadeLocal {
 			List<SimpleFilter> plainFilters, int start, int limit) {
 		return ventaEao.listar(plainFilters, start, limit);
 	}
+	
+	@Override
+	public List<FacturaVenta> listarFacturas(List<SimpleFilter> plainFilters, int start, int limit) {
+		return ventaEao.listar(plainFilters, start, limit);
+	}	
 
 	@Override
 	public boolean registrarPago(Pago pago) throws GuardarException {
@@ -153,5 +158,10 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	@Override
 	public List<Pago> listarPagos(List<SimpleFilter> filters, int start, int limit) {
 		return pagoEao.listar(filters, start, limit);
+	}
+
+	@Override
+	public int getTotalFacturas() {
+		return ventaEao.getTotalFacturas();
 	}
 }

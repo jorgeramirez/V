@@ -29,6 +29,7 @@ public class NavigationIconProvider implements ModelIconProvider<ModelData> {
 		iconsMap.put(AppConstants.REGISTRAR_VENTA_LABEL, "images/venta-1.png");
 		iconsMap.put(AppConstants.COBRAR_FACTURA_LABEL, "images/pago.png");
 		iconsMap.put(AppConstants.CIERRE_CAJA_LABEL, "images/cierre_caja1.png");
+		iconsMap.put(AppConstants.LISTAR_FACTURAS_LABEL, "images/factura.png");
 	}
 	
 	@Override
