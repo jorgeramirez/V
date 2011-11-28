@@ -38,7 +38,7 @@ public class PagoWebService implements PagoWebServiceRemote {
     
     @WebMethod(operationName = "registrarPago")
     public String registrarPago(@WebParam(name = "idCajero") Long idCajero,
-            @WebParam(name = "idFactura") Long idFactura,
+            @WebParam(name = "idFactura") Integer idFactura,
             @WebParam(name = "monto") Double monto) throws GuardarException{
     	
     	Usuario usuario = usuarioEao.findById(idCajero);

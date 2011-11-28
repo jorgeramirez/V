@@ -2,13 +2,17 @@ package v.ws;
 
 public class PagoWs {
 	Long idCajero;
-	Long IdFactura;
+	Integer idFactura;
 	Double monto;
 	
-	public PagoWs(Long idCajero, Long idFactura, Double monto) {
+	public PagoWs(){
+		
+	}
+	
+	public PagoWs(Long idCajero, Integer idFactura, Double monto) {
 		super();
 		this.idCajero = idCajero;
-		IdFactura = idFactura;
+		this.idFactura = idFactura;
 		this.monto = monto;
 	}
 
@@ -20,12 +24,12 @@ public class PagoWs {
 		this.idCajero = idCajero;
 	}
 
-	public Long getIdFactura() {
-		return IdFactura;
+	public Integer getIdFactura() {
+		return this.idFactura;
 	}
 
-	public void setIdFactura(Long idFactura) {
-		IdFactura = idFactura;
+	public void setIdFactura(Integer idFactura) {
+		this.idFactura = idFactura;
 	}
 
 	public Double getMonto() {
