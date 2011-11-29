@@ -18,6 +18,7 @@ import v.modelo.FacturaVenta;
 import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.binding.FormBinding;
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -38,6 +39,7 @@ import com.extjs.gxt.ui.client.widget.layout.AnchorData;
 import com.extjs.gxt.ui.client.widget.layout.AnchorLayout;
 import com.extjs.gxt.ui.client.widget.layout.ColumnData;
 import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -86,23 +88,39 @@ public class VentasController extends AbstractController {
 		
 		
 		panelVertical = new ContentPanel();
+		panelVertical.setTitle("Venta");
 		panelVertical.setLayout(new AnchorLayout());
 		
 		AnchorData data = new AnchorData();
-		data.setAnchorSpec("100% 40%");
+		data.setAnchorSpec("100% 25%");
 		panelVertical.add(panelCliente, data);
 		
 		data = new AnchorData();
-		data.setAnchorSpec("100% 60%");
+		data.setAnchorSpec("100% 75%");
 		panelVertical.add(gridDetalle, data);
 		
 		panelVertical.setTopComponent(gridCliente);
 		
-	    Button guardar = new Button("Guardar", new SelectionListener<ButtonEvent>() {  
+	    Button guardar = new Button("Guardar Venta", new SelectionListener<ButtonEvent>() {  
 
 			@Override  
 			public void componentSelected(ButtonEvent ce) {
+				
+				BeanModel cliente = gridCliente.obtenerCliente();
+				
+				if (cliente == null) {
+					MessageBox.alert("Cliente", "Debe seleccionar un Cliente", null);
+					return;
+				}
+				
+				venta.setCliente((Cliente) cliente.getBean());
 				List<BeanModel> detalles = gridDetalle.guardarDetalles();
+				
+				if (detalles.isEmpty()) {
+					MessageBox.alert("Detalles", "La factura debe tener al menos un producto", null);
+					return;
+				}
+				
 				List<FacturaDetalleVenta> fdv = new ArrayList<FacturaDetalleVenta>();
 				Double total = 0.0;
 				for (BeanModel f : detalles) {
@@ -112,11 +130,10 @@ public class VentasController extends AbstractController {
 					total += fd.getPrecio() * fd.getCantidad();
 					
 				}
+				
 				venta.setDetalles(fdv);
 				venta.setTotal(total);
 				venta.setSaldo(total);
-				BeanModel cliente = gridCliente.obtenerCliente();
-				venta.setCliente((Cliente) cliente.getBean());
 				venta.setFecha(new Date());
 				venta.setEstado(AppConstants.FACTURA_PENDIENTE_PAGO);
 
@@ -136,7 +153,7 @@ public class VentasController extends AbstractController {
 
 							@Override
 							public void onFailure(Throwable caught) {
-								MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
+								MessageBox.alert("Error", caught.getMessage(), null);
 							}
 
 							@Override
@@ -155,9 +172,11 @@ public class VentasController extends AbstractController {
 			}  
 		});  
 		
+	    guardar.setIconStyle("icon-save");
 	    ToolBar bottom = new ToolBar();
 	    bottom.add(guardar);
 	    panelVertical.setBottomComponent(bottom);
+	    panelVertical.setButtonAlign(HorizontalAlignment.CENTER);
 	    
 		LayoutContainer lc = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
 
@@ -173,6 +192,7 @@ public class VentasController extends AbstractController {
 		}
 		
 	}
+	
 	private FormPanel crearFormCliente() {
 
 		FormPanel panel = new FormPanel();  
@@ -184,66 +204,67 @@ public class VentasController extends AbstractController {
 		main.setLayout(new ColumnLayout());  
 
 		LayoutContainer left = new LayoutContainer();  
-		left.setStyleAttribute("paddingRight", "10px");  
-		FormLayout layout = new FormLayout();  
-		layout.setLabelAlign(LabelAlign.TOP);  
+		left.setStyleAttribute("paddingRight", "10px");
+		//left.setWidth(300);
+		FitLayout layout;
+		layout = new FitLayout(); 
+  
+		//layout.setLabelAlign(LabelAlign.TOP);  
 		left.setLayout(layout); 
 
 		// cedula field
 		text = new TextField<String>();
 		text.setAllowBlank(false);
-		text.setMaxLength(10);
-		text.setValidator(new VTypeValidator(VType.NUMERIC));
 		text.setFieldLabel("Cédula");
 		text.setName("cedula");
 		text.setEnabled(false);
+		text.setWidth(50);
 		left.add(text);
 
 		// nombre field
 		text = new TextField<String>();
-		text.setMaxLength(50);
-		text.setValidator(new VTypeValidator(VType.ALPHABET));
 		text.setFieldLabel("Nombre");
 		text.setName("nombre");
 		text.setEnabled(false);
 		text.setAllowBlank(false);
+		text.setWidth(200);
 		left.add(text);
 
 
 		// telefono field
 		text = new TextField<String>();
 		text.setMaxLength(20);
-		text.setValidator(new VTypeValidator(VType.ALPHANUMERIC));
 		text.setFieldLabel("Teléfono");
 		text.setName("telefono");
 		text.setEnabled(false);
+		text.setWidth(50);
 		left.add(text);
 
 
 		LayoutContainer right = new LayoutContainer();  
-		right.setStyleAttribute("paddingLeft", "10px");  
-		layout = new FormLayout();  
-		layout.setLabelAlign(LabelAlign.TOP);  
+		right.setStyleAttribute("paddingLeft", "10px");
+		right.setWidth(300);
+		layout = new FitLayout();  
+		//layout.setLabelAlign(LabelAlign.TOP);  
 		right.setLayout(layout);  
 
 		// direccion field
-		text = new TextField<String>();
-		text.setMaxLength(70);		
-		text.setValidator(new VTypeValidator(VType.ALPHANUMERIC));
+		text = new TextField<String>();		
 		text.setFieldLabel("Dirección");
 		text.setName("direccion");
 		text.setAllowBlank(false);
 		text.setEnabled(false);
+		text.setWidth(100);
 		right.add(text);
 
 		// apellido field
 		text = new TextField<String>();
-		text.setMaxLength(50);
-		text.setValidator(new VTypeValidator(VType.ALPHABET));
 		text.setFieldLabel("Apellido");
 		text.setName("apellido");
 		text.setAllowBlank(false);
-		text.setEnabled(false);
+		text.setEnabled(false);		
+	
+		text.setWidth(100);
 		right.add(text);
 
 		main.add(left, new ColumnData(.5));  

@@ -55,7 +55,7 @@ public class VentasClienteGrid extends ToolBar {
 		window.setPlain(true);  
 		window.setModal(true);  
 		window.setBlinkModal(true);  
-		window.setHeading("Clientes");  
+		//window.setHeading("Clientes");  
 		window.setLayout(new FitLayout());  
 		
 		window.addWindowListener(new WindowListener() {  
@@ -97,6 +97,9 @@ public class VentasClienteGrid extends ToolBar {
 	}
 	
 	public BeanModel obtenerCliente() {
+		if (gridCliente.getGrid() == null){
+			return null;
+		}
 		return gridCliente.getGrid().getSelectionModel().getSelectedItem();	
 	}
 }

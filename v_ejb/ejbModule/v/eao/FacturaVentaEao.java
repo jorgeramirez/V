@@ -49,6 +49,7 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 					throw new GuardarException("Cantidad mayor que existencia");
 				}
 				p.setCantidad(nuevaCantidad);
+				em.merge(p);
 			}
 			
 			return em.merge(facturaVenta);
