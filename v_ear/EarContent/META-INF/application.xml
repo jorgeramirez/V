@@ -16,4 +16,10 @@
       <context-root>v_reports</context-root>
     </web>
   </module>
+  <module>
+    <web>
+      <web-uri>v_wsClient.war</web-uri>
+      <context-root>v_wsClient</context-root>
+    </web>
+  </module>
 </application>

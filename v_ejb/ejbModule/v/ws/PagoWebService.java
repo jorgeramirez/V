@@ -1,11 +1,16 @@
 package v.ws;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+
+import v.excepciones.GuardarException;
+import v.facade.CajeroFacadeLocal;
 
 
 @WebService()
@@ -15,8 +20,31 @@ public class PagoWebService implements PagoWebServiceRemote {
     public PagoWebService() {
     }
     
+    @EJB
+    CajeroFacadeLocal cajeroFacade;
+    
     @WebMethod(operationName = "registrarPagos")
-    public String registrarPagos(@WebParam(name = "pagos") List<PagoWs> pagos){
-    	return registrarPagos(pagos);
+    public List<PagoWs> registrarPagos(@WebParam(name = "pagos") List<PagoWs> pagos) {
+    	
+    	List<PagoWs> listaRetorno = new ArrayList<PagoWs>();
+    	
+    	for (PagoWs pago : pagos){
+    		System.out.println("----");
+    		System.out.print("idCajero: ");
+    		System.out.println(pago.getIdCajero());
+    		System.out.print("idFactura: ");
+    		System.out.println(pago.getIdFactura());
+    		System.out.print("Monto: ");
+    		System.out.println(pago.getMonto());
+    		System.out.println("----");
+    	}
+    	try {
+    		listaRetorno = cajeroFacade.registroPagosWebService(pagos);
+			return listaRetorno;
+		} catch (GuardarException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listaRetorno;
     }
 }

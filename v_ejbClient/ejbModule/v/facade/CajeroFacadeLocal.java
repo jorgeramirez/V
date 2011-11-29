@@ -21,7 +21,8 @@ public interface CajeroFacadeLocal {
 
 	Pago registrarPago(Pago pago) throws GuardarException;
 
-	String registrarPagos(List<PagoWs> pagos) throws GuardarException;
+	List<PagoWs> registroPagosWebService(List<PagoWs> pagos)
+			throws GuardarException;
 
 	int getTotalPagos();
 
