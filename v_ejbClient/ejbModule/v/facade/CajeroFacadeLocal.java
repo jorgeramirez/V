@@ -34,4 +34,8 @@ public interface CajeroFacadeLocal {
 	
 	List<FacturaVenta> listarFacturas(List<SimpleFilter> plainFilters, int start, int limit);
 
+	int getTotalFacturasFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalPagosFilters(List<SimpleFilter> plainFilters);
+
 }

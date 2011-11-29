@@ -14,7 +14,7 @@ public interface VendedorServiceAsync {
 	
 	void listarClientes(FilterPagingLoadConfig config, AsyncCallback<PagingLoadResult<Cliente>> callback);
 	void agregarCliente(Cliente c, AsyncCallback<Cliente> asyncCallback);
-	void modificarCliente(Cliente c, AsyncCallback<Void> callback);
+	void modificarCliente(Cliente c, AsyncCallback<Boolean> callback);
 	void eliminarClientes(List<Cliente> clientes, AsyncCallback<Boolean> callback);
 
 	void agregarVenta(FacturaVenta v, AsyncCallback<Boolean> callback);

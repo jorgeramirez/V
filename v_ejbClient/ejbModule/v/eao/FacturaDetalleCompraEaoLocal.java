@@ -25,4 +25,6 @@ public interface FacturaDetalleCompraEaoLocal {
 	List<FacturaDetalleCompra> listarComprasDetalles(
 			List<SimpleFilter> plainFilters, int start, int limit);
 
+	int getTotalDetallesCompraFilters(List<SimpleFilter> plainFilters);
+
 }

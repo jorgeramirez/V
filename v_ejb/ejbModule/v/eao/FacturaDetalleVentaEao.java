@@ -54,4 +54,22 @@ public class FacturaDetalleVentaEao implements FacturaDetalleVentaEaoLocal {
 		return Integer.parseInt(q.getSingleResult().toString());
 	}
 
+	@Override
+	public int getTotalDetallesVentaFilters(List<SimpleFilter> filters) {
+		String q = "select count(f) from FacturaDetalleVenta f ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "f." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q);
+		return Integer.parseInt(query.getSingleResult().toString());	
+	}
+
 }

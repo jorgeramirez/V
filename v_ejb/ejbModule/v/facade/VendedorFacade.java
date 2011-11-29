@@ -91,4 +91,14 @@ public class VendedorFacade implements VendedorFacadeLocal {
 	public List<FacturaDetalleVenta> listarVentasDetalles(List<SimpleFilter> filters, int start, int limit) {
 		return ventaDetalleEao.listarVentasDetalles(filters, start, limit);
 	}
+
+	@Override
+	public int getTotalClientesFilters(List<SimpleFilter> plainFilters) {
+		return clienteEao.getTotalClientesFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalDetallesVentaFilters(List<SimpleFilter> plainFilters) {
+		return ventaDetalleEao.getTotalDetallesVentaFilters(plainFilters);
+	}
 }

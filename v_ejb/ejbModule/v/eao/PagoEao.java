@@ -100,4 +100,22 @@ public class PagoEao implements PagoEaoLocal {
 		return query.getResultList();
 	}
 
+	@Override
+	public int getTotalPagosFilters(List<SimpleFilter> filters) {
+		String q = "select count(p) from Pago p ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "p." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q);
+		return Integer.parseInt(query.getSingleResult().toString());
+	}
+
 }

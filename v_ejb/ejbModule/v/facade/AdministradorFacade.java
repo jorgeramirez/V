@@ -129,5 +129,15 @@ public class AdministradorFacade implements AdministradorFacadeLocal {
 	public String cifrarPassword(String textoplano) throws IllegalStateException{
 		return usuarioEao.cifrarPassword(textoplano);
 	}
+
+	@Override
+	public int getTotalCajasFiltros(List<SimpleFilter> filters) {
+		return cajaEao.getTotalCajasFiltros(filters);
+	}
+
+	@Override
+	public int getTotalUsuariosFilters(List<SimpleFilter> filters) {
+		return usuarioEao.getTotalUsuariosFilters(filters);
+	}
 	
 }

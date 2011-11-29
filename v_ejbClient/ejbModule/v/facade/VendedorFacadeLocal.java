@@ -29,4 +29,8 @@ public interface VendedorFacadeLocal {
 
 	List<FacturaDetalleVenta> listarVentasDetalles(List<SimpleFilter> filters, int start, int limit);
 
+	int getTotalClientesFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalDetallesVentaFilters(List<SimpleFilter> plainFilters);
+
 }

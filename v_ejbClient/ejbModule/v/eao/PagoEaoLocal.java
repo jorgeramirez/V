@@ -24,6 +24,8 @@ public interface PagoEaoLocal {
 	int getTotalPagosFactura(Integer numeroFactura);
 
 	List<Pago> listar(List<SimpleFilter> filters, int start, int limit);
+
+	int getTotalPagosFilters(List<SimpleFilter> plainFilters);
 	
 
 }

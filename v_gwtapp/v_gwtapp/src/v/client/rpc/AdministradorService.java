@@ -32,11 +32,11 @@ public interface AdministradorService extends RemoteService {
 	List<Integer> listarNrosCaja();
 	ListLoadResult<Caja> listarCajas();
 	Usuario agregarUsuario(Usuario u);
-	void modificarUsuario(Usuario u);
+	boolean modificarUsuario(Usuario u);
 	boolean existeUsername(String username);
 	boolean eliminarUsuarios(List<Usuario> users);
 	PagingLoadResult<Caja> listarCajas(FilterPagingLoadConfig loadConfig);
 	Caja agregarCaja(Caja cashBox);
-	void modificarCaja(Caja cashBox);
+	boolean modificarCaja(Caja cashBox);
 	boolean eliminarCajas(List<Caja> cashBoxes);
 }

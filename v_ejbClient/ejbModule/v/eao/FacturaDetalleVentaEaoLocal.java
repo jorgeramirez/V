@@ -14,4 +14,6 @@ public interface FacturaDetalleVentaEaoLocal {
 
 	int getTotalDetallesVenta(Integer numeroFactura);
 
+	int getTotalDetallesVentaFilters(List<SimpleFilter> plainFilters);
+
 }

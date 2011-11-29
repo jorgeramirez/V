@@ -44,12 +44,12 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 	
 	@Override
 	public PagingLoadResult<FacturaVenta> listarFacturasPendientes(FilterPagingLoadConfig config) {
-		int count = cajeroFacade.getTotalFacturasPendientes();
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		plainFilters.add(new SimpleFilter("estado", AppConstants.FACTURA_PENDIENTE_PAGO, "like"));
+		int count = cajeroFacade.getTotalFacturasFilters(plainFilters);
 		List<FacturaVenta> sales = cajeroFacade.listarFacturasPendientes(plainFilters, start, limit);
 		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
 		Converter<Usuario> uc = new Converter<Usuario>();
@@ -65,11 +65,11 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 	
 	@Override
 	public PagingLoadResult<FacturaVenta> listarFacturas(FilterPagingLoadConfig config) {
-		int count = cajeroFacade.getTotalFacturas();
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = cajeroFacade.getTotalFacturasFilters(plainFilters);
 		List<FacturaVenta> sales = cajeroFacade.listarFacturas(plainFilters, start, limit);
 		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
 		Converter<Usuario> uc = new Converter<Usuario>();
@@ -89,6 +89,8 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 			cajeroFacade.registrarPago(pago);
 		} catch (GuardarException e) {
 			e.printStackTrace();
+			error = e.getMessage();
+		}catch(EJBTransactionRolledbackException e){
 			error = e.getMessage();
 		}
 		return error;
@@ -110,16 +112,12 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 
 	@Override
 	public PagingLoadResult<Pago> listarPagos(FilterPagingLoadConfig config, FacturaVenta factura) {
-		int count;
 		List<FilterConfig> filters = config.getFilterConfigs();
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
-		
 		if(factura != null){
-			count = cajeroFacade.getTotalPagosFactura(factura.getNumeroFactura());
 			plainFilters.add(new SimpleFilter("factura.numeroFactura", factura.getNumeroFactura(), "="));
-		}else{
-			count = cajeroFacade.getTotalPagos();
 		}
+		int count = cajeroFacade.getTotalPagosFilters(plainFilters);
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<Pago> payments = cajeroFacade.listarPagos(plainFilters, start, limit);

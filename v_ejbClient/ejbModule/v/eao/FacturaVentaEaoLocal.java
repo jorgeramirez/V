@@ -17,4 +17,5 @@ public interface FacturaVentaEaoLocal {
 	int getTotalPendientes();
 	FacturaVenta findById(Integer id);
 	int getTotalFacturas();
+	int getTotalFacturasFilters(List<SimpleFilter> filters);
 }

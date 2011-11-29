@@ -50,11 +50,11 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 
 	@Override
 	public PagingLoadResult<Producto> listarProductos(FilterPagingLoadConfig loadConfig) {
-		int count = compradorFacade.getTotalProductos();
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = compradorFacade.getTotalProductosFilters(plainFilters);
 		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
 		Converter<Producto> pc = new Converter<Producto>();
 		products = pc.convertObjects(products);
@@ -70,18 +70,22 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 			added = pc.convertObject(added);
 		} catch (GuardarException e) {
 			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return added;			
 	}
 
 	@Override
 	public boolean modificarProducto(Producto p) {
-		boolean ok = true;
+		boolean ok = false;
 		try {
 			compradorFacade.modificarProducto(p);
+			ok = true;
 		} catch (GuardarException e) {
 			e.printStackTrace();
-			ok = false;
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return ok;
 	}
@@ -104,11 +108,11 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 
 	@Override
 	public PagingLoadResult<Proveedor> listarProveedores(FilterPagingLoadConfig loadConfig) {
-		int count = compradorFacade.getTotalProveedores();
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = compradorFacade.getTotalProveedoresFilters(plainFilters);
 		List<Proveedor> providers = compradorFacade.listarProveedores(plainFilters, start, limit);
 		Converter<Proveedor> pc = new Converter<Proveedor>();
 		providers = pc.convertObjects(providers);
@@ -129,18 +133,22 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 			added = pc.convertObject(added);
 		} catch (GuardarException e) {
 			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return added;
 	}
 
 	@Override
 	public boolean modificarProveedor(Proveedor provider) {
-		boolean ok = true;
+		boolean ok = false;
 		try {
 			compradorFacade.modificarProveedor(provider);
+			ok = true;
 		} catch (GuardarException e) {
 			e.printStackTrace();
-			ok = false;
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return ok;
 	}
@@ -164,12 +172,12 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 	@Override
 	public PagingLoadResult<Producto> listarProductosConExistencia(
 			FilterPagingLoadConfig loadConfig) {
-		int count = compradorFacade.getTotalProductos();
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		plainFilters.add(new SimpleFilter("cantidad", 0, ">"));
+		int count = compradorFacade.getTotalProductosFilters(plainFilters);
 		List<Producto> products = compradorFacade.listarProductos(plainFilters, start, limit);
 		Converter<Producto> pc = new Converter<Producto>();
 		products = pc.convertObjects(products);
@@ -178,11 +186,11 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 
 	@Override
 	public PagingLoadResult<FacturaCompra> listarCompras(FilterPagingLoadConfig loadConfig) {
-		int count = compradorFacade.getTotalCompras();
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = compradorFacade.getTotalComprasFilters(plainFilters);
 		List<FacturaCompra> purchases = compradorFacade.listarCompras(plainFilters, start, limit);
 		Converter<FacturaCompra> fc = new Converter<FacturaCompra>();
 		purchases = fc.convertObjects(purchases);
@@ -201,12 +209,12 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 	@Override
 	public PagingLoadResult<FacturaDetalleCompra> listarComprasDetalles(
 			FilterPagingLoadConfig config, FacturaCompra compra) {
-		int count = compradorFacade.getTotalDetallesCompra(compra.getNumeroFactura());
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		plainFilters.add(new SimpleFilter("cabecera.numeroFactura", compra.getNumeroFactura(), "="));
+		int count = compradorFacade.getTotalDetallesCompraFilters(plainFilters);
 		List<FacturaDetalleCompra> detalles = compradorFacade.listarComprasDetalles(plainFilters, start, limit);
 		
 		Converter<FacturaDetalleCompra> fdcc = new Converter<FacturaDetalleCompra>();

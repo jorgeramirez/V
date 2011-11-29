@@ -172,7 +172,7 @@ public class UsuariosController extends AbstractController {
 	 **/
 	private void updateUser(final BeanModel u){
 		Usuario user = (Usuario)u.getBean();
-		service.modificarUsuario(user, new AsyncCallback<Void>() {
+		service.modificarUsuario(user, new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -180,7 +180,10 @@ public class UsuariosController extends AbstractController {
 			}
 
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(Boolean ok) {
+				if(!ok){
+					MessageBox.alert("Error", "No se pudo modificar el usuario", null);
+				}
 				grid.getGrid().getStore().getLoader().load();
 			}
 		});

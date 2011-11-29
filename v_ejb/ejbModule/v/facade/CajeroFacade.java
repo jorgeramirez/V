@@ -158,4 +158,14 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	public int getTotalFacturas() {
 		return ventaEao.getTotalFacturas();
 	}
+
+	@Override
+	public int getTotalFacturasFilters(List<SimpleFilter> filters) {
+		return ventaEao.getTotalFacturasFilters(filters);
+	}
+
+	@Override
+	public int getTotalPagosFilters(List<SimpleFilter> plainFilters) {
+		return pagoEao.getTotalPagosFilters(plainFilters);
+	}
 }

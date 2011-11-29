@@ -51,4 +51,12 @@ public interface CompradorFacadeLocal {
 	List<FacturaDetalleCompra> listarComprasDetalles(
 			List<SimpleFilter> plainFilters, int start, int limit);
 
+	int getTotalProductosFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalProveedoresFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalComprasFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalDetallesCompraFilters(List<SimpleFilter> plainFilters);
+
 }

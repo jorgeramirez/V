@@ -90,4 +90,22 @@ public class ClienteEao implements ClienteEaoLocal {
 		Query q = em.createNamedQuery("Cliente.count");
 		return Integer.parseInt(q.getSingleResult().toString());
 	}
+
+	@Override
+	public int getTotalClientesFilters(List<SimpleFilter> filters) {
+		String q = "select count(c) from Cliente c ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "c." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q);
+		return Integer.parseInt(query.getSingleResult().toString());
+	}
 }

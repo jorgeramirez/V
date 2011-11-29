@@ -31,7 +31,7 @@ public interface VendedorService extends RemoteService {
 	
 	PagingLoadResult<Cliente> listarClientes(FilterPagingLoadConfig config);
 	Cliente agregarCliente(Cliente c);
-	void modificarCliente(Cliente c);
+	boolean modificarCliente(Cliente c);
 	boolean eliminarClientes(List<Cliente> clientes);
 	boolean agregarVenta(FacturaVenta v);
 	PagingLoadResult<FacturaDetalleVenta> listarVentasDetalles(FilterPagingLoadConfig config, FacturaVenta venta);	

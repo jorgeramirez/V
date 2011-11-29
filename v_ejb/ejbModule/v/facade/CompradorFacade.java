@@ -149,4 +149,24 @@ public class CompradorFacade implements CompradorFacadeLocal {
 			List<SimpleFilter> plainFilters, int start, int limit) {
 		return detalleEao.listarComprasDetalles(plainFilters, start, limit);
 	}
+
+	@Override
+	public int getTotalProductosFilters(List<SimpleFilter> plainFilters) {
+		return productoEao.getTotalProductosFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalProveedoresFilters(List<SimpleFilter> plainFilters) {
+		return proveedorEao.getTotalProveedoresFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalComprasFilters(List<SimpleFilter> plainFilters) {
+		return facturaEao.getTotalComprasFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalDetallesCompraFilters(List<SimpleFilter> plainFilters) {
+		return detalleEao.getTotalDetallesCompraFilters(plainFilters);
+	}
 }
