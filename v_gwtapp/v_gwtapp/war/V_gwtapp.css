@@ -90,3 +90,7 @@ font: normal 10px arial, tahoma, sans-serif;
 .icon-ver-pagos {
 	background-image: url(images/pagos.png) !important; background-repeat: no-repeat; 
 }
+
+.icon-detalles {
+	background-image: url(images/detalles.png) !important; background-repeat: no-repeat; 
+}

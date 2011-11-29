@@ -26,7 +26,9 @@ import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.facade.VendedorFacadeLocal;
 import v.modelo.Cliente;
+import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -101,6 +103,28 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 			}
 		}
 		return ok;
+	}
+
+	@Override
+	public PagingLoadResult<FacturaDetalleVenta> listarVentasDetalles(FilterPagingLoadConfig config, FacturaVenta venta) {
+		int count = vendedorFacade.getTotalDetallesVenta(venta.getNumeroFactura());
+		List<FilterConfig> filters = config.getFilterConfigs();
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		plainFilters.add(new SimpleFilter("cabecera.numeroFactura", venta.getNumeroFactura(), "="));
+		List<FacturaDetalleVenta> detalles = vendedorFacade.listarVentasDetalles(plainFilters, start, limit);
+		Converter<FacturaDetalleVenta> fdvc = new Converter<FacturaDetalleVenta>();
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Cliente> cc = new Converter<Cliente>();
+		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
+		detalles = fdvc.convertObjects(detalles);
+		for(FacturaDetalleVenta fdv: detalles){
+			fdv.setCabecera(fvc.convertObject(fdv.getCabecera()));
+			fdv.getCabecera().setVendedor(uc.convertObject(fdv.getCabecera().getVendedor()));
+			fdv.getCabecera().setCliente(cc.convertObject(fdv.getCabecera().getCliente()));
+		}
+		return new BasePagingLoadResult<FacturaDetalleVenta>(detalles, config.getOffset(), count);		
 	}
 
 

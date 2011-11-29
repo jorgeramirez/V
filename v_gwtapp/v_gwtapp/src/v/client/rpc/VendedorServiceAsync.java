@@ -3,6 +3,7 @@ package v.client.rpc;
 import java.util.List;
 
 import v.modelo.Cliente;
+import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
@@ -17,4 +18,7 @@ public interface VendedorServiceAsync {
 	void eliminarClientes(List<Cliente> clientes, AsyncCallback<Boolean> callback);
 
 	void agregarVenta(FacturaVenta v, AsyncCallback<Boolean> callback);
+	void listarVentasDetalles(FilterPagingLoadConfig config,
+			FacturaVenta venta,
+			AsyncCallback<PagingLoadResult<FacturaDetalleVenta>> callback);
 }

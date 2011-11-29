@@ -18,6 +18,7 @@ package v.client.rpc;
 import java.util.List;
 
 import v.modelo.Cliente;
+import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
 
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
@@ -33,5 +34,5 @@ public interface VendedorService extends RemoteService {
 	void modificarCliente(Cliente c);
 	boolean eliminarClientes(List<Cliente> clientes);
 	boolean agregarVenta(FacturaVenta v);
-	
+	PagingLoadResult<FacturaDetalleVenta> listarVentasDetalles(FilterPagingLoadConfig config, FacturaVenta venta);	
 }
