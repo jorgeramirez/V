@@ -7,9 +7,9 @@ import java.util.Map;
 
 import v.client.AppConstants;
 import v.client.AppConstants.Filtros;
-import v.client.rpc.CajeroServiceAsync;
+import v.client.rpc.CompradorServiceAsync;
 import v.client.widgets.CustomGrid;
-import v.modelo.FacturaVenta;
+import v.modelo.FacturaCompra;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -31,16 +31,15 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * Define un {@link Grid} para Listado de Ventas
+ * Define un {@link Grid} para Listado de Compras
  * 
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
-public class VentasGrid extends CustomGrid<FacturaVenta> {
-	
-	private final CajeroServiceAsync service = (CajeroServiceAsync)Registry.get(AppConstants.CAJERO_SERVICE);
+public class ComprasGrid extends CustomGrid<FacturaCompra> {
+	private final CompradorServiceAsync service = (CompradorServiceAsync)Registry.get(AppConstants.COMPRADOR_SERVICE);
 	private Button verDetallesButton;
 	
-	public VentasGrid(String title, boolean useCheckBoxSm, boolean hasFilters) {
+	public ComprasGrid(String title, boolean useCheckBoxSm, boolean hasFilters) {
 		super(title, useCheckBoxSm, hasFilters);
 	}
 	
@@ -76,11 +75,11 @@ public class VentasGrid extends CustomGrid<FacturaVenta> {
 	}	
 	
 	@Override
-	public RpcProxy<PagingLoadResult<FacturaVenta>> buildProxy() {
-		return new RpcProxy<PagingLoadResult<FacturaVenta>>() {
+	public RpcProxy<PagingLoadResult<FacturaCompra>> buildProxy() {
+		return new RpcProxy<PagingLoadResult<FacturaCompra>>() {
 			@Override
-			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<FacturaVenta>> callback) {
-				service.listarFacturas((FilterPagingLoadConfig)loadConfig, callback);
+			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<FacturaCompra>> callback) {
+				service.listarCompras((FilterPagingLoadConfig)loadConfig, callback);
 			}
 		};
 	}
@@ -93,10 +92,10 @@ public class VentasGrid extends CustomGrid<FacturaVenta> {
 		fc = new HashMap<String, AppConstants.Filtros>();
 			fc.put("numeroFactura", AppConstants.Filtros.INTEGER_FILTER);
 			fc.put("fecha", AppConstants.Filtros.DATE_FILTER);
-			fc.put("cliente.nombre", AppConstants.Filtros.STRING_FILTER);
-			fc.put("cliente.cedula", AppConstants.Filtros.STRING_FILTER);
-			fc.put("vendedor.nombre", AppConstants.Filtros.STRING_FILTER);
-			fc.put("vendedor.cedula", AppConstants.Filtros.STRING_FILTER);
+			fc.put("proveedor.ruc", AppConstants.Filtros.STRING_FILTER);
+			fc.put("proveedor.nombre", AppConstants.Filtros.STRING_FILTER);
+			fc.put("comprador.nombre", AppConstants.Filtros.STRING_FILTER);
+			fc.put("comprador.cedula", AppConstants.Filtros.STRING_FILTER);
 		}
 		return fc;
 	}
@@ -113,77 +112,74 @@ public class VentasGrid extends CustomGrid<FacturaVenta> {
 		}
 		
 		// numero factura
-		ColumnConfig column = new ColumnConfig("numeroFactura", "Número de Factura", 100);
+		ColumnConfig column = new ColumnConfig("numeroFactura", "Número de Compra", 100);
 		columns.add(column);
 
 		// fecha
 		column = new ColumnConfig("fecha", "Fecha", 100);
 		columns.add(column);
 
-		// cliente nombre
-		column = new ColumnConfig("cliente.nombre", "Nombre del Cliente", 100);
+		// proveedor nombre
+		column = new ColumnConfig("proveedor.nombre", "Nombre del Proveedor", 100);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				return ((FacturaVenta)model.getBean()).getCliente().getNombre();
-			}
-		
-		});
-		columns.add(column);
-		
-		// cliente cedula
-		column = new ColumnConfig("cliente.cedula", "Cédula del Cliente", 100);
-		column.setRenderer(new GridCellRenderer<BeanModel>() {
-
-			@Override
-			public Object render(BeanModel model, String property,
-					ColumnData config, int rowIndex, int colIndex,
-					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				return ((FacturaVenta)model.getBean()).getCliente().getCedula();
+				return ((FacturaCompra)model.getBean()).getProveedor().getNombre();
 			}
 		
 		});
 		columns.add(column);
 
-		// vendedor nombre
-		column = new ColumnConfig("vendedor.nombre", "Nombre del Vendedor", 100);
+		// proveedor ruc
+		column = new ColumnConfig("proveedor.ruc", "RUC del Proveedor", 100);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				return ((FacturaVenta)model.getBean()).getVendedor().getNombre();
+				return ((FacturaCompra)model.getBean()).getProveedor().getRuc();
 			}
 		
 		});
 		columns.add(column);
-
-		// vendedor cedula
-		column = new ColumnConfig("vendedor.cedula", "Cédula del Vendedor", 100);
+		
+		
+		// comprador nombre
+		column = new ColumnConfig("comprador.nombre", "Nombre del Comprador", 100);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				return ((FacturaVenta)model.getBean()).getVendedor().getCedula();
+				return ((FacturaCompra)model.getBean()).getComprador().getNombre();
 			}
 		
-		});		
+		});
+
+		// comprador cedula
+		column = new ColumnConfig("comprador.cedula", "Cédula del Comprador", 100);
+		column.setRenderer(new GridCellRenderer<BeanModel>() {
+
+			@Override
+			public Object render(BeanModel model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<BeanModel> store, Grid<BeanModel> grid) {
+				return ((FacturaCompra)model.getBean()).getComprador().getCedula();
+			}
+		
+		});
+		
 		columns.add(column);
 		
 		// total
 		column = new ColumnConfig("total", "Total", 100);
 		columns.add(column);
 
-		// saldo
-		column = new ColumnConfig("saldo", "Saldo", 100);
-		columns.add(column);
-		
 		return new ColumnModel(columns);
 	}
 

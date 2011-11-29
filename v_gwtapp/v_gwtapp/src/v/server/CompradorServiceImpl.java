@@ -26,8 +26,11 @@ import v.client.rpc.CompradorService;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.facade.CompradorFacadeLocal;
+import v.modelo.FacturaCompra;
+import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -171,5 +174,55 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		Converter<Producto> pc = new Converter<Producto>();
 		products = pc.convertObjects(products);
 		return new BasePagingLoadResult<Producto>(products, loadConfig.getOffset(), count);
+	}
+
+	@Override
+	public PagingLoadResult<FacturaCompra> listarCompras(FilterPagingLoadConfig loadConfig) {
+		int count = compradorFacade.getTotalCompras();
+		List<FilterConfig> filters = loadConfig.getFilterConfigs();
+		int start = loadConfig.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		List<FacturaCompra> purchases = compradorFacade.listarCompras(plainFilters, start, limit);
+		Converter<FacturaCompra> fc = new Converter<FacturaCompra>();
+		purchases = fc.convertObjects(purchases);
+		
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Proveedor> pc = new Converter<Proveedor>();
+		
+		for(FacturaCompra c: purchases){
+			c.setProveedor(pc.convertObject(c.getProveedor()));
+			c.setComprador(uc.convertObject(c.getComprador()));
+		}
+		
+		return new BasePagingLoadResult<FacturaCompra>(purchases, loadConfig.getOffset(), count);
+	}
+
+	@Override
+	public PagingLoadResult<FacturaDetalleCompra> listarComprasDetalles(
+			FilterPagingLoadConfig config, FacturaCompra compra) {
+		int count = compradorFacade.getTotalDetallesCompra(compra.getNumeroFactura());
+		List<FilterConfig> filters = config.getFilterConfigs();
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		plainFilters.add(new SimpleFilter("cabecera.numeroFactura", compra.getNumeroFactura(), "="));
+		List<FacturaDetalleCompra> detalles = compradorFacade.listarComprasDetalles(plainFilters, start, limit);
+		
+		Converter<FacturaDetalleCompra> fdcc = new Converter<FacturaDetalleCompra>();
+		detalles = fdcc.convertObjects(detalles);
+		
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Proveedor> pc = new Converter<Proveedor>();
+		Converter<FacturaCompra> fcc = new Converter<FacturaCompra>();
+		
+		
+		for(FacturaDetalleCompra fdc: detalles){
+			fdc.setCabecera(fcc.convertObject(fdc.getCabecera()));
+			fdc.getCabecera().setProveedor(pc.convertObject(fdc.getCabecera().getProveedor()));
+			fdc.getCabecera().setComprador(uc.convertObject(fdc.getCabecera().getComprador()));
+		}
+		
+		return new BasePagingLoadResult<FacturaDetalleCompra>(detalles, config.getOffset(), count);	
 	}
 }

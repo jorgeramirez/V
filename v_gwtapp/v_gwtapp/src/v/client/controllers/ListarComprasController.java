@@ -2,9 +2,9 @@ package v.client.controllers;
 
 import v.client.AppConstants;
 import v.client.AppViewport;
-import v.client.dialogs.ListarVentaDetallesDialog;
-import v.client.grids.VentasGrid;
-import v.modelo.FacturaVenta;
+import v.client.dialogs.ListarCompraDetallesDialog;
+import v.client.grids.ComprasGrid;
+import v.modelo.FacturaCompra;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -16,22 +16,22 @@ import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 
 /**
- * Controlador de Listado de Ventas
+ * Controlador de Listado de Compras
  * 
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com> 
  **/
-public class ListarVentasController extends AbstractController {
+public class ListarComprasController extends AbstractController {
 
-	private VentasGrid grid;
+	private ComprasGrid grid;
 	
-	public ListarVentasController() {
-		super(AppConstants.LISTAR_VENTAS_LABEL);
+	public ListarComprasController() {
+		super(AppConstants.LISTAR_COMPRAS_LABEL);
 	}
 
 	@Override
 	public void init() {
-		// creamos grid para listado de ventas
-		grid = new VentasGrid("Ventas", false, true);
+		// creamos grid para listado de compras
+		grid = new ComprasGrid("Compras", false, true);
 		bindHandlers();
 
 		LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
@@ -62,11 +62,12 @@ public class ListarVentasController extends AbstractController {
 	}
 
 	/**
-	 * Despliega el {@link Dialog} con la lista de detalles para esta venta
+	 * Despliega el {@link Dialog} con la lista de detalles para esta compra
 	 **/
 	private void onVerDetallesClicked() {
-		FacturaVenta venta = (FacturaVenta)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
-		ListarVentaDetallesDialog detalles = new ListarVentaDetallesDialog(venta);
+		FacturaCompra compra = (FacturaCompra)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
+		ListarCompraDetallesDialog detalles = new ListarCompraDetallesDialog(compra);
 		detalles.show();
-	}	
+	}
+
 }

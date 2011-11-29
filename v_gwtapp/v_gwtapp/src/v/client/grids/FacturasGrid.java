@@ -105,6 +105,10 @@ public class FacturasGrid extends CustomGrid<FacturaVenta> {
 		// numero factura
 		ColumnConfig column = new ColumnConfig("numeroFactura", "Número de Factura", 100);
 		columns.add(column);
+		
+		// estado de la factura
+		column = new ColumnConfig("estado", "Estado", 100);
+		columns.add(column);
 
 		// fecha
 		column = new ColumnConfig("fecha", "Fecha", 100);

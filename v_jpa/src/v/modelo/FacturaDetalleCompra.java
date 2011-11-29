@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -15,6 +17,9 @@ import v.modelo.FacturaDetalle;
  */
 @Entity
 @Table(name="factura_detalle_compra")
+@NamedQueries({
+	@NamedQuery(name="FacturaDetalleCompra.countDetallesCompra", query="select count(f) from FacturaDetalleCompra f where f.cabecera.numeroFactura = :id"),
+})
 public class FacturaDetalleCompra extends FacturaDetalle {
 
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)

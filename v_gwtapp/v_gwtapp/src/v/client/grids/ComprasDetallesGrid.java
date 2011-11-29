@@ -7,10 +7,10 @@ import java.util.Map;
 
 import v.client.AppConstants;
 import v.client.AppConstants.Filtros;
-import v.client.rpc.VendedorServiceAsync;
+import v.client.rpc.CompradorServiceAsync;
 import v.client.widgets.CustomGrid;
-import v.modelo.FacturaDetalleVenta;
-import v.modelo.FacturaVenta;
+import v.modelo.FacturaCompra;
+import v.modelo.FacturaDetalleCompra;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -27,26 +27,26 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * Define un {@link Grid} para Listado de Detalles de Venta
+ * Define un {@link Grid} para Listado de Detalles de Compra
  * 
  * @author Jorge Ramírez <jorgeramirez1990@gmail.com>
  **/
-public class VentasDetallesGrid extends CustomGrid<FacturaDetalleVenta> {
-	private final VendedorServiceAsync service = (VendedorServiceAsync)Registry.get(AppConstants.VENDEDOR_SERVICE);
-	private FacturaVenta venta;
+public class ComprasDetallesGrid extends CustomGrid<FacturaDetalleCompra> {
+	private final CompradorServiceAsync service = (CompradorServiceAsync)Registry.get(AppConstants.COMPRADOR_SERVICE);
+	private FacturaCompra compra;
 
-	public VentasDetallesGrid(FacturaVenta venta, String title, boolean useCheckBoxSm, boolean hasFilters) {
+	public ComprasDetallesGrid(FacturaCompra compra, String title, boolean useCheckBoxSm, boolean hasFilters) {
 		super(title, useCheckBoxSm, hasFilters);
-		this.venta = new FacturaVenta();
-		this.venta.setNumeroFactura(venta.getNumeroFactura());
+		this.compra = new FacturaCompra();
+		this.compra.setNumeroFactura(compra.getNumeroFactura());
 	}
 	
 	@Override
-	public RpcProxy<PagingLoadResult<FacturaDetalleVenta>> buildProxy() {
-		return new RpcProxy<PagingLoadResult<FacturaDetalleVenta>>() {
+	public RpcProxy<PagingLoadResult<FacturaDetalleCompra>> buildProxy() {
+		return new RpcProxy<PagingLoadResult<FacturaDetalleCompra>>() {
 			@Override
-			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<FacturaDetalleVenta>> callback) {
-				service.listarVentasDetalles((FilterPagingLoadConfig)loadConfig, venta,  callback);
+			public void load(Object loadConfig, AsyncCallback<PagingLoadResult<FacturaDetalleCompra>> callback) {
+				service.listarComprasDetalles((FilterPagingLoadConfig)loadConfig, compra,  callback);
 			}
 		};
 	}
@@ -82,7 +82,7 @@ public class VentasDetallesGrid extends CustomGrid<FacturaDetalleVenta> {
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+				FacturaDetalleCompra fd = (FacturaDetalleCompra)model.getBean();
 				return fd.getProducto().getCodigo();
 			}
 		});
@@ -97,7 +97,7 @@ public class VentasDetallesGrid extends CustomGrid<FacturaDetalleVenta> {
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+				FacturaDetalleCompra fd = (FacturaDetalleCompra)model.getBean();
 
 				return fd.getProducto().getNombre();
 			}
@@ -113,7 +113,7 @@ public class VentasDetallesGrid extends CustomGrid<FacturaDetalleVenta> {
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
+				FacturaDetalleCompra fd = (FacturaDetalleCompra)model.getBean();
 				return fd.getPrecio();
 
 			}
@@ -132,8 +132,8 @@ public class VentasDetallesGrid extends CustomGrid<FacturaDetalleVenta> {
 			public Object render(BeanModel model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<BeanModel> store, Grid<BeanModel> grid) {
-				FacturaDetalleVenta fd = (FacturaDetalleVenta)model.getBean();
-				return  fd.getPrecio() * fd.getCantidad();
+				FacturaDetalleCompra fd = (FacturaDetalleCompra)model.getBean();
+				return fd.getPrecio() * fd.getCantidad();
 
 			}
 		});
