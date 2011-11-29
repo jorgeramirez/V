@@ -1,6 +1,7 @@
 package v.ws;
 
 public class PagoWs {
+	Long idPago;
 	Long idCajero;
 	Integer idFactura;
 	Double monto;
@@ -38,7 +39,13 @@ public class PagoWs {
 	public void setMonto(Double monto) {
 		this.monto = monto;
 	}
-	
-	
+
+	public Long getIdPago() {
+		return idPago;
+	}
+
+	public void setIdPago(Long idPago) {
+		this.idPago = idPago;
+	}
 }
 
