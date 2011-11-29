@@ -19,7 +19,7 @@ public interface CajeroFacadeLocal {
 	List<FacturaVenta> listarFacturasPendientes(
 			List<SimpleFilter> plainFilters, int start, int limit);
 
-	boolean registrarPago(Pago pago) throws GuardarException;
+	Pago registrarPago(Pago pago) throws GuardarException;
 
 	String registrarPagos(List<PagoWs> pagos) throws GuardarException;
 

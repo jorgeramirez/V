@@ -39,9 +39,6 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	UsuarioEaoLocal usuarioEao;
 	
 	@EJB
-	FacturaVentaEaoLocal facturaVentaEao;
-	
-	@EJB
 	RegistroPagoEaoLocal registroEao;
 
     public CajeroFacade() {
@@ -81,7 +78,7 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	}	
 
 	@Override
-	public boolean registrarPago(Pago pago) throws GuardarException {
+	public Pago registrarPago(Pago pago) throws GuardarException {
 		FacturaVenta factura = 	ventaEao.findById(pago.getFactura().getNumeroFactura());
 		Usuario cajero = usuarioEao.findByUsername(pago.getUsuario().getUsername());
 		Caja caja = cajero.getCaja();
@@ -98,11 +95,11 @@ public class CajeroFacade implements CajeroFacadeLocal {
 		if(factura.getSaldo() == 0.0){
 			factura.setEstado("pagada");
 		}
-		return pagoEao.agregar(pago) != null;
+		return pagoEao.agregar(pago);
 	}
     
 	@Override
-	public String registrarPagos(List<PagoWs> pagos) throws GuardarException{
+	public String registrarPagos(List<PagoWs> pagos) throws GuardarException {
 		
 		String resultado = "Pagos guardados correctamente.";
 		if(pagos.isEmpty()) {
@@ -112,10 +109,9 @@ public class CajeroFacade implements CajeroFacadeLocal {
 		for (PagoWs pagoWs : pagos) {
 			
 			RegistroPago registro = new RegistroPago();
-			boolean pagado = false;
 			
 			Usuario usuario = usuarioEao.findById(pagoWs.getIdCajero());
-	    	FacturaVenta facturaVenta = facturaVentaEao.findById(pagoWs.getIdFactura());
+	    	FacturaVenta facturaVenta = ventaEao.findById(pagoWs.getIdFactura());
 	    	
 	    	Pago pago = new Pago();
 	    	
@@ -125,18 +121,17 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	    	
 	    	try {
 	    		
-				pagado = registrarPago(pago);
+				pago = registrarPago(pago);
 				registro.setRealizado(true);
 			
 	    	} catch (GuardarException e) {
-				
 				registro.setRealizado(false);
 				registro.setMensajeError(e.getMessage().toString());
 				resultado = "Pagos guardado con errores";
 			
 	    	} finally {
 	    		registro.setFecha(new Date());
-	    		if (pagado){
+	    		if (pago != null){
 	    			registro.setIdPago(pago.getId());
 	    		}
 	    		registroEao.agregar(registro);
