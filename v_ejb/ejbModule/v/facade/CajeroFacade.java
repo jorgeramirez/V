@@ -1,5 +1,6 @@
 package v.facade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,12 +100,9 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	}
     
 	@Override
-	public String registrarPagos(List<PagoWs> pagos) throws GuardarException {
+	public List<PagoWs> registroPagosWebService(List<PagoWs> pagos) throws GuardarException {
 		
-		String resultado = "Pagos guardados correctamente.";
-		if(pagos.isEmpty()) {
-			return "Ningun pago registrado.";
-		}
+		List<PagoWs> pagosRegistrados = new ArrayList<PagoWs>();
 		
 		for (PagoWs pagoWs : pagos) {
 			
@@ -118,26 +116,27 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	    	pago.setUsuario(usuario);
 	    	pago.setFactura(facturaVenta);
 	    	pago.setMonto(pagoWs.getMonto());
+	    	pago.setEstado("cerrado");
 	    	
 	    	try {
-	    		
 				pago = registrarPago(pago);
 				registro.setRealizado(true);
 			
 	    	} catch (GuardarException e) {
 				registro.setRealizado(false);
 				registro.setMensajeError(e.getMessage().toString());
-				resultado = "Pagos guardado con errores";
 			
 	    	} finally {
 	    		registro.setFecha(new Date());
 	    		if (pago != null){
 	    			registro.setIdPago(pago.getId());
+	    			pagoWs.setIdPago(pago.getId());
+					pagosRegistrados.add(pagoWs);
 	    		}
 	    		registroEao.agregar(registro);
 	    	}
 		}
-		return resultado;		
+		return pagosRegistrados;	
 	}
 
 	@Override
