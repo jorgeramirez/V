@@ -15,11 +15,11 @@ public interface AdministradorServiceAsync {
 	void listarNrosCaja(AsyncCallback<List<Integer>> callback);
 	void listarCajas(AsyncCallback<ListLoadResult<Caja>> callback);
 	void agregarUsuario(Usuario u, AsyncCallback<Usuario> callback);
-	void modificarUsuario(Usuario u, AsyncCallback<Void> asyncCallback);
+	void modificarUsuario(Usuario u, AsyncCallback<Boolean> asyncCallback);
 	void existeUsername(String username, AsyncCallback<Boolean> asyncCallback);
 	void eliminarUsuarios(List<Usuario> users, AsyncCallback<Boolean> asyncCallback);
 	void listarCajas(FilterPagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<Caja>> callback);
 	void agregarCaja(Caja cashBox, AsyncCallback<Caja> asyncCallback);
-	void modificarCaja(Caja cashBox, AsyncCallback<Void> asyncCallback);
+	void modificarCaja(Caja cashBox, AsyncCallback<Boolean> asyncCallback);
 	void eliminarCajas(List<Caja> cashBoxes, AsyncCallback<Boolean> asyncCallback);
 }

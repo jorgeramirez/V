@@ -1,5 +1,6 @@
 package v.facade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,9 +40,6 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	UsuarioEaoLocal usuarioEao;
 	
 	@EJB
-	FacturaVentaEaoLocal facturaVentaEao;
-	
-	@EJB
 	RegistroPagoEaoLocal registroEao;
 
     public CajeroFacade() {
@@ -74,9 +72,14 @@ public class CajeroFacade implements CajeroFacadeLocal {
 			List<SimpleFilter> plainFilters, int start, int limit) {
 		return ventaEao.listar(plainFilters, start, limit);
 	}
+	
+	@Override
+	public List<FacturaVenta> listarFacturas(List<SimpleFilter> plainFilters, int start, int limit) {
+		return ventaEao.listar(plainFilters, start, limit);
+	}	
 
 	@Override
-	public boolean registrarPago(Pago pago) throws GuardarException {
+	public Pago registrarPago(Pago pago) throws GuardarException {
 		FacturaVenta factura = 	ventaEao.findById(pago.getFactura().getNumeroFactura());
 		Usuario cajero = usuarioEao.findByUsername(pago.getUsuario().getUsername());
 		Caja caja = cajero.getCaja();
@@ -93,50 +96,76 @@ public class CajeroFacade implements CajeroFacadeLocal {
 		if(factura.getSaldo() == 0.0){
 			factura.setEstado("pagada");
 		}
-		return pagoEao.agregar(pago) != null;
+		return pagoEao.agregar(pago);
 	}
     
 	@Override
-	public String registrarPagos(List<PagoWs> pagos) throws GuardarException{
+	public List<PagoWs> registroPagosWebService(List<PagoWs> pagos) throws GuardarException {
 		
-		String resultado = "Pagos guardados correctamente.";
-		if(pagos.isEmpty()) {
-			return "Ningun pago registrado.";
-		}
+		List<PagoWs> pagosRegistrados = new ArrayList<PagoWs>();
 		
 		for (PagoWs pagoWs : pagos) {
 			
 			RegistroPago registro = new RegistroPago();
-			boolean pagado = false;
 			
 			Usuario usuario = usuarioEao.findById(pagoWs.getIdCajero());
-	    	FacturaVenta facturaVenta = facturaVentaEao.findById(pagoWs.getIdFactura());
+	    	FacturaVenta facturaVenta = ventaEao.findById(pagoWs.getIdFactura());
 	    	
 	    	Pago pago = new Pago();
 	    	
 	    	pago.setUsuario(usuario);
 	    	pago.setFactura(facturaVenta);
 	    	pago.setMonto(pagoWs.getMonto());
+	    	pago.setEstado("cerrado");
 	    	
 	    	try {
-	    		
-				pagado = registrarPago(pago);
+				pago = registrarPago(pago);
 				registro.setRealizado(true);
 			
 	    	} catch (GuardarException e) {
-				
 				registro.setRealizado(false);
 				registro.setMensajeError(e.getMessage().toString());
-				resultado = "Pagos guardado con errores";
 			
 	    	} finally {
 	    		registro.setFecha(new Date());
-	    		if (pagado){
+	    		if (pago != null){
 	    			registro.setIdPago(pago.getId());
+	    			pagoWs.setIdPago(pago.getId());
+					pagosRegistrados.add(pagoWs);
 	    		}
 	    		registroEao.agregar(registro);
 	    	}
 		}
-		return resultado;		
+		return pagosRegistrados;	
+	}
+
+	@Override
+	public int getTotalPagos() {
+		return pagoEao.getTotalPagos();
+	}
+
+	@Override
+	public int getTotalPagosFactura(Integer numeroFactura) {
+		return pagoEao.getTotalPagosFactura(numeroFactura);
+	}
+
+	@Override
+	public List<Pago> listarPagos(List<SimpleFilter> filters, int start, int limit) {
+		return pagoEao.listar(filters, start, limit);
+	}
+
+	@Override
+	public int getTotalFacturas() {
+		return ventaEao.getTotalFacturas();
+	}
+
+	@Override
+	public int getTotalFacturasFilters(List<SimpleFilter> filters) {
+		return ventaEao.getTotalFacturasFilters(filters);
+	}
+
+	@Override
+	public int getTotalPagosFilters(List<SimpleFilter> plainFilters) {
+		return pagoEao.getTotalPagosFilters(plainFilters);
 	}
 }

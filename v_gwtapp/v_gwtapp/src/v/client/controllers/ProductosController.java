@@ -185,11 +185,10 @@ public class ProductosController extends AbstractController {
 
 			@Override
 			public void onSuccess(Boolean ok) {
-				if(ok){
-					grid.getGrid().getStore().getLoader().load();
-				}else{
+				if(!ok){
 					MessageBox.alert("Error", "No se pudo modificar el producto", null);
 				}
+				grid.getGrid().getStore().getLoader().load();	
 			}
 		});
 	}

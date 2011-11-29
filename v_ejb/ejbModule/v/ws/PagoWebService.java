@@ -1,5 +1,6 @@
 package v.ws;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -8,55 +9,42 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import v.eao.FacturaVentaEaoLocal;
-import v.eao.UsuarioEaoLocal;
 import v.excepciones.GuardarException;
 import v.facade.CajeroFacadeLocal;
-import v.modelo.FacturaVenta;
-import v.modelo.Pago;
-import v.modelo.Usuario;
 
-/**
- * Session Bean implementation class PagoWebService
- */
+
 @WebService()
 @Stateless
 public class PagoWebService implements PagoWebServiceRemote {
-
-
-    @EJB
-    CajeroFacadeLocal cajeroFacade;
-	
-    @EJB
-    UsuarioEaoLocal usuarioEao;
-    
-    @EJB
-    FacturaVentaEaoLocal facturaVentaEao;
-    
+  
     public PagoWebService() {
     }
     
-    @WebMethod(operationName = "registrarPago")
-    public String registrarPago(@WebParam(name = "idCajero") Long idCajero,
-            @WebParam(name = "idFactura") Integer idFactura,
-            @WebParam(name = "monto") Double monto) throws GuardarException{
-    	
-    	Usuario usuario = usuarioEao.findById(idCajero);
-    	FacturaVenta facturaVenta = facturaVentaEao.findById(idFactura);
-    	Pago pago = new Pago();
-    	
-    	pago.setUsuario(usuario);
-    	pago.setFactura(facturaVenta);
-    	pago.setMonto(monto);
-    	
-    	if (cajeroFacade.registrarPago(pago)){
-    		return "Pago guardado exitosamente";
-    	}
-    	return "Error al guardar el pago";
-    }
-
+    @EJB
+    CajeroFacadeLocal cajeroFacade;
+    
     @WebMethod(operationName = "registrarPagos")
-    public String registrarPagos(@WebParam(name = "pagos") List<PagoWs> pagos){
-    	return registrarPagos(pagos);
+    public List<PagoWs> registrarPagos(@WebParam(name = "pagos") List<PagoWs> pagos) {
+    	
+    	List<PagoWs> listaRetorno = new ArrayList<PagoWs>();
+    	
+    	for (PagoWs pago : pagos){
+    		System.out.println("----");
+    		System.out.print("idCajero: ");
+    		System.out.println(pago.getIdCajero());
+    		System.out.print("idFactura: ");
+    		System.out.println(pago.getIdFactura());
+    		System.out.print("Monto: ");
+    		System.out.println(pago.getMonto());
+    		System.out.println("----");
+    	}
+    	try {
+    		listaRetorno = cajeroFacade.registroPagosWebService(pagos);
+			return listaRetorno;
+		} catch (GuardarException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listaRetorno;
     }
 }

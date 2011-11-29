@@ -3,6 +3,7 @@ package v.client.controllers;
 import v.client.AppConstants;
 import v.client.AppViewport;
 import v.client.Util;
+import v.client.dialogs.ListarPagosDialog;
 import v.client.forms.PagoEditorForm;
 import v.client.grids.CobroFacturasGrid;
 import v.client.rpc.CajeroServiceAsync;
@@ -75,7 +76,13 @@ public class CobrarFacturasController extends AbstractController {
 						onAddClicked();
 					}
 				});
+				grid.getVerPagosButton().addSelectionListener(new SelectionListener<ButtonEvent>() {
 
+					@Override
+					public void componentSelected(ButtonEvent ce) {
+						onVerPagosClicked();
+					}
+				});
 			}
 		
 		});
@@ -141,6 +148,7 @@ public class CobrarFacturasController extends AbstractController {
 				FacturaVenta factura = (FacturaVenta)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
 				final Pago p = new Pago();
 				p.setFactura(factura);
+				p.setMonto(factura.getSaldo());
 				p.setEstado(AppConstants.PAGO_NO_CERRADO);
 				loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
 
@@ -160,5 +168,14 @@ public class CobrarFacturasController extends AbstractController {
 			}
 		});
 		form.show();
+	}
+	
+	/**
+	 * Despliega el Dialog con la lista de pagos para esta factura.
+	 **/
+	private void onVerPagosClicked() {
+		FacturaVenta factura = (FacturaVenta)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
+		ListarPagosDialog pagos = new ListarPagosDialog(factura);
+		pagos.show();
 	}
 }

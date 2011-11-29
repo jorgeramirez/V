@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import util.SimpleFilter;
 import v.eao.FacturaCompraEaoLocal;
+import v.eao.FacturaDetalleCompraEaoLocal;
 import v.eao.ProductoEaoLocal;
 import v.eao.ProveedorEaoLocal;
 import v.excepciones.EliminarException;
@@ -28,6 +29,9 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	
 	@EJB
 	FacturaCompraEaoLocal facturaEao;
+	
+	@EJB
+	FacturaDetalleCompraEaoLocal detalleEao;
 	
     public CompradorFacade() {
     	
@@ -123,5 +127,46 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	@Override
 	public Object findProductoByRuc(String ruc) {
 		return proveedorEao.findByRuc(ruc);
+	}
+
+	@Override
+	public int getTotalCompras() {
+		return facturaEao.getCount();
+	}
+
+	@Override
+	public List<FacturaCompra> listarCompras(List<SimpleFilter> filters, int start, int limit) {
+		return facturaEao.listarCompras(filters, start, limit);
+	}
+
+	@Override
+	public int getTotalDetallesCompra(Integer numeroFactura) {
+		return detalleEao.getTotalDetallesCompra(numeroFactura);
+	}
+
+	@Override
+	public List<FacturaDetalleCompra> listarComprasDetalles(
+			List<SimpleFilter> plainFilters, int start, int limit) {
+		return detalleEao.listarComprasDetalles(plainFilters, start, limit);
+	}
+
+	@Override
+	public int getTotalProductosFilters(List<SimpleFilter> plainFilters) {
+		return productoEao.getTotalProductosFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalProveedoresFilters(List<SimpleFilter> plainFilters) {
+		return proveedorEao.getTotalProveedoresFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalComprasFilters(List<SimpleFilter> plainFilters) {
+		return facturaEao.getTotalComprasFilters(plainFilters);
+	}
+
+	@Override
+	public int getTotalDetallesCompraFilters(List<SimpleFilter> plainFilters) {
+		return detalleEao.getTotalDetallesCompraFilters(plainFilters);
 	}
 }

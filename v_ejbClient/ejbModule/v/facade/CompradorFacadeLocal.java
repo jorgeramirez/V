@@ -7,6 +7,7 @@ import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaCompra;
+import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
 
@@ -40,5 +41,22 @@ public interface CompradorFacadeLocal {
 	int getTotalProveedores();
 
 	Object findProductoByRuc(String ruc);
+
+	int getTotalCompras();
+
+	List<FacturaCompra> listarCompras(List<SimpleFilter> filters, int start, int limit);
+
+	int getTotalDetallesCompra(Integer numeroFactura);
+
+	List<FacturaDetalleCompra> listarComprasDetalles(
+			List<SimpleFilter> plainFilters, int start, int limit);
+
+	int getTotalProductosFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalProveedoresFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalComprasFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalDetallesCompraFilters(List<SimpleFilter> plainFilters);
 
 }

@@ -153,12 +153,16 @@ public class ClientesController extends AbstractController {
 	
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 	
 			@Override
 			public void onSuccess(Cliente cliente) {
-				grid.getGrid().getStore().getLoader().load();
+				if(cliente == null){
+					MessageBox.alert("Error", "No se pudo crear el cliente", null);
+				}else{
+					grid.getGrid().getStore().getLoader().load();
+				}
 			}
 		});
 	}
@@ -168,16 +172,19 @@ public class ClientesController extends AbstractController {
 	 **/
 	private void updateClient(final BeanModel bm){
 		Cliente cliente = (Cliente)bm.getBean();
-		service.modificarCliente(cliente, new AsyncCallback<Void>() {
+		service.modificarCliente(cliente, new AsyncCallback<Boolean>() {
 	
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
 			}
 	
 			@Override
-			public void onSuccess(Void result) {
-				grid.getGrid().getStore().getLoader().load();
+			public void onSuccess(Boolean ok) {
+				if(!ok){
+					MessageBox.alert("Error", "No se pudo modificar el cliente", null);
+				}
+				grid.getGrid().getStore().getLoader().load();			
 			}
 		});
 	}

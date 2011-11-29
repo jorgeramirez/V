@@ -1,12 +1,16 @@
 package v.eao;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaCompra;
@@ -55,6 +59,51 @@ public class FacturaCompraEao implements FacturaCompraEaoLocal {
 		}catch(Exception pe) {
 			throw new EliminarException(pe.getMessage());
 		}
+	}
+
+	@Override
+	public int getCount() {
+		Query q = em.createNamedQuery("FacturaCompra.count");
+		return Integer.parseInt(q.getSingleResult().toString());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<FacturaCompra> listarCompras(List<SimpleFilter> filters, int start, int limit) {
+		String q = "select f from FacturaCompra f ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "f." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q, FacturaCompra.class);
+		query.setFirstResult(start);
+		query.setMaxResults(limit);
+		return query.getResultList();
+	}
+
+	@Override
+	public int getTotalComprasFilters(List<SimpleFilter> filters) {
+		String q = "select count(f) from FacturaCompra f ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "f." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q);
+		return Integer.parseInt(query.getSingleResult().toString());
 	}
 
 }

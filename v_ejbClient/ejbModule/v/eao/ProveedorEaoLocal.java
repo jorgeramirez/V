@@ -21,8 +21,10 @@ public interface ProveedorEaoLocal {
 
 	Proveedor getById(Long id);
 
-	public int getCount();
+	int getCount();
 
-	public Proveedor findByRuc(String ruc);
+	Proveedor findByRuc(String ruc);
+
+	int getTotalProveedoresFilters(List<SimpleFilter> plainFilters);
 
 }

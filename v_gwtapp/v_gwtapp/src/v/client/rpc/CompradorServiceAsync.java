@@ -2,6 +2,8 @@ package v.client.rpc;
 
 import java.util.List;
 
+import v.modelo.FacturaCompra;
+import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
 
@@ -40,5 +42,11 @@ public interface CompradorServiceAsync {
 
 	void listarProductosConExistencia(FilterPagingLoadConfig loadConfig,
 			AsyncCallback<PagingLoadResult<Producto>> callback);
+
+	void listarCompras(FilterPagingLoadConfig loadConfig,
+			AsyncCallback<PagingLoadResult<FacturaCompra>> callback);
+
+	void listarComprasDetalles(FilterPagingLoadConfig loadConfig, FacturaCompra compra, 
+			AsyncCallback<PagingLoadResult<FacturaDetalleCompra>> callback);
 
 }

@@ -25,4 +25,6 @@ public interface AdministradorFacadeLocal {
 	void modificarCaja(Caja c) throws GuardarException;
 	void eliminarCaja(Caja c) throws EliminarException;
 	String cifrarPassword(String textoplano) throws IllegalStateException;
+	int getTotalCajasFiltros(List<SimpleFilter> filters);
+	int getTotalUsuariosFilters(List<SimpleFilter> filters);
 }

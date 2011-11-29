@@ -28,4 +28,6 @@ public interface CajaEaoLocal {
 
 	List<Pago> pagosNoCerrados(Long idCajero);
 
+	int getTotalCajasFiltros(List<SimpleFilter> filters);
+
 }

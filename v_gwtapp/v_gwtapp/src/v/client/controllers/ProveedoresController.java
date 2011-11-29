@@ -185,11 +185,10 @@ public class ProveedoresController extends AbstractController {
 
 			@Override
 			public void onSuccess(Boolean ok) {
-				if(ok){
-					grid.getGrid().getStore().getLoader().load();
-				}else{
+				if(!ok){
 					MessageBox.alert("Error", "No se pudo modificar el proveedor", null);
 				}
+				grid.getGrid().getStore().getLoader().load();
 			}
 		});
 	}

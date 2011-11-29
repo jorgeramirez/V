@@ -17,6 +17,8 @@ package v.client.rpc;
 
 import java.util.List;
 
+import v.modelo.FacturaCompra;
+import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
 
@@ -28,15 +30,30 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("CompradorService")
 public interface CompradorService extends RemoteService {
 	boolean existeCodigoProducto(String codigo);
+	
 	PagingLoadResult<Producto> listarProductos(FilterPagingLoadConfig loadConfig);
+	
 	Producto agregarProducto(Producto p);
+	
 	boolean modificarProducto(Producto p);
+	
 	boolean eliminarProductos(List<Producto> products);
+	
 	PagingLoadResult<Proveedor> listarProveedores(FilterPagingLoadConfig loadConfig);
+	
 	boolean existeRucProveedor(String ruc);
+	
 	Proveedor agregarProveedor(Proveedor provider);
+	
 	boolean modificarProveedor(Proveedor provider);
+	
 	boolean eliminarProveedores(List<Proveedor> providers);
+	
 	PagingLoadResult<Producto> listarProductosConExistencia(
 			FilterPagingLoadConfig loadConfig);
+	
+	PagingLoadResult<FacturaCompra> listarCompras(FilterPagingLoadConfig loadConfig);
+	
+	PagingLoadResult<FacturaDetalleCompra> listarComprasDetalles(FilterPagingLoadConfig loadConfig, FacturaCompra compra);
+	
 }

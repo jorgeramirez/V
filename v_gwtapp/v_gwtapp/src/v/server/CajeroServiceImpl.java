@@ -25,6 +25,7 @@ import v.client.AppConstants;
 import v.client.rpc.CajeroService;
 import v.excepciones.GuardarException;
 import v.facade.CajeroFacadeLocal;
+import v.modelo.Caja;
 import v.modelo.Cliente;
 import v.modelo.FacturaVenta;
 import v.modelo.Pago;
@@ -43,12 +44,12 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 	
 	@Override
 	public PagingLoadResult<FacturaVenta> listarFacturasPendientes(FilterPagingLoadConfig config) {
-		int count = cajeroFacade.getTotalFacturasPendientes();
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
 		plainFilters.add(new SimpleFilter("estado", AppConstants.FACTURA_PENDIENTE_PAGO, "like"));
+		int count = cajeroFacade.getTotalFacturasFilters(plainFilters);
 		List<FacturaVenta> sales = cajeroFacade.listarFacturasPendientes(plainFilters, start, limit);
 		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
 		Converter<Usuario> uc = new Converter<Usuario>();
@@ -61,6 +62,26 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 		return new BasePagingLoadResult<FacturaVenta>(sales, config.getOffset(), count);
 	}
 
+	
+	@Override
+	public PagingLoadResult<FacturaVenta> listarFacturas(FilterPagingLoadConfig config) {
+		List<FilterConfig> filters = config.getFilterConfigs();
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = cajeroFacade.getTotalFacturasFilters(plainFilters);
+		List<FacturaVenta> sales = cajeroFacade.listarFacturas(plainFilters, start, limit);
+		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Cliente> cc = new Converter<Cliente>();
+		sales = fvc.convertObjects(sales);
+		for(FacturaVenta fv: sales){
+			fv.setVendedor(uc.convertObject(fv.getVendedor()));
+			fv.setCliente(cc.convertObject(fv.getCliente()));
+		}
+		return new BasePagingLoadResult<FacturaVenta>(sales, config.getOffset(), count);
+	}	
+	
 	@Override
 	public String registrarPago(Pago pago) {
 		String error = null;
@@ -68,6 +89,8 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 			cajeroFacade.registrarPago(pago);
 		} catch (GuardarException e) {
 			e.printStackTrace();
+			error = e.getMessage();
+		}catch(EJBTransactionRolledbackException e){
 			error = e.getMessage();
 		}
 		return error;
@@ -85,5 +108,34 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 			errorMsg = e.getMessage();
 		}
 		return errorMsg;
+	}
+
+	@Override
+	public PagingLoadResult<Pago> listarPagos(FilterPagingLoadConfig config, FacturaVenta factura) {
+		List<FilterConfig> filters = config.getFilterConfigs();
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		if(factura != null){
+			plainFilters.add(new SimpleFilter("factura.numeroFactura", factura.getNumeroFactura(), "="));
+		}
+		int count = cajeroFacade.getTotalPagosFilters(plainFilters);
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<Pago> payments = cajeroFacade.listarPagos(plainFilters, start, limit);
+		Converter<Pago> pc = new Converter<Pago>();
+		Converter<FacturaVenta> fc = new Converter<FacturaVenta>();
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Caja> cc = new Converter<Caja>();
+		Converter<Cliente> clc = new Converter<Cliente>();
+		payments = pc.convertObjects(payments);
+		FacturaVenta f;
+		for(Pago p: payments){
+			p.setUsuario(uc.convertObject(p.getUsuario()));
+			p.setCaja(cc.convertObject(p.getCaja()));
+			f = fc.convertObject(p.getFactura());
+			f.setVendedor(uc.convertObject(f.getVendedor()));
+			f.setCliente(clc.convertObject(f.getCliente()));
+			p.setFactura(f);
+		}
+		return new BasePagingLoadResult<Pago>(payments, config.getOffset(), count);
 	}
 }

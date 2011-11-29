@@ -19,8 +19,23 @@ public interface CajeroFacadeLocal {
 	List<FacturaVenta> listarFacturasPendientes(
 			List<SimpleFilter> plainFilters, int start, int limit);
 
-	boolean registrarPago(Pago pago) throws GuardarException;
+	Pago registrarPago(Pago pago) throws GuardarException;
 
-	String registrarPagos(List<PagoWs> pagos) throws GuardarException;
+	List<PagoWs> registroPagosWebService(List<PagoWs> pagos)
+			throws GuardarException;
+
+	int getTotalPagos();
+
+	int getTotalPagosFactura(Integer numeroFactura);
+
+	List<Pago> listarPagos(List<SimpleFilter> filters, int start, int limit);
+
+	int getTotalFacturas();
+	
+	List<FacturaVenta> listarFacturas(List<SimpleFilter> plainFilters, int start, int limit);
+
+	int getTotalFacturasFilters(List<SimpleFilter> plainFilters);
+
+	int getTotalPagosFilters(List<SimpleFilter> plainFilters);
 
 }

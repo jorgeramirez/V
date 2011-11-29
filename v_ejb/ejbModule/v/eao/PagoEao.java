@@ -1,12 +1,16 @@
 package v.eao;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
+import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Pago;
@@ -60,6 +64,58 @@ public class PagoEao implements PagoEaoLocal {
 	@Override
 	public Pago getById(Long id){
 		return em.find(Pago.class, id);
+	}
+
+	@Override
+	public int getTotalPagos() {
+		Query q = em.createNamedQuery("Pago.count");
+		return Integer.parseInt(q.getSingleResult().toString());
+	}
+
+	@Override
+	public int getTotalPagosFactura(Integer numeroFactura) {
+		Query q = em.createNamedQuery("Pago.getTotalPagosFactura");
+		q.setParameter("id", numeroFactura);
+		return Integer.parseInt(q.getSingleResult().toString());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pago> listar(List<SimpleFilter> filters, int start, int limit) {
+		String q = "select p from Pago p ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "p." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q, Pago.class);
+		query.setFirstResult(start);
+		query.setMaxResults(limit);
+		return query.getResultList();
+	}
+
+	@Override
+	public int getTotalPagosFilters(List<SimpleFilter> filters) {
+		String q = "select count(p) from Pago p ";
+		int i = 1, size = filters.size();
+		if(!filters.isEmpty()){
+			q += "where ";
+			for(SimpleFilter sf: filters){
+				q += "p." + sf;
+				if(size > 1 && i < size){
+					q += " and ";
+				}
+				++i;
+			}
+		}
+		Query query = em.createQuery(q);
+		return Integer.parseInt(query.getSingleResult().toString());
 	}
 
 }

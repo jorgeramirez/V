@@ -86,3 +86,11 @@ font: normal 10px arial, tahoma, sans-serif;
 .icon-discard {
 	background-image: url(images/discard.png) !important; background-repeat: no-repeat; 
 }
+
+.icon-ver-pagos {
+	background-image: url(images/pagos.png) !important; background-repeat: no-repeat; 
+}
+
+.icon-detalles {
+	background-image: url(images/detalles.png) !important; background-repeat: no-repeat; 
+}

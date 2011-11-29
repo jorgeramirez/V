@@ -170,7 +170,7 @@ public class CajasController extends AbstractController {
 	 **/
 	private void updateCaja(final BeanModel c){
 		Caja cashBox = (Caja)c.getBean();
-		service.modificarCaja(cashBox, new AsyncCallback<Void>() {
+		service.modificarCaja(cashBox, new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -178,7 +178,10 @@ public class CajasController extends AbstractController {
 			}
 
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(Boolean ok) {
+				if(!ok){
+					MessageBox.alert("Error", "No se pudo modificar la caja", null);
+				}
 				grid.getGrid().getStore().getLoader().load();
 			}
 		});

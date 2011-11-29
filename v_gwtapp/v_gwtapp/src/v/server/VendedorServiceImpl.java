@@ -18,6 +18,7 @@ package v.server;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 
 import util.SimpleFilter;
 import v.client.AppConstants;
@@ -26,7 +27,9 @@ import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.facade.VendedorFacadeLocal;
 import v.modelo.Cliente;
+import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
+import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -51,11 +54,11 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 	
 	@Override
 	public PagingLoadResult<Cliente> listarClientes(FilterPagingLoadConfig config) {
-		int count = vendedorFacade.getTotalClientes();
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = vendedorFacade.getTotalClientesFilters(plainFilters);
 		List<Cliente> clientes = vendedorFacade.listarClientes(plainFilters, start, limit);
 		Converter<Cliente> cu = new Converter<Cliente>();
 		clientes = cu.convertObjects(clientes);
@@ -74,17 +77,25 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 				
 		} catch (GuardarException e) {
 			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return added;
 	}
 
 	@Override
-	public void modificarCliente(Cliente c) {
+	public boolean modificarCliente(Cliente c) {
+		boolean ok = true;
 		try {
 			vendedorFacade.modificarCliente(c);
 		} catch (GuardarException e) {
 			e.printStackTrace();
-		}	
+			ok = false;
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
+			ok = false;
+		}
+		return ok;
 	}
 
 
@@ -97,10 +108,33 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 			} catch (EliminarException e) {
 				e.printStackTrace();
 				ok = false;
-				break;
+			}catch(EJBTransactionRolledbackException e){
+				ok = false;
 			}
 		}
 		return ok;
+	}
+
+	@Override
+	public PagingLoadResult<FacturaDetalleVenta> listarVentasDetalles(FilterPagingLoadConfig config, FacturaVenta venta) {
+		List<FilterConfig> filters = config.getFilterConfigs();
+		int start = config.getOffset();
+		int limit = AppConstants.PAGE_SIZE;
+		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		plainFilters.add(new SimpleFilter("cabecera.numeroFactura", venta.getNumeroFactura(), "="));
+		int count = vendedorFacade.getTotalDetallesVentaFilters(plainFilters);
+		List<FacturaDetalleVenta> detalles = vendedorFacade.listarVentasDetalles(plainFilters, start, limit);
+		Converter<FacturaDetalleVenta> fdvc = new Converter<FacturaDetalleVenta>();
+		Converter<Usuario> uc = new Converter<Usuario>();
+		Converter<Cliente> cc = new Converter<Cliente>();
+		Converter<FacturaVenta> fvc = new Converter<FacturaVenta>();
+		detalles = fdvc.convertObjects(detalles);
+		for(FacturaDetalleVenta fdv: detalles){
+			fdv.setCabecera(fvc.convertObject(fdv.getCabecera()));
+			fdv.getCabecera().setVendedor(uc.convertObject(fdv.getCabecera().getVendedor()));
+			fdv.getCabecera().setCliente(cc.convertObject(fdv.getCabecera().getCliente()));
+		}
+		return new BasePagingLoadResult<FacturaDetalleVenta>(detalles, config.getOffset(), count);		
 	}
 
 

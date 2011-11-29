@@ -37,7 +37,7 @@ import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "unchecked"})
 public class AdministradorServiceImpl extends RemoteServiceServlet implements AdministradorService {
 
 	@EJB
@@ -45,11 +45,11 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 	
 	@Override
 	public PagingLoadResult<Usuario> listarUsuarios(FilterPagingLoadConfig config) {
-		int count = administradorFacade.getTotalUsuarios();
 		List<FilterConfig> filters = config.getFilterConfigs();
 		int start = config.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = administradorFacade.getTotalUsuariosFilters(plainFilters);
 		List<Usuario> users = administradorFacade.listarUsuarios(plainFilters, start, limit);
 		Converter<Usuario> cu = new Converter<Usuario>();
 		Converter<Caja> cc = new Converter<Caja>();
@@ -86,17 +86,24 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 			}			
 		} catch (GuardarException e) {
 			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return added;
 	}
 
 	@Override
-	public void modificarUsuario(Usuario u) {
+	public boolean modificarUsuario(Usuario u) {
+		boolean ok = false;
 		try {
 			administradorFacade.modificarUsuario(u);
+			ok = true;
 		} catch (GuardarException e) {
 			e.printStackTrace();
-		}		
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
+		}
+		return ok;
 	}
 
 	/**
@@ -125,11 +132,11 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 
 	@Override
 	public PagingLoadResult<Caja> listarCajas(FilterPagingLoadConfig loadConfig) {
-		int count = administradorFacade.getTotalCajas();
 		List<FilterConfig> filters = loadConfig.getFilterConfigs();
 		int start = loadConfig.getOffset();
 		int limit = AppConstants.PAGE_SIZE;
 		List<SimpleFilter> plainFilters = Filter.processFilters(filters);
+		int count = administradorFacade.getTotalCajasFiltros(plainFilters);
 		List<Caja> cashBoxes = administradorFacade.listarCajas(plainFilters, start, limit);
 		Converter<Caja> cc = new Converter<Caja>();
 		cashBoxes = cc.convertObjects(cashBoxes);
@@ -145,17 +152,24 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 			added = cc.convertObject(added);
 		} catch (GuardarException e) {
 			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
 		return added;		
 	}
 
 	@Override
-	public void modificarCaja(Caja c) {
+	public boolean modificarCaja(Caja c) {
+		boolean ok = false;
 		try {
 			administradorFacade.modificarCaja(c);
+			ok = true;
 		} catch (GuardarException e) {
 			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
 		}
+		return ok;
 	}
 
 	@Override
@@ -168,6 +182,7 @@ public class AdministradorServiceImpl extends RemoteServiceServlet implements Ad
 				e.printStackTrace();
 				ok = false;
 			}catch(EJBTransactionRolledbackException e){
+				e.printStackTrace();
 				ok = false;
 			}
 		}

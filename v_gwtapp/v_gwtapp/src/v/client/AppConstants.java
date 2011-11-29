@@ -33,12 +33,13 @@ public class AppConstants {
 	public static final String REGISTRAR_COMPRA_LABEL = "Registrar Compra";
 	public static final String OPERACIONES_CAJA_LABEL = "Operaciones Caja";
 	public static final String COBRAR_FACTURA_LABEL = "Cobrar Factura";
+	public static final String LISTAR_FACTURAS_LABEL = "Listar Facturas";
 	public static final String CIERRE_CAJA_LABEL = "Cierre de Caja";
 	public static final String LISTAR_VENTAS_LABEL = "Listar Ventas";
 	public static final String LISTAR_COMPRAS_LABEL = "Listar Compras";
 	public static final String LOGOUT_LABEL = "Salir";
 	
-	public static final int PAGE_SIZE = 50;
+	public static final int PAGE_SIZE = 3;
 	
 	//nombre de los roles que maneja el sistema
 	public static final String ADMINISTRADOR_ROL = "administrador";
@@ -54,5 +55,6 @@ public class AppConstants {
 	// labels para el estado de los pagos.
 	public static final String PAGO_CERRADO = "cerrado";
 	public static final String PAGO_NO_CERRADO = "no cerrado";
+
 
 }

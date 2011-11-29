@@ -105,6 +105,11 @@ public abstract class CustomGrid<M> extends ContentPanel {
 	
 	public CustomGrid(String title, boolean useCheckBoxSm, boolean hasFilters){
 		this.title = title;
+		if(title != null){
+			this.setHeading(this.title);	
+		}else{
+			this.setHeaderVisible(false);
+		}		
 		this.useCheckBoxSm = useCheckBoxSm;
 		this.hasFilters = hasFilters;
 		build();
@@ -208,7 +213,6 @@ public abstract class CustomGrid<M> extends ContentPanel {
 		store = new ListStore<BeanModel>(loader);
 		
 		this.setLayout(new FitLayout());
-		this.setHeading(this.title);
 		grid = createGrid();
 		
 		//para no haya espacio al pedo al final
