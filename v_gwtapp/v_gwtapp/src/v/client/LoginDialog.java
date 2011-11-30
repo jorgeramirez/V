@@ -99,6 +99,7 @@ public class LoginDialog extends Dialog {
 
 		login = new Button("Login");
 		login.disable();
+		login.setIconStyle("icon-login");
 		login.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			public void componentSelected(ButtonEvent ce) {
 				onSubmit();

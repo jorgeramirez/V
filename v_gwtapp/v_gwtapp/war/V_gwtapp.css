@@ -94,3 +94,11 @@ font: normal 10px arial, tahoma, sans-serif;
 .icon-detalles {
 	background-image: url(images/detalles.png) !important; background-repeat: no-repeat; 
 }
+
+.icon-pdf {
+	background-image: url(images/pdf.png) !important; background-repeat: no-repeat; 
+}
+
+.icon-login {
+	background-image: url(images/log_in.png) !important; background-repeat: no-repeat; 
+}

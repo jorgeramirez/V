@@ -169,8 +169,10 @@ public class UsuarioEditorForm extends EditorForm {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<SimpleComboValue<String>> se) {
 				cajaCombo.setVisible(false);
+				cajaCombo.setAllowBlank(true);
 				if(se.getSelectedItem().getValue().equals(AppConstants.CAJERO_ROL)){
 					cajaCombo.setVisible(true);
+					cajaCombo.setAllowBlank(false);
 				}
 			}
 		});
