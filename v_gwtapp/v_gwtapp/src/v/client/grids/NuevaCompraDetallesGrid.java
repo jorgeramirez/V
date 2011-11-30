@@ -5,6 +5,7 @@ import java.util.List;
 
 import v.client.Util;
 import v.client.dialogs.ListarProductosDialog;
+import v.client.dialogs.RemoveFromStoreDialog;
 import v.client.forms.CompraDetalleEditorForm;
 import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
@@ -16,18 +17,18 @@ import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
-import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
+import com.extjs.gxt.ui.client.widget.grid.RowNumberer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.Element;
@@ -44,9 +45,10 @@ public class NuevaCompraDetallesGrid extends ContentPanel {
 	private ListStore<BeanModel> store;
 	private String title = "Detalles Compra";
 	private Button addProductButton;
-	private Button removeSelectedButton;
+	private Button removeButton;
 	private Button removeAllButton;
 	private ListarProductosDialog dialog;
+	private RowNumberer rowNumber;
 	
 	public NuevaCompraDetallesGrid() {
 		this.setHeading(this.title);	
@@ -64,10 +66,10 @@ public class NuevaCompraDetallesGrid extends ContentPanel {
 		addProductButton.setIconStyle("icon-add");
 		topToolBar.add(addProductButton);
 		
-		//boton remover seleccionado
-		removeSelectedButton = new Button("Eliminar Seleccionado");
-		removeSelectedButton.setIconStyle("icon-delete");
-		//topToolBar.add(removeSelectedButton);
+		//boton remover
+		removeButton = new Button("Eliminar");
+		removeButton.setIconStyle("icon-delete");
+		topToolBar.add(removeButton);
 		
 		//boton remover todos
 		removeAllButton = new Button("Limpiar", new SelectionListener<ButtonEvent>() {  
@@ -98,11 +100,18 @@ public class NuevaCompraDetallesGrid extends ContentPanel {
 		grid.setStripeRows(true);
 		grid.setColumnLines(true);
 		grid.getView().setForceFit(true); 
-		grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<BeanModel>() {
+		grid.addPlugin(rowNumber);
+		
+		removeButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
 
 			@Override
-			public void selectionChanged(SelectionChangedEvent<BeanModel> se) {
-				removeSelectedButton.setEnabled(se.getSelection().size() > 0);
+			public void componentSelected(ButtonEvent ce) {
+				if(store.getCount() > 0){
+					RemoveFromStoreDialog remove = new RemoveFromStoreDialog(store, "Remover Detalle de Compra");
+					remove.show();
+				}else{
+					MessageBox.alert("Advertencia", "No existen detalles", null);
+				}
 			}
 		});
 		
@@ -122,6 +131,9 @@ public class NuevaCompraDetallesGrid extends ContentPanel {
 		// Creamos los ColumnConfigs
 		List<ColumnConfig> columns = new ArrayList<ColumnConfig>();
 
+		rowNumber = new RowNumberer();
+		columns.add(rowNumber);
+		
 		// producto
 		ColumnConfig column = new ColumnConfig("producto.codigo", "Código de Producto", 100);
 		column.setRenderer(new GridCellRenderer<BeanModel>() {

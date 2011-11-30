@@ -19,6 +19,7 @@ public class NavigationTree extends TreePanel<ModelData> {
 	
 	public void onRender(Element target, int index) {
 		super.onRender(target, index);
+		this.expandAll();
 
 		this.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>() {
 			@Override
