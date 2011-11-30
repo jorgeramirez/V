@@ -55,6 +55,8 @@ public class AppConstants {
 	// labels para el estado de los pagos.
 	public static final String PAGO_CERRADO = "cerrado";
 	public static final String PAGO_NO_CERRADO = "no cerrado";
+	
+	public static final String NUMERO_TELEFONO_ERROR = "El formato del número de telefono debe ser 1223-111-111 o 123-456-788 (los guiones son opcionales)";
 
 
 }

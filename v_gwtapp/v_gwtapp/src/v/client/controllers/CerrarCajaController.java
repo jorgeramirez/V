@@ -37,6 +37,10 @@ public class CerrarCajaController extends AbstractController {
 			@Override
 			public void onSuccess(Usuario u) {
 				user = u;
+				if(u.getRol().compareTo(AppConstants.CAJERO_ROL) != 0){
+					MessageBox.alert("Advertencia", "Sr. Administrador, esta funcionalidad puede ser realizada solo por cajeros", null);
+					return;
+				}
 				viewer = new ReportViewer(u.getId().toString(), "cierre_caja", "Cierre de Caja");
 				bindHandlers();
 				viewer.show();

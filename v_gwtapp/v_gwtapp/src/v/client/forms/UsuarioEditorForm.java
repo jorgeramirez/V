@@ -225,7 +225,7 @@ public class UsuarioEditorForm extends EditorForm {
 		// telefono field
 		text = new TextField<String>();
 		text.setMaxLength(20);
-		text.setValidator(new VTypeValidator(VType.ALPHANUMERIC));
+		text.setValidator(new VTypeValidator(VType.PHONE_NUMBER, AppConstants.NUMERO_TELEFONO_ERROR));
 		text.setFieldLabel("Teléfono");
 		text.setName("telefono");
 		fields.add(text);

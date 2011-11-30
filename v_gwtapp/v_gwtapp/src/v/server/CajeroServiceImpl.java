@@ -128,8 +128,11 @@ public class CajeroServiceImpl extends RemoteServiceServlet implements CajeroSer
 		Converter<Cliente> clc = new Converter<Cliente>();
 		payments = pc.convertObjects(payments);
 		FacturaVenta f;
+		Usuario user;
 		for(Pago p: payments){
-			p.setUsuario(uc.convertObject(p.getUsuario()));
+			user = uc.convertObject(p.getUsuario());
+			user.setCaja(cc.convertObject(user.getCaja()));
+			p.setUsuario(user);
 			p.setCaja(cc.convertObject(p.getCaja()));
 			f = fc.convertObject(p.getFactura());
 			f.setVendedor(uc.convertObject(f.getVendedor()));
