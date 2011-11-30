@@ -34,6 +34,8 @@ public class CobrarFacturasController extends AbstractController {
 
 	private CobroFacturasGrid grid;
 	private final CajeroServiceAsync service = Registry.get(AppConstants.CAJERO_SERVICE);
+	final LoginServiceAsync loginService = (LoginServiceAsync)Registry.get(AppConstants.LOGIN_SERVICE);
+	private Usuario user;
 
 	public CobrarFacturasController() {
 		super(AppConstants.COBRAR_FACTURA_LABEL);
@@ -42,13 +44,31 @@ public class CobrarFacturasController extends AbstractController {
 	@Override
 	public void init() {
 
-		// creamos grid para Cobro de Facturas.
-		grid = new CobroFacturasGrid("Facturas Pendientes");
-		bindHandlers();
+		loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
+			
+			@Override
+			public void onSuccess(Usuario u) {
+				user = u;
+				if(u.getRol().compareTo(AppConstants.CAJERO_ROL) != 0){
+					MessageBox.alert("Advertencia", "Sr. Administrador, esta funcionalidad puede ser realizada solo por cajeros", null);
+					return;
+				}
 
-		LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
-		cp.add(grid);
-		cp.layout();
+				// creamos grid para Cobro de Facturas.
+				grid = new CobroFacturasGrid("Facturas Pendientes");
+				bindHandlers();
+
+				LayoutContainer cp = (LayoutContainer)Registry.get(AppViewport.CENTER_REGION);
+				cp.add(grid);
+				cp.layout();
+				
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				MessageBox.alert("Error en el servidor", caught.getMessage(), null);
+			}
+		});		
 
 	}
 
@@ -144,26 +164,14 @@ public class CobrarFacturasController extends AbstractController {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
-				final LoginServiceAsync loginService = (LoginServiceAsync)Registry.get(AppConstants.LOGIN_SERVICE);
 				FacturaVenta factura = (FacturaVenta)grid.getGrid().getSelectionModel().getSelectedItem().getBean();
 				final Pago p = new Pago();
 				p.setFactura(factura);
 				p.setMonto(factura.getSaldo());
 				p.setEstado(AppConstants.PAGO_NO_CERRADO);
-				loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						MessageBox.alert("Error en el Servidor", caught.getMessage(), null);
-					}
-
-					@Override
-					public void onSuccess(Usuario cajero) {
-						p.setUsuario(cajero);
-						p.setCaja(cajero.getCaja());
-						form.getFormBindings().bind(Util.createBeanModel(p));
-					}
-				});
+				p.setUsuario(user);
+				p.setCaja(user.getCaja());
+				form.getFormBindings().bind(Util.createBeanModel(p));
 				bindButtonsHandlers(form, true);
 			}
 		});

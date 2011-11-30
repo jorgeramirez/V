@@ -1,5 +1,6 @@
 package v.client.forms;
 
+import v.client.AppConstants;
 import v.client.VType;
 import v.client.VTypeValidator;
 import v.client.widgets.EditorForm;
@@ -54,7 +55,7 @@ public class ClienteEditorForm extends EditorForm {
 		// telefono field
 		text = new TextField<String>();
 		text.setMaxLength(20);
-		text.setValidator(new VTypeValidator(VType.ALPHANUMERIC));
+		text.setValidator(new VTypeValidator(VType.PHONE_NUMBER, AppConstants.NUMERO_TELEFONO_ERROR));
 		text.setFieldLabel("Teléfono");
 		text.setName("telefono");
 		fields.add(text);

@@ -51,6 +51,7 @@ public class ReportViewer extends Dialog {
 
 		final Dialog me = this;
 		
+		this.getButtonById(PDF).setIconStyle("icon-pdf");
 		this.getButtonById(PDF).addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override  
 			public void componentSelected(ButtonEvent ce) {

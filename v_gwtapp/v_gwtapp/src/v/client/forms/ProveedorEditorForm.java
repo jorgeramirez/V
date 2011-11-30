@@ -86,7 +86,7 @@ public class ProveedorEditorForm extends EditorForm {
 		telefono.setName("telefono");
 		telefono.setFieldLabel("Teléfono");
 		telefono.setAllowBlank(false);
-		telefono.setValidator(new VTypeValidator(VType.ALPHANUMERIC));
+		telefono.setValidator(new VTypeValidator(VType.PHONE_NUMBER, AppConstants.NUMERO_TELEFONO_ERROR));
 		telefono.setMaxLength(20);
 		fields.add(telefono);		
 	}
