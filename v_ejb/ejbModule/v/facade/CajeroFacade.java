@@ -155,10 +155,7 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	    	}
 	    	
     		registro.setFecha(new Date());
-    		
-    		//if (pago != null){
-    		//	}	
-    		
+    			
     		try {
 				registroEao.agregar(registro);
 			} catch (GuardarException e) {
