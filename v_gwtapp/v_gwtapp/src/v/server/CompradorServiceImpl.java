@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
+import javax.servlet.http.HttpSession;
 
 import util.SimpleFilter;
 import v.client.AppConstants;
@@ -232,5 +233,22 @@ public class CompradorServiceImpl extends RemoteServiceServlet implements Compra
 		}
 		
 		return new BasePagingLoadResult<FacturaDetalleCompra>(detalles, config.getOffset(), count);	
+	}
+
+	@Override
+	public boolean registrarCompra(FacturaCompra compra) {
+		boolean ok = false;
+		HttpSession session = getThreadLocalRequest().getSession();
+        Usuario comprador = (Usuario) session.getAttribute("usuario");
+        compra.setComprador(comprador);
+        try {
+			compradorFacade.registrarCompra(compra);
+			ok = true;
+		} catch (GuardarException e) {
+			e.printStackTrace();
+		}catch(EJBTransactionRolledbackException e){
+			e.printStackTrace();
+		}
+        return ok;
 	}
 }

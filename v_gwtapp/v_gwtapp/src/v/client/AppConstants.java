@@ -39,7 +39,7 @@ public class AppConstants {
 	public static final String LISTAR_COMPRAS_LABEL = "Listar Compras";
 	public static final String LOGOUT_LABEL = "Salir";
 	
-	public static final int PAGE_SIZE = 3;
+	public static final int PAGE_SIZE = 50;
 	
 	//nombre de los roles que maneja el sistema
 	public static final String ADMINISTRADOR_ROL = "administrador";

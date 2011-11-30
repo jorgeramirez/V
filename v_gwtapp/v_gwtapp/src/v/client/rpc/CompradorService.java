@@ -55,5 +55,6 @@ public interface CompradorService extends RemoteService {
 	PagingLoadResult<FacturaCompra> listarCompras(FilterPagingLoadConfig loadConfig);
 	
 	PagingLoadResult<FacturaDetalleCompra> listarComprasDetalles(FilterPagingLoadConfig loadConfig, FacturaCompra compra);
-	
+
+	boolean registrarCompra(FacturaCompra compra);
 }

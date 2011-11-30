@@ -49,4 +49,7 @@ public interface CompradorServiceAsync {
 	void listarComprasDetalles(FilterPagingLoadConfig loadConfig, FacturaCompra compra, 
 			AsyncCallback<PagingLoadResult<FacturaDetalleCompra>> callback);
 
+	void registrarCompra(FacturaCompra compra,
+			AsyncCallback<Boolean> asyncCallback);
+
 }

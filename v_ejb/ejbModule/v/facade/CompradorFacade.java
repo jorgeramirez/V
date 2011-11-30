@@ -1,5 +1,6 @@
 package v.facade;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -10,12 +11,14 @@ import v.eao.FacturaCompraEaoLocal;
 import v.eao.FacturaDetalleCompraEaoLocal;
 import v.eao.ProductoEaoLocal;
 import v.eao.ProveedorEaoLocal;
+import v.eao.UsuarioEaoLocal;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.FacturaCompra;
 import v.modelo.FacturaDetalleCompra;
 import v.modelo.Producto;
 import v.modelo.Proveedor;
+import v.modelo.Usuario;
 
 
 @Stateless
@@ -32,6 +35,9 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	
 	@EJB
 	FacturaDetalleCompraEaoLocal detalleEao;
+	
+	@EJB
+	UsuarioEaoLocal usuarioEao;
 	
     public CompradorFacade() {
     	
@@ -83,6 +89,7 @@ public class CompradorFacade implements CompradorFacadeLocal {
 	public void registrarCompra(FacturaCompra factura) throws GuardarException {
 		
 		Proveedor proveedor = proveedorEao.getById(factura.getProveedor().getId());
+		Usuario comprador = usuarioEao.findById(factura.getComprador().getId());
 		
 		for (FacturaDetalleCompra detalle : factura.getDetalles()) {
 			
@@ -99,14 +106,18 @@ public class CompradorFacade implements CompradorFacadeLocal {
 			producto.setCosto(nuevoCosto);
 			producto.setCantidad(nuevaCantidad);
 			
-			productoEao.modificar(producto);
+			//productoEao.modificar(producto);
 				
-			detalle.setProducto(producto);			
+			detalle.setProducto(producto);
+			detalle.setCabecera(factura);
 		}
-		
+		factura.setFecha(new Date());
 		factura.setProveedor(proveedor);
+		factura.setComprador(comprador);
 		
 		facturaEao.agregar(factura);
+		
+				
 	}
 
 	@Override

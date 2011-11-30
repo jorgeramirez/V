@@ -37,7 +37,7 @@ import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-@SuppressWarnings({"serial", "unchecked"})
+@SuppressWarnings({"serial"})
 public class AdministradorServiceImpl extends RemoteServiceServlet implements AdministradorService {
 
 	@EJB
