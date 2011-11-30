@@ -46,7 +46,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class VentasController extends AbstractController {
-	private FacturaDetalleVentaGrid gridDetalle;
+	private final FacturaDetalleVentaGrid gridDetalle = new FacturaDetalleVentaGrid();
 	private VentasClienteGrid gridCliente;
 
 	private FormBinding formBindings; 
@@ -75,7 +75,7 @@ public class VentasController extends AbstractController {
 		
 		
 		//el grid de detalles de los producutos seleccionados
-		gridDetalle = new FacturaDetalleVentaGrid(venta);
+		//gridDetalle = new FacturaDetalleVentaGrid(venta);
 
 
 		/*panelVertical = new VerticalPanel();
@@ -92,11 +92,11 @@ public class VentasController extends AbstractController {
 		panelVertical.setLayout(new AnchorLayout());
 		
 		AnchorData data = new AnchorData();
-		data.setAnchorSpec("100% 25%");
+		data.setAnchorSpec("100% 28%");
 		panelVertical.add(panelCliente, data);
 		
 		data = new AnchorData();
-		data.setAnchorSpec("100% 75%");
+		data.setAnchorSpec("100% 72%");
 		panelVertical.add(gridDetalle, data);
 		
 		panelVertical.setTopComponent(gridCliente);
@@ -202,7 +202,7 @@ public class VentasController extends AbstractController {
 
 		LayoutContainer main = new LayoutContainer();  
 		main.setLayout(new ColumnLayout());  
-
+		main.setAutoWidth(true);
 		LayoutContainer left = new LayoutContainer();  
 		left.setStyleAttribute("paddingRight", "10px");
 		//left.setWidth(300);
@@ -218,7 +218,7 @@ public class VentasController extends AbstractController {
 		text.setFieldLabel("Cédula");
 		text.setName("cedula");
 		text.setEnabled(false);
-		text.setWidth(50);
+		//text.setWidth(50);
 		left.add(text);
 
 		// nombre field
@@ -227,23 +227,23 @@ public class VentasController extends AbstractController {
 		text.setName("nombre");
 		text.setEnabled(false);
 		text.setAllowBlank(false);
-		text.setWidth(200);
+		//text.setWidth(200);
 		left.add(text);
 
 
 		// telefono field
 		text = new TextField<String>();
-		text.setMaxLength(20);
+		//text.setMaxLength(20);
 		text.setFieldLabel("Teléfono");
 		text.setName("telefono");
 		text.setEnabled(false);
-		text.setWidth(50);
+		//text.setWidth(50);
 		left.add(text);
 
 
 		LayoutContainer right = new LayoutContainer();  
 		right.setStyleAttribute("paddingLeft", "10px");
-		right.setWidth(300);
+		//right.setWidth(300);
 		layout = new FitLayout();  
 		//layout.setLabelAlign(LabelAlign.TOP);  
 		right.setLayout(layout);  
@@ -254,7 +254,7 @@ public class VentasController extends AbstractController {
 		text.setName("direccion");
 		text.setAllowBlank(false);
 		text.setEnabled(false);
-		text.setWidth(100);
+		//text.setWidth(100);
 		right.add(text);
 
 		// apellido field
@@ -264,13 +264,13 @@ public class VentasController extends AbstractController {
 		text.setAllowBlank(false);
 		text.setEnabled(false);		
 	
-		text.setWidth(100);
+		//text.setWidth(100);
 		right.add(text);
 
 		main.add(left, new ColumnData(.5));  
 		main.add(right, new ColumnData(.5));  
 
-		panel.add(main, new FormData("100%")); 
+		panel.add(main, new FormData("-20")); 
 
 		return panel;  
 	}
