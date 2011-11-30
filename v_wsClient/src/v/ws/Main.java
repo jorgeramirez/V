@@ -20,7 +20,7 @@ public class Main {
 		pago2.setIdCajero((long)2);
 		
 		pago1.setIdFactura(1);
-		pago2.setIdFactura(2);
+		pago2.setIdFactura(40);
 		
 		pago1.setMonto((double)1000);
 		pago2.setMonto((double)2000);
@@ -31,7 +31,9 @@ public class Main {
 		
 		List<PagoWs> res;
 		res = port1.registrarPagos(lista);
-		if (res.isEmpty()){
+		if (res == null){
+			System.out.println("Fallo del sistema");
+		}else if (res.isEmpty()){
 			System.out.println("Ningun pago guardado");
 		} else {
 			for (PagoWs re : res){

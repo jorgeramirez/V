@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import util.SimpleFilter;
 import v.eao.CajaEaoLocal;
@@ -98,9 +100,32 @@ public class CajeroFacade implements CajeroFacadeLocal {
 		}
 		return pagoEao.agregar(pago);
 	}
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public Pago registrarPagoWebService(Pago pago) throws GuardarException {
+		FacturaVenta factura = 	ventaEao.findById(pago.getFactura().getNumeroFactura());
+		Usuario cajero = usuarioEao.findByUsername(pago.getUsuario().getUsername());
+		Caja caja = cajero.getCaja();
+		
+		if(pago.getMonto() > factura.getSaldo()){
+			throw new GuardarException("El monto a pagar excede el saldo");
+		}
+		
+		pago.setFactura(factura);
+		pago.setUsuario(cajero);
+		pago.setCaja(caja);
+		pago.setFecha(new Date());
+		factura.setSaldo(factura.getSaldo() - pago.getMonto());
+		if(factura.getSaldo() == 0.0){
+			factura.setEstado("pagada");
+		}
+		return pagoEao.agregar(pago);
+	}
     
 	@Override
-	public List<PagoWs> registroPagosWebService(List<PagoWs> pagos) throws GuardarException {
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<PagoWs> registroPagosWebService(List<PagoWs> pagos) {
 		
 		List<PagoWs> pagosRegistrados = new ArrayList<PagoWs>();
 		
@@ -119,22 +144,29 @@ public class CajeroFacade implements CajeroFacadeLocal {
 	    	pago.setEstado("cerrado");
 	    	
 	    	try {
-				pago = registrarPago(pago);
+				pago = registrarPagoWebService(pago);
 				registro.setRealizado(true);
-			
-	    	} catch (GuardarException e) {
+				pagoWs.setIdPago(pago.getId());
+				pagosRegistrados.add(pagoWs);
+				registro.setIdPago(pago.getId());
+	    	} catch (Exception e) {
 				registro.setRealizado(false);
-				registro.setMensajeError(e.getMessage().toString());
-			
-	    	} finally {
-	    		registro.setFecha(new Date());
-	    		if (pago != null){
-	    			registro.setIdPago(pago.getId());
-	    			pagoWs.setIdPago(pago.getId());
-					pagosRegistrados.add(pagoWs);
-	    		}
-	    		registroEao.agregar(registro);
+				registro.setMensajeError("Error de componente pago");
 	    	}
+	    	
+    		registro.setFecha(new Date());
+    		
+    		//if (pago != null){
+    		//	}	
+    		
+    		try {
+				registroEao.agregar(registro);
+			} catch (GuardarException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+	    	
 		}
 		return pagosRegistrados;	
 	}

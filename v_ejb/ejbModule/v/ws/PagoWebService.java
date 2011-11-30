@@ -9,7 +9,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import v.excepciones.GuardarException;
 import v.facade.CajeroFacadeLocal;
 
 
@@ -29,7 +28,9 @@ public class PagoWebService implements PagoWebServiceRemote {
     	List<PagoWs> listaRetorno = new ArrayList<PagoWs>();
     	
     	for (PagoWs pago : pagos){
-    		System.out.println("----");
+    		System.out.println("Pago Registrados:");
+    		System.out.print("idPago: ");
+    		System.out.println(pago.getIdPago());
     		System.out.print("idCajero: ");
     		System.out.println(pago.getIdCajero());
     		System.out.print("idFactura: ");
@@ -38,13 +39,9 @@ public class PagoWebService implements PagoWebServiceRemote {
     		System.out.println(pago.getMonto());
     		System.out.println("----");
     	}
-    	try {
-    		listaRetorno = cajeroFacade.registroPagosWebService(pagos);
-			return listaRetorno;
-		} catch (GuardarException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+   		listaRetorno = cajeroFacade.registroPagosWebService(pagos);
+	
 		return listaRetorno;
     }
 }
