@@ -383,6 +383,9 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		return store.getModels();
 	}
 
+	public ListStore<BeanModel> getStore() {
+		return store;
+	}
 	private void seleccionDetalle(final BeanModel ge){ 
 		final Dialog dialog = new Dialog();
 		final FormPanel form = new FormPanel();

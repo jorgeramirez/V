@@ -39,6 +39,7 @@ public class ComprasDetallesGrid extends CustomGrid<FacturaDetalleCompra> {
 		super(title, useCheckBoxSm, hasFilters);
 		this.compra = new FacturaCompra();
 		this.compra.setNumeroFactura(compra.getNumeroFactura());
+		this.setFrame(true);
 	}
 	
 	@Override

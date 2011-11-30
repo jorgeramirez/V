@@ -74,7 +74,7 @@ public class VentasController extends AbstractController {
 		bindHandlers();
 
 		panelVertical = new ContentPanel(new AnchorLayout());
-		panelVertical.setTitle("Nueva Venta");
+		panelVertical.setHeading("Nueva Venta");
 		panelVertical.setFrame(true);
 		
 		AnchorData data = new AnchorData("100% 25%");;
@@ -144,6 +144,16 @@ public class VentasController extends AbstractController {
 								if (b != null) {
 									//mostrar el reporte de la factura
 									viewer = new ReportViewer(b.getNumeroFactura().toString(), "factura_venta", "Factura Venta");
+									viewer.setPlain(true);  
+									viewer.setModal(true);  
+									viewer.setBlinkModal(true);
+									viewer.setClosable(false);
+									viewer.getButtonById(ReportViewer.ACEPTAR).hide();
+									viewer.getButtonById(ReportViewer.CANCELAR).hide();
+									viewer.show();
+									
+									formBindings.unbind();
+									gridDetalle.getStore().removeAll();
 								} else {
 									MessageBox.alert("Error", "La venta no pudo guardarse, por favor intente de otra vez", null);
 								}
@@ -259,7 +269,7 @@ public class VentasController extends AbstractController {
 				gridCliente.getGrid().getSelectionModel().addListener(Events.SelectionChange,  
 						new Listener<SelectionChangedEvent<BeanModel>>() {  
 					public void handleEvent(SelectionChangedEvent<BeanModel> be) {  
-						if (be.getSelection().size() > 0) {  
+						if (be.getSelection().size() > 0) {
 							formBindings.bind((ModelData) be.getSelection().get(0));  
 						} else {  
 							formBindings.unbind();  

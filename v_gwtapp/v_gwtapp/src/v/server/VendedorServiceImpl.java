@@ -49,7 +49,9 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return added;	
+		FacturaVenta nueva = new FacturaVenta();
+		nueva.setNumeroFactura(added.getNumeroFactura());	
+		return nueva;
 	}
 	
 	@Override
