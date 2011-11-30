@@ -35,19 +35,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RegistrarPagosResponse }
-     * 
-     */
-    public RegistrarPagosResponse createRegistrarPagosResponse() {
-        return new RegistrarPagosResponse();
-    }
-
-    /**
      * Create an instance of {@link PagoWs }
      * 
      */
     public PagoWs createPagoWs() {
         return new PagoWs();
+    }
+
+    /**
+     * Create an instance of {@link RegistrarPagosResponse }
+     * 
+     */
+    public RegistrarPagosResponse createRegistrarPagosResponse() {
+        return new RegistrarPagosResponse();
     }
 
     /**

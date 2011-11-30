@@ -27,7 +27,20 @@ public class Main {
 			
 		lista.add(pago1);
 		lista.add(pago2);
-		//PagoWs [] plist = {pago1, pago2};
+		
+		System.out.println("--------------");
+		System.out.println("Pagos Enviados:");
+		System.out.println("--------------\n");
+    	for (PagoWs pago : lista){
+    		System.out.println("--------------");
+    		System.out.print("idFactura: ");
+    		System.out.println(pago.getIdFactura());
+    		System.out.print("idCajero: ");
+    		System.out.println(pago.getIdCajero());
+    		System.out.print("Monto: ");
+    		System.out.println(pago.getMonto());
+    		System.out.println("--------------");
+    	}
 		
 		List<PagoWs> res;
 		res = port1.registrarPagos(lista);
@@ -36,15 +49,20 @@ public class Main {
 		}else if (res.isEmpty()){
 			System.out.println("Ningun pago guardado");
 		} else {
+			System.out.println("\n--------------");
+			System.out.println("Pagos Recibidos:");
+			System.out.println("--------------\n");
 			for (PagoWs re : res){
-	    		System.out.println("xxx");
-	    		System.out.print("idCajero: ");
-	    		System.out.println(re.getIdCajero());
+				System.out.println("--------------");
+	    		System.out.print("idPago: ");
+	    		System.out.println(re.getIdPago());
 	    		System.out.print("idFactura: ");
 	    		System.out.println(re.getIdFactura());
+	    		System.out.print("idCajero: ");
+	    		System.out.println(re.getIdCajero());
 	    		System.out.print("Monto: ");
 	    		System.out.println(re.getMonto());
-	    		System.out.println("xxx");
+				System.out.println("--------------");
 			}
 		}		
 	}

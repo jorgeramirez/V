@@ -27,19 +27,6 @@ public class PagoWebService implements PagoWebServiceRemote {
     	
     	List<PagoWs> listaRetorno = new ArrayList<PagoWs>();
     	
-    	for (PagoWs pago : pagos){
-    		System.out.println("Pago Registrados:");
-    		System.out.print("idPago: ");
-    		System.out.println(pago.getIdPago());
-    		System.out.print("idCajero: ");
-    		System.out.println(pago.getIdCajero());
-    		System.out.print("idFactura: ");
-    		System.out.println(pago.getIdFactura());
-    		System.out.print("Monto: ");
-    		System.out.println(pago.getMonto());
-    		System.out.println("----");
-    	}
-
    		listaRetorno = cajeroFacade.registroPagosWebService(pagos);
 	
 		return listaRetorno;
