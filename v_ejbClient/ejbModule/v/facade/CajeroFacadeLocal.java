@@ -21,8 +21,7 @@ public interface CajeroFacadeLocal {
 
 	Pago registrarPago(Pago pago) throws GuardarException;
 
-	List<PagoWs> registroPagosWebService(List<PagoWs> pagos)
-			throws GuardarException;
+	List<PagoWs> registroPagosWebService(List<PagoWs> pagos);
 
 	int getTotalPagos();
 
@@ -34,8 +33,12 @@ public interface CajeroFacadeLocal {
 	
 	List<FacturaVenta> listarFacturas(List<SimpleFilter> plainFilters, int start, int limit);
 
+
 	int getTotalFacturasFilters(List<SimpleFilter> plainFilters);
 
 	int getTotalPagosFilters(List<SimpleFilter> plainFilters);
+
+	Pago registrarPagoWebService(Pago pago) throws GuardarException;
+
 
 }
