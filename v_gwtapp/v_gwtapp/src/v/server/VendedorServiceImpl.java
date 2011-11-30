@@ -42,8 +42,8 @@ public class VendedorServiceImpl extends RemoteServiceServlet implements Vendedo
 	@EJB
 	VendedorFacadeLocal vendedorFacade;
 	
-	public boolean agregarVenta(FacturaVenta v) {
-		boolean added = false;
+	public FacturaVenta agregarVenta(FacturaVenta v) {
+		FacturaVenta added = null;
 		try {
 			added = vendedorFacade.agregarVenta(v);
 		} catch (Exception e) {

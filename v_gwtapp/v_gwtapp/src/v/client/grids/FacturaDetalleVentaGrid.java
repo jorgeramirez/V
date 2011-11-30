@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import v.client.Util;
+import v.client.dialogs.RemoveFromStoreDialog;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
 import v.modelo.Producto;
@@ -27,6 +28,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.Field;
@@ -61,26 +63,20 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 	private Button clear;
 	private int selected;
 
-	
 	public Window getWindow() {
 		return window;
 	}
-
 
 	public FacturaDetalleVentaGrid(){
 		this.setHeading(this.title);  
 		this.setFrame(true);
 		
-		
-
 		RowNumberer r = new RowNumberer(); 
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();  
 		configs.add(r);
 		
 		ColumnConfig column; 
 
-//		NumberField nf;
-//		CellEditor ce;
 		// código producto field
 		column = new ColumnConfig("producto.codigo", "Código", 50);
 
@@ -100,9 +96,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 		// nombre de producto
 		column = new ColumnConfig("producto.nombre", "Nombre Producto", 100);
-		//tf = new TextField<String>();
-		//ce = new CellEditor(tf);
-
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -119,11 +112,8 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		// precio
 		column = new ColumnConfig("precio", "Precio", 80);
 		column.setAlignment(HorizontalAlignment.RIGHT);
-//		nf = new NumberField();
-//		nf.setPropertyEditorType(Double.class);
-//		ce = new CellEditor(nf);
-//		//ce.setEnabled(false);
-//		column.setEditor(ce);
+		//column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
+
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -139,35 +129,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		
 		column = new ColumnConfig("cantidad", "Cantidad", 50);     
 		column.setAlignment(HorizontalAlignment.RIGHT);  
-//		//column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
-//		nf = new NumberField();
-//		nf.setPropertyEditorType(Integer.class);
-//		ce = new CellEditor(nf);
-//		column.setEditor(ce);
-		
-/*		column.addListener(Events.OnBlur, new Listener<BaseEvent>() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void handleEvent(BaseEvent be) {
-				GridEvent<BeanModel> gw = (GridEvent<BeanModel>)be;
-				BeanModel fd = gw.getModel();
-			
-				FacturaDetalleVenta fdv = (FacturaDetalleVenta) fd.getBean();
-				if (fdv.getProducto().getCantidad() < fdv.getCantidad()) {
-					MessageBox.alert("Cantidad de Producto", "Sólo existen " +  fdv.getProducto().getCantidad().toString()
-							+ "unidades", null);
-					gridDetalle.startEditing(gw.getRowIndex(), 3);
-				} else {
-					fd.set("subtotal", (Integer) fd.get("cantidad") * (Double) fd.get("precio"));
-					fd.set("cantidad", fd.get("cantidad"));
-					store.commitChanges();
-				}
 				
-			}
-			
-		});*/
-		
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
 			@Override
@@ -185,11 +147,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		// subtotal
 		column = new ColumnConfig("subtotal", "Subtotales", 80);
 		column.setAlignment(HorizontalAlignment.RIGHT);
-//		nf = new NumberField();
-//		nf.setPropertyEditorType(Double.class);
-//		ce = new CellEditor(nf);
-//		//ce.setEnabled(false);
-//		column.setEditor(ce);
+		//column.setNumberFormat(NumberFormat.getCurrencyFormat());  //cambiar para guarani, si hay
 		
 		column.setRenderer(new GridCellRenderer<BeanModel>() {
 
@@ -211,8 +169,9 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 	    store = new ListStore<BeanModel>();
 		gridDetalle = new Grid<BeanModel>(store, cm);
 		gridDetalle.setAutoExpandColumn("producto.nombre");
-		gridDetalle.addPlugin(r);
 		
+		//plugin de numeración
+		gridDetalle.addPlugin(r);
 		
 		//gridDetalle.disableTextSelection(true);
 		gridDetalle.setTrackMouseOver(true);
@@ -232,7 +191,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 				};			
 			}
 		};
-		
 
 		window.addListener(Events.Render, new Listener<BaseEvent>() {
 
@@ -247,18 +205,13 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 					public void handleEvent(BaseEvent be) {
 						GridEvent<BeanModel> bm = (GridEvent<BeanModel>) be;
 						BeanModel d = crearDetalle(gridProductos.getGrid().getSelectionModel().getSelectedItem());
-						//gridDetalle.getStore().add(d);
 						seleccionDetalle(d);
-						//store.add(d);
-						//window.hide();
 					}
 				});
 				
 			}
 			
 		});
-		
-
 		
 		topToolBar= new ToolBar();
 		bottomToolBar = new ToolBar();
@@ -269,21 +222,13 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 
 	protected void selectorProductos() {     
-
-		//final Window window = new Window();  
 		window.setSize(500, 300);  
 		window.setPlain(true);  
 		window.setModal(true);  
 		window.setBlinkModal(true);  
 		//window.setHeading("Productos");  
-		window.setLayout(new FitLayout());  
-/*		window.addWindowListener(new WindowListener() {  
-			@Override  
-			public void windowHide(WindowEvent we) {  
-				Button open = we.getWindow().getData("productos");  
-				open.focus();  
-			}  
-		}); */ 
+		window.setLayout(new FitLayout());
+		
 
 		window.add(gridProductos);
 		window.addButton(new Button("Ok", new SelectionListener<ButtonEvent>() {  
@@ -291,29 +236,12 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			public void componentSelected(ButtonEvent ce) {
 				BeanModel d = crearDetalle(gridProductos.getGrid().getSelectionModel().getSelectedItem());
 				seleccionDetalle(d);
-				//store.add(d);
-				
-//				if (gridDetalle.getStore().getModels().isEmpty()){
-//					store.insert(d, 0);
-//
-//				} else {
-//					for (ColumnConfig c : gridDetalle.getColumnModel().getColumns()) {
-//						c.getEditor().setEnabled(true);
-//					}
-//					store.insert(d, 0);
-//					for (ColumnConfig c : gridDetalle.getColumnModel().getColumns()) {
-//						c.getEditor().setEnabled(false);
-//					}		
-//				}
-//				gridDetalle.startEditing(0, 4);
-				//window.hide();  
 			}  
 		}));  
 
-
 		//window.setFocusWidget(window.getButtonBar().getItem(0));  
 
-		add = new Button("Agregar Producto", new SelectionListener<ButtonEvent>() {  
+		add = new Button("Seleccionar Producto", new SelectionListener<ButtonEvent>() {  
 			@Override  
 			public void componentSelected(ButtonEvent ce) {
 				window.show();  
@@ -322,29 +250,24 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		
 		add.setIconStyle("icon-add");
 
-		//ToolBar topToolBar= new ToolBar();  
-
 		window.setData("productos", add);  
 
 		topToolBar.add(add);
 		del = new Button("Remover Seleccionado", new SelectionListener<ButtonEvent>() {  
 			@Override  
 			public void componentSelected(ButtonEvent ce) {
-				//arreglar para que borre el seleccionado
-				//gridDetalle.getActiveEditor();
-				//gridDetalle.startEditing(0, 4);
-
-				//MessageBox.alert("esto es una prueba", "preba", null);
-				gridDetalle.getStore().remove(gridDetalle.getSelectionModel().getSelectedItem());  
-
+				if(store.getCount() > 0){
+					RemoveFromStoreDialog remove = new RemoveFromStoreDialog(store, "Remover Detalle de Compra");
+					remove.show();
+				}else{
+					MessageBox.alert("Advertencia", "No existen detalles", null);
+				}
 			}
 		});
 		
 		del.setIconStyle("icon-delete");
 
 		topToolBar.add(del);
-		//this.setTopComponent(topToolBar);  
-
 	}
 
 
@@ -353,7 +276,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		FacturaDetalleVenta fdv = new FacturaDetalleVenta();
 		fdv.setCantidad(1);
 		fdv.setPrecio(((Producto)p.getBean()).getPrecioVenta());
-		//fdv.setCabecera(fv);
 		fdv.setProducto((Producto) p.getBean());
 
 		return Util.createBeanModel(fdv);  
@@ -378,20 +300,19 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		gridDetalle.setStripeRows(true);
 		gridDetalle.setColumnLines(true);
 		gridDetalle.getSelectionModel().setSelectionMode(SelectionMode.SIMPLE);
-		//plugin de numeración
-		//gridDetalle.addPlugin(r);
 		gridDetalle.getView().setForceFit(true);
 
 		gridDetalle.addListener(Events.Render, new Listener<BaseEvent>() {
 
 			@Override
 			public void handleEvent(BaseEvent be) {
-				//Controlamos enabled/disabled del botón delete del ToolBar
+				//Controlamos enabled/disabled del botón clear del ToolBar
 				gridDetalle.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<BeanModel>() {
 
 					@Override
 					public void selectionChanged(SelectionChangedEvent<BeanModel> se) {
 						clear.setEnabled(se.getSelection().size() > 0);
+						del.setEnabled(se.getSelection().size() > 0);
 					}
 				});
 				
@@ -415,6 +336,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		this.add(gridDetalle);  
 		
 		this.setButtonAlign(HorizontalAlignment.CENTER); 
+		
 		clear = new Button("Limpiar", new SelectionListener<ButtonEvent>() {  
 
 			@Override  
@@ -422,10 +344,8 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 				store.removeAll();
 			}  
 		});
-		
-	
+
 		clear.setIconStyle("clear_icon");
-				
 		bottomToolBar.add(clear);
 		
 		
@@ -460,11 +380,8 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 	
 	public List<BeanModel> guardarDetalles() {
 		//retorna la lista de detalles para guardar la factura
-		//store.commitChanges();  
 		return store.getModels();
 	}
-	
-
 
 	private void seleccionDetalle(final BeanModel ge){ 
 		final Dialog dialog = new Dialog();
@@ -487,7 +404,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		fields = new ArrayList<Field<?>>();
 		bindings = new ArrayList<FieldBinding>();
 		
-		// codigo
+		// código
 		final TextField<BeanModel> codigo = new TextField<BeanModel>();
 		codigo.setEnabled(false);
 		codigo.setName("producto");
@@ -503,7 +420,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 				}
 				return nf;
 			}
-
+			
 			@Override
 			public BeanModel convertStringValue(String value) {
 				return codigo.getValue();
@@ -555,8 +472,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 		cantidad.setPropertyEditorType(Integer.class);
 		fields.add(cantidad);
 
-			
-		
 		FormData formData = new FormData("-20");
 		form.setHeaderVisible(false);
 		form.setFrame(true);
@@ -581,18 +496,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			selected = store.indexOf(s);
 		}
 			
-		
-/*		BeanModel detalle = store.findModel("producto", ge);
-		
-		if ( detalle != null) {
-			int c = detalle.get("cantidad");
-			detalle = crearDetalle(ge);
-			detalle.set("cantidad", c);
-			
-		} else {
-			detalle = crearDetalle(ge);
-		}*/
-			
 
 		formBindings.bind(detalle);
 		
@@ -601,17 +504,27 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 			
 			@Override
 			public void handleEvent(BaseEvent be) {
-				//formBindings.setStore((Store) gridDetalle.getStore());
 				
 				dialog.getButtonById(Dialog.OK).addSelectionListener(new SelectionListener<ButtonEvent>() {
 
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						//store.commitChanges();
-						//store.remove(selected);
-						
+							
 						BeanModel agregar = (BeanModel) formBindings.getModel();
 						Producto prodAgregar = (Producto) ((FacturaDetalleVenta)agregar.getBean()).getProducto();
+						FacturaDetalleVenta fdv = (FacturaDetalleVenta) agregar.getBean();
+						
+						if (prodAgregar.getCantidad() < fdv.getCantidad()) {
+							String mensaje;
+							if (prodAgregar.getCantidad() == 1) {
+								mensaje = "Sólo existe 1 unidad";
+							} else {
+								mensaje = "Sólo existen " + prodAgregar.getCantidad().toString() + " unidades";
+							}
+							MessageBox.alert("Cantidad de Producto", mensaje, null);
+							return;
+						}
+						
 						if (selected >= 0) {
 							List<BeanModel> nuevoStore = new ArrayList<BeanModel>();
 							for (BeanModel b : store.getModels()) {
@@ -636,7 +549,6 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 							store.add(agregar);
 						}
 						
-						//formBindings.unbind();
 						dialog.hide();
 						window.hide();
 						
@@ -647,10 +559,7 @@ public class FacturaDetalleVentaGrid extends ContentPanel {
 
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						//store.rejectChanges();
 						dialog.hide();
-						
-
 					}
 				});
 				

@@ -37,9 +37,8 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 		try {
 			em.persist(facturaVenta);
 			em.flush();
-			
-			
 			//actualizar el stock
+			/*
 			Producto p;
 			int nuevaCantidad;
 			for (FacturaDetalleVenta fdv : facturaVenta.getDetalles()) {
@@ -51,7 +50,7 @@ public class FacturaVentaEao implements FacturaVentaEaoLocal {
 				p.setCantidad(nuevaCantidad);
 				em.merge(p);
 			}
-			
+			*/
 			return em.merge(facturaVenta);
 		} catch (PersistenceException pe) {
 			throw new GuardarException(pe.getMessage());

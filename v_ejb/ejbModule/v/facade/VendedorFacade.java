@@ -1,5 +1,6 @@
 package v.facade;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -10,12 +11,17 @@ import v.eao.CajaEaoLocal;
 import v.eao.ClienteEaoLocal;
 import v.eao.FacturaDetalleVentaEaoLocal;
 import v.eao.FacturaVentaEaoLocal;
+import v.eao.ProductoEaoLocal;
 import v.eao.UsuarioEaoLocal;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Cliente;
+import v.modelo.FacturaDetalleCompra;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
+import v.modelo.Producto;
+import v.modelo.Proveedor;
+import v.modelo.Usuario;
 
 /**
  * Session Bean implementation class VendedorFacade
@@ -33,6 +39,9 @@ public class VendedorFacade implements VendedorFacadeLocal {
 	
 	@EJB
 	UsuarioEaoLocal usuarioEao;
+	
+	@EJB
+	ProductoEaoLocal productoEao;
 	
 	@EJB
 	FacturaDetalleVentaEaoLocal ventaDetalleEao;
@@ -71,14 +80,31 @@ public class VendedorFacade implements VendedorFacadeLocal {
 	}
 
 	@Override
-	public boolean agregarVenta(FacturaVenta v) throws GuardarException {
-		FacturaVenta fv = null;
-		fv = facturaVentaEao.agregar(v);
-		if (fv == null) {
-			return false;
-		} else {
-			return true;
-		}		
+	public FacturaVenta agregarVenta(FacturaVenta factura) throws GuardarException {
+		Cliente cliente = clienteEao.getById(factura.getCliente().getId());
+		Usuario vendedor = usuarioEao.findById(factura.getVendedor().getId());
+		
+		for (FacturaDetalleVenta detalle : factura.getDetalles()) {
+			
+			Producto producto = productoEao.getById(detalle.getProducto().getId());
+			
+			int nuevaCantidad = producto.getCantidad() - detalle.getCantidad();
+			
+			if (nuevaCantidad < 0 ) {
+				throw new GuardarException("Cantidad Incorrecta");
+			}
+			
+			producto.setCantidad(nuevaCantidad);
+				
+			detalle.setProducto(producto);
+			detalle.setCabecera(factura);
+		}
+		
+		factura.setFecha(new Date());
+		factura.setCliente(cliente);
+		factura.setVendedor(vendedor);
+		
+		return facturaVentaEao.agregar(factura);		
 		
 	}
 

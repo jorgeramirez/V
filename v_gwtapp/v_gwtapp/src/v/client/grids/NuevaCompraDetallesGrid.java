@@ -17,6 +17,8 @@ import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -121,6 +123,23 @@ public class NuevaCompraDetallesGrid extends ContentPanel {
 			public void componentSelected(ButtonEvent ce) {
 				grid.getStore().removeAll();	
 			}
+		});
+		
+		grid.addListener(Events.Render, new Listener<BaseEvent>() {
+
+			@Override
+			public void handleEvent(BaseEvent be) {
+				//Controlamos enabled/disabled del botón clear del ToolBar
+				grid.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<BeanModel>() {
+
+					@Override
+					public void selectionChanged(SelectionChangedEvent<BeanModel> se) {
+						removeButton.setEnabled(se.getSelection().size() > 0);
+					}
+				});
+				
+			}
+			
 		});
 		
 		this.add(grid);

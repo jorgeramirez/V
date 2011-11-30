@@ -38,10 +38,10 @@ public class NuevaCompraPanel extends ContentPanel {
 		
 		this.setLayout(new AnchorLayout());
 		
-		AnchorData data = new AnchorData("100% 30%");
+		AnchorData data = new AnchorData("100% 25%");
 		this.add(providerSelector, data);
 		
-		data = new AnchorData("100% 70%");
+		data = new AnchorData("100% 75%");
 		this.add(grid, data);
 	}
 

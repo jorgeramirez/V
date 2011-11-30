@@ -16,6 +16,7 @@ import util.SimpleFilter;
 import v.excepciones.EliminarException;
 import v.excepciones.GuardarException;
 import v.modelo.Cliente;
+import v.modelo.Proveedor;
 
 /**
  * Session Bean implementation class ClienteEao
@@ -31,6 +32,10 @@ public class ClienteEao implements ClienteEaoLocal {
 
     }
     
+	public Cliente getById(Long id){
+		return em.find(Cliente.class, id);
+	}
+	
     @Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Cliente agregar(Cliente cliente) throws GuardarException {

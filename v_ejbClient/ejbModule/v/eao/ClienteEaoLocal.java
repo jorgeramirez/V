@@ -17,5 +17,6 @@ public interface ClienteEaoLocal {
 	List<Cliente> listar(List<SimpleFilter> filters, int start, int limit);
 	int getCount();
 	int getTotalClientesFilters(List<SimpleFilter> plainFilters);
+	Cliente getById(Long id);
 	
 }

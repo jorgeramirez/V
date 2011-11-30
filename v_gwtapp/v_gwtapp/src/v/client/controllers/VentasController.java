@@ -12,6 +12,7 @@ import v.client.grids.FacturaDetalleVentaGrid;
 import v.client.grids.VentasClienteGrid;
 import v.client.rpc.LoginServiceAsync;
 import v.client.rpc.VendedorServiceAsync;
+import v.client.widgets.ReportViewer;
 import v.modelo.Cliente;
 import v.modelo.FacturaDetalleVenta;
 import v.modelo.FacturaVenta;
@@ -29,6 +30,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Layout;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -48,7 +50,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class VentasController extends AbstractController {
 	private final FacturaDetalleVentaGrid gridDetalle = new FacturaDetalleVentaGrid();
 	private VentasClienteGrid gridCliente;
-
+	private ReportViewer viewer;
+	
 	private FormBinding formBindings; 
 	private ContentPanel panelVertical;
 	private final VendedorServiceAsync service = Registry.get(AppConstants.VENDEDOR_SERVICE);
@@ -65,38 +68,19 @@ public class VentasController extends AbstractController {
 		// creamos el grid de selección de cliente
 		gridCliente = new VentasClienteGrid();
 
-		
 		//form que contiene los datos del cliente seleccionado
 		FormPanel panelCliente = crearFormCliente();  
 		formBindings = new FormBinding(panelCliente, true);  
-
 		bindHandlers();
-		
-		
-		
-		//el grid de detalles de los producutos seleccionados
-		//gridDetalle = new FacturaDetalleVentaGrid(venta);
 
-
-		/*panelVertical = new VerticalPanel();
-		panelVertical.setSpacing(20);
+		panelVertical = new ContentPanel(new AnchorLayout());
+		panelVertical.setTitle("Nueva Venta");
+		panelVertical.setFrame(true);
 		
-
-		panelVertical.add(gridCliente);
-		panelVertical.add(panelCliente);
-		panelVertical.add(gridDetalle);*/
-		
-		
-		panelVertical = new ContentPanel();
-		panelVertical.setTitle("Venta");
-		panelVertical.setLayout(new AnchorLayout());
-		
-		AnchorData data = new AnchorData();
-		data.setAnchorSpec("100% 28%");
+		AnchorData data = new AnchorData("100% 25%");;
 		panelVertical.add(panelCliente, data);
 		
-		data = new AnchorData();
-		data.setAnchorSpec("100% 72%");
+		data = new AnchorData("100% 75%");
 		panelVertical.add(gridDetalle, data);
 		
 		panelVertical.setTopComponent(gridCliente);
@@ -137,7 +121,6 @@ public class VentasController extends AbstractController {
 				venta.setFecha(new Date());
 				venta.setEstado(AppConstants.FACTURA_PENDIENTE_PAGO);
 
-				
 				final LoginServiceAsync loginService = (LoginServiceAsync)Registry.get(AppConstants.LOGIN_SERVICE);
 				loginService.getSessionAttribute("usuario", new AsyncCallback<Usuario>() {
 
@@ -149,7 +132,7 @@ public class VentasController extends AbstractController {
 					@Override
 					public void onSuccess(Usuario vendedor) {
 						venta.setVendedor(vendedor);
-						service.agregarVenta(venta,  new AsyncCallback<Boolean>() {
+						service.agregarVenta(venta,  new AsyncCallback<FacturaVenta>() {
 
 							@Override
 							public void onFailure(Throwable caught) {
@@ -157,11 +140,12 @@ public class VentasController extends AbstractController {
 							}
 
 							@Override
-							public void onSuccess(Boolean b) {
-								if (b) {
+							public void onSuccess(FacturaVenta b) {
+								if (b != null) {
 									//mostrar el reporte de la factura
+									viewer = new ReportViewer(b.getNumeroFactura().toString(), "factura_venta", "Factura Venta");
 								} else {
-								//no se puedo guardar la venta
+									MessageBox.alert("Error", "La venta no pudo guardarse, por favor intente de otra vez", null);
 								}
 							}
 						});						
@@ -195,82 +179,72 @@ public class VentasController extends AbstractController {
 	
 	private FormPanel crearFormCliente() {
 
-		FormPanel panel = new FormPanel();  
+		FormPanel panel = new FormPanel(); 
+		panel.setFrame(true);
 		panel.setHeaderVisible(false);  
 
 		TextField<String> text;
 
 		LayoutContainer main = new LayoutContainer();  
 		main.setLayout(new ColumnLayout());  
-		main.setAutoWidth(true);
+		
 		LayoutContainer left = new LayoutContainer();  
 		left.setStyleAttribute("paddingRight", "10px");
-		//left.setWidth(300);
-		FitLayout layout;
-		layout = new FitLayout(); 
-  
-		//layout.setLabelAlign(LabelAlign.TOP);  
+		FormLayout layout;
+		layout = new FormLayout(); 
 		left.setLayout(layout); 
+		
+		LayoutContainer right = new LayoutContainer();  
+		right.setStyleAttribute("paddingLeft", "10px");
+		layout = new FormLayout();  
+		right.setLayout(layout);
 
+		FormData formData = new FormData("100%");
+		
 		// cedula field
 		text = new TextField<String>();
-		text.setAllowBlank(false);
 		text.setFieldLabel("Cédula");
 		text.setName("cedula");
 		text.setEnabled(false);
-		//text.setWidth(50);
-		left.add(text);
+
+		left.add(text, formData);
 
 		// nombre field
 		text = new TextField<String>();
 		text.setFieldLabel("Nombre");
 		text.setName("nombre");
 		text.setEnabled(false);
-		text.setAllowBlank(false);
-		//text.setWidth(200);
-		left.add(text);
 
+		left.add(text, formData);
 
 		// telefono field
 		text = new TextField<String>();
-		//text.setMaxLength(20);
 		text.setFieldLabel("Teléfono");
 		text.setName("telefono");
 		text.setEnabled(false);
-		//text.setWidth(50);
-		left.add(text);
 
-
-		LayoutContainer right = new LayoutContainer();  
-		right.setStyleAttribute("paddingLeft", "10px");
-		//right.setWidth(300);
-		layout = new FitLayout();  
-		//layout.setLabelAlign(LabelAlign.TOP);  
-		right.setLayout(layout);  
+		left.add(text, formData); 
 
 		// direccion field
 		text = new TextField<String>();		
 		text.setFieldLabel("Dirección");
 		text.setName("direccion");
-		text.setAllowBlank(false);
 		text.setEnabled(false);
-		//text.setWidth(100);
-		right.add(text);
+
+		right.add(text, formData);
 
 		// apellido field
 		text = new TextField<String>();
 		text.setFieldLabel("Apellido");
 		text.setName("apellido");
-		text.setAllowBlank(false);
 		text.setEnabled(false);		
 	
-		//text.setWidth(100);
-		right.add(text);
+		right.add(text, formData);
 
 		main.add(left, new ColumnData(.5));  
 		main.add(right, new ColumnData(.5));  
 
-		panel.add(main, new FormData("-20")); 
+		panel.add(main, new FormData("100%")); 
 
 		return panel;  
 	}
@@ -281,7 +255,6 @@ public class VentasController extends AbstractController {
 			@Override
 			public void handleEvent(BaseEvent be) {
 				//hacer el bind del form cliente con la fila seleccionada
-				//gridCliente.getGrid().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 				  
 				gridCliente.getGrid().getSelectionModel().addListener(Events.SelectionChange,  
 						new Listener<SelectionChangedEvent<BeanModel>>() {  

@@ -23,7 +23,7 @@ public interface VendedorFacadeLocal {
 
 	int getTotalClientes();
 
-	boolean agregarVenta(FacturaVenta v) throws GuardarException;
+	FacturaVenta agregarVenta(FacturaVenta v) throws GuardarException;
 
 	int getTotalDetallesVenta(Integer numeroFactura);
 
