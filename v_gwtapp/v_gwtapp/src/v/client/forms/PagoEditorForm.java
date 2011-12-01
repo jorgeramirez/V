@@ -6,9 +6,11 @@ import v.modelo.FacturaVenta;
 import v.modelo.Usuario;
 
 import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.PropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.Validator;
 
 public class PagoEditorForm extends EditorForm {
 
@@ -23,6 +25,14 @@ public class PagoEditorForm extends EditorForm {
 		monto.setFieldLabel("Monto");
 		monto.setName("monto");
 		monto.setAllowBlank(false);
+		monto.setValidator(new Validator() {
+			
+			@Override
+			public String validate(Field<?> field, String value) {
+				Double m = Double.parseDouble(value);
+				return m > 0 ? null : "El monto debe ser mayor a cero";
+			}
+		});
 		fields.add(monto);
 		
 		final TextField<BeanModel> factura = new TextField<BeanModel>();
