@@ -147,7 +147,7 @@ public class VentasController extends AbstractController {
 									viewer.setPlain(true);  
 									viewer.setModal(true);  
 									viewer.setBlinkModal(true);
-									viewer.setClosable(false);
+									//viewer.setClosable(false);
 									viewer.getButtonById(ReportViewer.ACEPTAR).hide();
 									viewer.getButtonById(ReportViewer.CANCELAR).hide();
 									viewer.show();
