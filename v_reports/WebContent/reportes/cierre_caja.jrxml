@@ -199,7 +199,7 @@
 			<![CDATA[select f.fecha as fecha_factura, f.id, p.fecha as fecha_pago, p.monto as monto_pago from factura_venta f, pago p where f.id = p.id_factura_venta
 and p.estado = 'no cerrado' and p.id_usuario = $P{id_cajero};]]>
 		</queryString>
-		<field name="fecha_factura" class="java.sql.Date"/>
+		<field name="fecha_factura" class="java.lang.String"/>
 		<field name="id" class="java.lang.Integer"/>
 		<field name="fecha_pago" class="java.sql.Timestamp"/>
 		<field name="monto_pago" class="java.lang.Double"/>
@@ -209,13 +209,13 @@ and p.estado = 'no cerrado' and p.id_usuario = $P{id_cajero};]]>
 	</parameter>
 	<parameter name="ROOT_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select p.nombre, p.apellido, c.descripcion as caja
+		<![CDATA[select p.nombre, p.apellido, c.id as caja
 from usuario p, caja c
 where p.id_caja = c.id and p.id = $P{id};]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="apellido" class="java.lang.String"/>
-	<field name="caja" class="java.lang.String"/>
+	<field name="caja" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -233,35 +233,35 @@ where p.id_caja = c.id and p.id = $P{id};]]>
 				<text><![CDATA[ V]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="SubTitle" x="353" y="8" width="200" height="22" forecolor="#FFFFFF"/>
+				<reportElement style="SubTitle" x="342" y="8" width="200" height="22" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="18"/>
 				</textElement>
-				<text><![CDATA[Cierre de Caja  ]]></text>
+				<text><![CDATA[Cierre de Caja]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="1" y="54" width="46" height="15"/>
+				<reportElement style="Column header" x="1" y="54" width="51" height="15"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<text><![CDATA[ Cajero:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="1" y="70" width="35" height="15"/>
+				<reportElement style="Column header" x="1" y="70" width="65" height="15"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<text><![CDATA[ Caja:]]></text>
+				<text><![CDATA[ Caja Nro:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="47" y="54" width="162" height="15"/>
+				<reportElement x="52" y="54" width="162" height="15"/>
 				<textElement verticalAlignment="Top">
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre} + " " + $F{apellido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="36" y="70" width="162" height="15"/>
+				<reportElement x="67" y="70" width="162" height="15"/>
 				<textElement verticalAlignment="Top">
 					<font size="11"/>
 				</textElement>

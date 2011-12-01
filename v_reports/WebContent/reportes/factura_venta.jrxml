@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura_venta" pageWidth="595" pageHeight="432" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="1029"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="SansSerif" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="SansSerif" fontSize="18"/>
@@ -82,7 +82,7 @@
 		<band height="154" splitType="Stretch">
 			<image isUsingCache="true">
 				<reportElement stretchType="RelativeToTallestObject" x="1" y="5" width="553" height="75" isPrintInFirstWholeBand="true"/>
-				<imageExpression><![CDATA[$P{ROOT_DIR} + "\\reportes\\fondo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "/reportes/fondo.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement style="Title" x="0" y="5" width="263" height="33"/>
@@ -94,16 +94,16 @@
 			<staticText>
 				<reportElement style="SubTitle" x="353" y="8" width="200" height="22" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="18"/>
+					<font fontName="SansSerif" size="18"/>
 				</textElement>
-				<text><![CDATA[Factura Venta  ]]></text>
+				<text><![CDATA[Factura Venta ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="461" y="29" width="71" height="15" forecolor="#FFFFFF"/>
+				<reportElement x="467" y="29" width="71" height="15" forecolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{numero_factura}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Column header" x="1" y="55" width="100" height="15"/>
@@ -113,7 +113,7 @@
 				<text><![CDATA[  Nombre Cliente:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="1" y="70" width="67" height="15"/>
+				<reportElement style="Column header" x="1" y="70" width="70" height="15"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
@@ -134,7 +134,7 @@
 				<textFieldExpression><![CDATA[$F{nombre} + " " + $F{apellido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="68" y="70" width="162" height="15"/>
+				<reportElement x="71" y="70" width="162" height="15"/>
 				<textElement verticalAlignment="Top">
 					<font size="11"/>
 				</textElement>
@@ -162,8 +162,10 @@
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="Column header" x="431" y="29" width="30" height="15" forecolor="#FFFFFF"/>
-				<textElement/>
+				<reportElement style="Column header" x="436" y="29" width="30" height="15" forecolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[Nro:]]></text>
 			</staticText>
 			<staticText>
