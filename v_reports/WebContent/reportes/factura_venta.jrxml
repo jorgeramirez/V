@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura_venta" pageWidth="595" pageHeight="432" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="1032"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="453"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="SansSerif" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="SansSerif" fontSize="18"/>
@@ -67,7 +67,7 @@
 	<queryString>
 		<![CDATA[select fecha, f.id, total, saldo, nombre, apellido, cedula, direccion from factura_venta f, cliente c where f.id_cliente = c.id and f.id = $P{id};]]>
 	</queryString>
-	<field name="fecha" class="java.sql.Date"/>
+	<field name="fecha" class="java.lang.String"/>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="total" class="java.lang.Double"/>
 	<field name="saldo" class="java.lang.Double"/>
@@ -87,21 +87,21 @@
 			<staticText>
 				<reportElement style="Title" x="0" y="5" width="263" height="33"/>
 				<textElement verticalAlignment="Middle">
-					<font size="28"/>
+					<font fontName="SansSerif" size="26"/>
 				</textElement>
 				<text><![CDATA[ V]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="SubTitle" x="346" y="8" width="200" height="22" forecolor="#FFFFFF"/>
+				<reportElement style="SubTitle" x="341" y="8" width="200" height="22" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="18"/>
+					<font fontName="SansSerif" size="16"/>
 				</textElement>
-				<text><![CDATA[Factura Venta ]]></text>
+				<text><![CDATA[Factura Venta]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="461" y="29" width="71" height="15" forecolor="#FFFFFF"/>
+				<reportElement x="477" y="29" width="71" height="15" forecolor="#FFFFFF"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
@@ -155,16 +155,16 @@
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="419" y="70" width="137" height="15"/>
+				<reportElement x="419" y="70" width="113" height="15"/>
 				<textElement verticalAlignment="Top">
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="Column header" x="429" y="29" width="30" height="15" forecolor="#FFFFFF"/>
+				<reportElement style="Column header" x="443" y="29" width="30" height="15" forecolor="#FFFFFF"/>
 				<textElement>
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[Nro:]]></text>
 			</staticText>
