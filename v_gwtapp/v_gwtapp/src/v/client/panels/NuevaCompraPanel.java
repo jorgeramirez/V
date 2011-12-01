@@ -28,6 +28,7 @@ public class NuevaCompraPanel extends ContentPanel {
 		super.onRender(parent, pos);
 		
 		grid = new NuevaCompraDetallesGrid();
+		grid.setFrame(true);
 		providerSelector = new ProveedorSelectorPanel();
 
 		
