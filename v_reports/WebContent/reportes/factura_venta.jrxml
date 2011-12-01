@@ -53,7 +53,7 @@
 		</parameter>
 		<parameter name="total" class="java.lang.Double"/>
 		<queryString>
-			<![CDATA[select codigo, nombre, d.cantidad, precio from producto p, factura_detalle_venta d where d.id_producto = p.id and d.id_factura_venta = $P{id_factura}]]>
+			<![CDATA[select codigo, nombre, d.cantidad, precio from producto p, factura_detalle_venta d where d.id_producto = p.id and d.id_factura_venta = $P{id_factura};]]>
 		</queryString>
 		<field name="codigo" class="java.lang.String"/>
 		<field name="nombre" class="java.lang.String"/>
@@ -65,10 +65,10 @@
 	</parameter>
 	<parameter name="ROOT_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select fecha, numero_factura, total, saldo, nombre, apellido, cedula, direccion from factura_venta f, cliente c where f.id_cliente = c.id and f.id = $P{id};]]>
+		<![CDATA[select fecha, f.id, total, saldo, nombre, apellido, cedula, direccion from factura_venta f, cliente c where f.id_cliente = c.id and f.id = $P{id};]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date"/>
-	<field name="numero_factura" class="java.lang.Integer"/>
+	<field name="id" class="java.lang.Integer"/>
 	<field name="total" class="java.lang.Double"/>
 	<field name="saldo" class="java.lang.Double"/>
 	<field name="nombre" class="java.lang.String"/>
