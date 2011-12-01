@@ -63,9 +63,16 @@ public class ProductoEditorForm extends EditorForm {
 		NumberField porcentaje = new NumberField();
 		porcentaje.setName("porcentajeGanancia");
 		porcentaje.setFieldLabel("Porcentaje Ganancia");
-		porcentaje.setEnabled(false);
 		porcentaje.setPropertyEditorType(Double.class);
 		porcentaje.setAllowBlank(false);
+		porcentaje.setValidator(new Validator() {
+			
+			@Override
+			public String validate(Field<?> field, String value) {
+				Double percent = Double.parseDouble(value);
+				return percent > 0 && percent <= 1 ? null: "El porcentaje de ganancia debe ser un número mayor a cero y menor o igual a uno";
+			}
+		});
 		fields.add(porcentaje);
 		
 		if(create){
